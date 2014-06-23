@@ -76,6 +76,8 @@
 		/// </summary>
 		public AccountCategory Account { get; private set; }
 
+        public PhotosCategory Photos { get; private set; }
+
         #endregion
 
         internal IBrowser Browser { get; set; }
@@ -108,6 +110,7 @@
             Fave = new FaveCategory(this);
             Video = new VideoCategory(this);
 			Account = new AccountCategory(this);
+            Photos = new PhotosCategory( this );
         }
 
         /// <summary>
