@@ -137,6 +137,41 @@
 
         #region Методы
 
+        /// <summary>
+        /// Возвращает максимальный размер фото
+        /// </summary>
+        public Uri GetMaxResolution
+        {
+            get
+            {
+                if ( this.Photo2560 != null )
+                {
+                    return this.Photo2560;
+                }
+                if ( this.Photo1280 != null )
+                {
+                    return this.Photo1280;
+                }
+                if ( this.Photo807 != null )
+                {
+                    return this.Photo807;
+                }
+                if ( this.Photo604 != null )
+                {
+                    return this.Photo604;
+                }
+                if ( this.Photo130 != null )
+                {
+                    return this.Photo130;
+                }
+                if ( this.Photo75 != null )
+                {
+                    return this.Photo75;
+                }
+                return null;
+            }
+        }
+
         internal static Photo FromJson(VkResponse response)
         {
             var photo = new Photo();
