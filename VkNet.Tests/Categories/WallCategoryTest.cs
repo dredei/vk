@@ -307,7 +307,7 @@ namespace VkNet.Tests.Categories
 		public void Get_ExtendedVersion_GenerateOutParametersCorrectly()
 		{
 			const string url =
-			    "https://api.vk.com/method/wall.get?owner_id=10&count=1&offset=1&filter=owner&extended=1&access_token=token";
+			    "https://api.vk.com/method/wall.get?owner_id=10&count=1&offset=1&filter=owner&extended=1&v=5.9&access_token=token";
 			const string json =
 			    @"{
                     'response': {
@@ -434,9 +434,9 @@ namespace VkNet.Tests.Categories
             const string url = "https://api.vk.com/method/wall.getComments?owner_id=12312&post_id=12345&need_likes=1&preview_length=0&sort=asc&v=5.9&access_token=token";
 			const string json =
                 @"{
-                    'response': [
-                      2,
-                      {
+                    'response': {
+                      'count': 2,
+                      'items': [{
                         'id': 3809,
                         'from_id': 6733856,
                         'date': 1385099144,
@@ -471,8 +471,8 @@ namespace VkNet.Tests.Categories
                             }
                           }
                         ]
-                      }
-                    ]
+                      } ]
+                    }
                   }";
 
 			int totalCount;
@@ -1187,7 +1187,7 @@ namespace VkNet.Tests.Categories
 		[Ignore]
 		public void Delete_AccessTokenInvalid_ThrowAccessTokenInvalidException()
 		{
-			This.Action(() => _defaultWall.Delete()).Throws<AccessTokenInvalidException>();
+			This.Action(() => _defaultWall.Delete(1, 1)).Throws<AccessTokenInvalidException>();
 		}
 
 		[Test]

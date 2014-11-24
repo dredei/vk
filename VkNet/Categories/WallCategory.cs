@@ -75,6 +75,7 @@
 	    /// Страница документации ВКонтакте <see href="http://vk.com/dev/wall.get"/>, для случая, когда параметр extended = 1.
 	    /// </remarks>
 	    [Pure]
+        [ApiVersion("5.9")]
 		public int GetExtended(long ownerId, out ReadOnlyCollection<Post> wallPosts, out ReadOnlyCollection<User> profiles, out ReadOnlyCollection<Group> groups, int? count = null, int? offset = null, WallFilter filter = WallFilter.All)
 		{			   
 			VkErrors.ThrowIfNumberIsNegative(() => count);
@@ -134,17 +135,15 @@
                                  { "need_likes", needLikes },
                                  { "count", count },
                                  { "offset", offset },
-                                 { "preview_length", previewLength }
+                                 { "preview_length", previewLength },
+                                 { "sort", sort }
                              };
 
-            if (sort != null)
-                parameters.Add("sort", sort.ToString().ToLowerInvariant());
+            var response = _vk.Call("wall.getComments", parameters);
 
-            VkResponseArray response = _vk.Call("wall.getComments", parameters);
+	        totalCount = response["count"];
 
-            totalCount = response[0];
-
-            return response.Skip(1).ToReadOnlyCollectionOf<Comment>(c => c);
+            return response["items"].ToReadOnlyCollectionOf<Comment>(c => c);
         }
 
         /// <summary>
@@ -364,14 +363,26 @@
         /// <summary>
         /// Удаляет запись со стены. 
         /// </summary>
+        /// <param name="ownerId">Идентификатор пользователя или сообщества, на стене которого находится запись.</param>
+        /// <param name="postId">Идентификатор записи на стене.</param>
+        /// <returns>
+        /// После успешного выполнения возвращает true.
+        /// </returns>
         /// <remarks>
         /// Для вызова этого метода Ваше приложение должно иметь права с битовой маской, содержащей <see cref="Settings.Wall"/>.
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/wall.delete"/>.
         /// </remarks>
-        public void Delete()
+        public bool Delete(long ownerId, long postId)
         {
-            // TODO:
-            throw new NotImplementedException();
+            VkErrors.ThrowIfNumberIsNegative(() => postId);
+
+            var parameters = new VkParameters
+                         {
+                             { "owner_id", ownerId },
+                             { "post_id", postId }
+                         };
+
+            return _vk.Call("wall.delete", parameters);
         }
 
         /// <summary>

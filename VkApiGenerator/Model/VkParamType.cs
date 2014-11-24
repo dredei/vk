@@ -2,12 +2,6 @@
 
 namespace VkApiGenerator.Model
 {
-    public enum VkParamType
-    {
-        Digit,
-        ListOfLongs
-    }
-
     [Flags]
     public enum VkParamRestrictions
     {
@@ -22,6 +16,7 @@ namespace VkApiGenerator.Model
         Collection = 2,
         Void = 3,
         Long = 4,
-        String = 5
+        String = 5,
+        Double = 6
     }
 }

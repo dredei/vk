@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using HtmlAgilityPack;
 using JetBrains.Annotations;
@@ -65,7 +66,7 @@ namespace VkApiGenerator.Model
 
             info.Description = GetDesctiption(html);
             info.Params = GetParams(html);
-            info.ReturnText = GetReturnText(html);
+            info.ReturnText = GetReturnText(html).TransformXmlDocCommentes();
             info.ReturnType = GetReturnType(info.ReturnText);
 
 //            Debug.Assert(!string.IsNullOrEmpty(info.Description));
@@ -81,12 +82,10 @@ namespace VkApiGenerator.Model
         {
             if (string.IsNullOrEmpty(text)) return ReturnType.Unknown;
 
-            if (text.Contains("список") || text.Contains("массив")) return ReturnType.Collection;
-
-            if (text.Contains("идентификатор")) return ReturnType.Long;
-
+            if (text.Contains("дробное")) return ReturnType.Double;
             if (text.Contains("строка")) return ReturnType.String;
-
+            if (text.Contains("список") || text.Contains("массив")) return ReturnType.Collection;
+            if (text.Contains("идентификатор")) return ReturnType.Long;
             if (text.Contains("1")) return ReturnType.Bool;
 
             return ReturnType.Unknown;
@@ -127,6 +126,9 @@ namespace VkApiGenerator.Model
                 return result;
 
             Debug.Assert(table != null);
+
+            var isMandatoryParams = new List<VkMethodParam>();
+            var isNotMandatoryParams = new List<VkMethodParam>();
             
             HtmlNodeCollection rows = table.SelectNodes("tr");
             foreach (HtmlNode row in rows)
@@ -137,15 +139,18 @@ namespace VkApiGenerator.Model
                 var param = new VkMethodParam
                 {
                     Name = columns[0].InnerText,
-                    Description = HtmlHelper.RemoveHtmlComment(columns[1].InnerText),
+                    Description = HtmlHelper.RemoveHtmlComment(columns[1].InnerText).Capitalize().TransformXmlDocCommentes(),
                     Restrictions = VkMethodParam.GetRestrictions(columns[1]),
                     IsMandatory = VkMethodParam.GetIsMandatory(columns[1])
                 };
 
-                result.Add(param);
+                if (param.IsMandatory) isMandatoryParams.Add(param);
+                else isNotMandatoryParams.Add(param);
             }
 
-            return result;
+            isMandatoryParams.AddRange(isNotMandatoryParams);
+
+            return new VkMethodParamsCollection(isMandatoryParams);
         }
         #endregion
     }

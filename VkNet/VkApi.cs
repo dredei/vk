@@ -2,7 +2,6 @@
 {
     using System;
     using System.Runtime.CompilerServices;
-    using System.Threading.Tasks;
     using JetBrains.Annotations;
 
     using System.Collections.Generic;
@@ -75,21 +74,26 @@
 		/// API для работы с аккаунтом пользователя.
 		/// </summary>
 		public AccountCategory Account { get; private set; }
-
-        public PhotosCategory Photos { get; private set; }
+        /// <summary>
+        /// API для работы с фотографиями
+        /// </summary>
+        public PhotoCategory Photo { get; private set; }
 
         #endregion
 
         internal IBrowser Browser { get; set; }
 
-        internal string AccessToken { get; set; }
+        /// <summary>
+        /// Токен для доступа к методам API
+        /// </summary>
+        public string AccessToken { get; set; }
 
         /// <summary>
         /// Идентификатор пользователя, от имени которого была проведена авторизация.
         /// Если авторизация не была произведена с использованием метода <see cref="Authorize(int,string,string,Settings)"/>, 
         /// то возвращается null.
         /// </summary>
-        public long ?UserId { get; set; }
+        public long? UserId { get; set; }
 
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="VkApi"/>.
@@ -110,7 +114,7 @@
             Fave = new FaveCategory(this);
             Video = new VideoCategory(this);
 			Account = new AccountCategory(this);
-            Photos = new PhotosCategory( this );
+            Photo = new PhotoCategory(this);
         }
 
         /// <summary>
@@ -143,7 +147,7 @@
 
         #region Private & Internal Methods
 
-#if DEBUG
+#if false
         // todo refactor this shit
         internal async Task<VkResponse> CallAsync(string methodName, VkParameters parameters, bool skipAuthorization = false)
         {

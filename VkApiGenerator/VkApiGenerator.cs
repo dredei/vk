@@ -9,7 +9,6 @@ using RazorEngine;
 using VkApiGenerator.Model;
 using VkApiGenerator.Utils;
 using VkNet;
-using VkNet.Enums.Filters;
 using VkNet.Utils;
 
 namespace VkApiGenerator
@@ -62,8 +61,6 @@ namespace VkApiGenerator
 
             // invoke and get json and url
             var api = new VkApi();
-
-            
 
             api.Authorize(accessToken);
             // TODO must be authorized

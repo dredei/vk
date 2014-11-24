@@ -5,6 +5,7 @@ using Moq;
 using NUnit.Framework;
 using VkNet.Categories;
 using VkNet.Model;
+using VkNet.Model.Attachments;
 using VkNet.Utils;
 
 namespace VkNet.Tests.Categories
@@ -12,10 +13,10 @@ namespace VkNet.Tests.Categories
     [TestFixture]
     public class PhotosCategoryTest
     {
-        public PhotosCategory GetMockedPhotosCategory(string url, string json)
+        public PhotoCategory GetMockedPhotosCategory(string url, string json)
         {
             var browser = Mock.Of<IBrowser>(m => m.GetJson(url) == json);
-            return new PhotosCategory(new VkApi{Browser = browser, AccessToken = "token"});
+            return new PhotoCategory(new VkApi{Browser = browser, AccessToken = "token"});
         }
 
         #region GetProfileUploadServer
@@ -146,8 +147,8 @@ namespace VkNet.Tests.Categories
             albums[0].OwnerId.ShouldEqual(1);
             albums[0].Title.ShouldEqual("Здесь будут новые фотографии для прессы-службы");
             albums[0].Description.ShouldEqual(string.Empty);
-            albums[0].Created.ShouldEqual(new DateTime(2011, 6, 9, 19, 12, 58));
-            albums[0].Updated.ShouldEqual(new DateTime(2014, 4, 27, 23, 4, 33));
+	        albums[0].Created.ShouldEqual(new DateTime(2011, 6, 9, 14, 12, 58, DateTimeKind.Utc).ToLocalTime());
+           	albums[0].Updated.ShouldEqual(new DateTime(2014, 4, 27, 19, 4, 33).ToLocalTime());
             albums[0].Size.ShouldEqual(8);
         }
         #endregion
@@ -184,9 +185,9 @@ namespace VkNet.Tests.Categories
 
         #region GetProfile
         [Test]
-        public void GetProfile_()
+        public void GetProfile_NormalCase()
         {
-            const string url = "https://api.vk.com/method/photos.getProfile?extended=1&owner_id=1&offset=3&rev=1&count=2&v=5.9&access_token=token";
+            const string url = "https://api.vk.com/method/photos.getProfile?owner_id=1&rev=1&extended=1&count=2&offset=3&v=5.9&access_token=token";
             const string json =
                 @"{
                     'response': {
@@ -242,15 +243,24 @@ namespace VkNet.Tests.Categories
                     }
                   }";
 
-            Assert.Fail("undone");
+            ReadOnlyCollection<Photo> photos = GetMockedPhotosCategory(url, json).GetProfile(ownerId: 1, offset: 3, rev: true, count: 2, extended:true);
+            photos.Count.ShouldEqual(2);
+            photos[0].Id.ShouldEqual(278184324);
+            photos[0].PostId.ShouldEqual(45430);
+            photos[0].Likes.Count.ShouldEqual(471203);
+            photos[0].Likes.UserLikes.ShouldEqual(false);
+            photos[0].Comments.Count.ShouldEqual(1);
+            photos[0].CanComment.ShouldEqual(false);
+            photos[0].Tags.Count.ShouldEqual(0);
+
         }
         #endregion
 
         #region GetAll
         [Test]
-        public void GetAll_()
+        public void GetAll_NormalCase()
         {
-            const string url = "https://api.vk.com/method/photos.getAll?count=2&offset=4&owner_id=1&v=5.9&access_token=token";
+            const string url = "https://api.vk.com/method/photos.getAll?owner_id=1&count=2&offset=4&v=5.9&access_token=token";
             const string json =
                 @"{
                     'response': {
@@ -286,16 +296,29 @@ namespace VkNet.Tests.Categories
                     }
                   }";
 
-            Assert.Fail("undone");
+            ReadOnlyCollection<Photo> photos = GetMockedPhotosCategory(url, json).GetAll(ownerId: 1, offset: 4, count: 2);
+            photos.Count.ShouldEqual(2);
+
+            photos[0].Id.ShouldEqual(328693256);
+            photos[0].AlbumId.ShouldEqual(-7);
+            photos[0].OwnerId.ShouldEqual(1);
+            photos[0].Photo75.ShouldEqual(new Uri("http://cs7004.vk.me/c7006/v7006001/26e37/xOF6D9lY3CU.jpg"));
+            photos[0].Photo130.ShouldEqual(new Uri("http://cs7004.vk.me/c7006/v7006001/26e38/3atNlPEJpaA.jpg"));
+            photos[0].Photo604.ShouldEqual(new Uri("http://cs7004.vk.me/c7006/v7006001/26e39/OfHtSC9qtuA.jpg"));
+            photos[0].Photo807.ShouldEqual(new Uri("http://cs7004.vk.me/c7006/v7006001/26e3a/el6ZcXa9WSc.jpg"));
+            photos[0].Width.ShouldEqual(609);
+            photos[0].Height.ShouldEqual(574);
+            photos[0].Text.ShouldEqual("Сегодня должности раздаются чиновниками, которые боятся конкуренции и подбирают себе все менее талантливых и все более беспомощных подчиненных. Государственные посты должны распределяться на основе прозрачных механизмов, в том числе, прямых выборов.");
+            photos[0].CreateTime.ShouldEqual(new DateTime(2014, 4, 28, 8, 12, 7));
         }
 
 #endregion
 
         #region Search
         [Test]
-        public void Search_()
+        public void Search_NormalCase()
         {
-            const string url = "https://api.vk.com/method/photos.search?offset=2&q=порно&count=3&v=5.9&access_token=token";
+            const string url = "https://api.vk.com/method/photos.search?q=порно&offset=2&count=3&v=5.9&access_token=token";
             const string json =
                 @"{
                     'response': {
@@ -347,9 +370,123 @@ namespace VkNet.Tests.Categories
                     }
                   }";
 
-            Assert.Fail("undone");
+            ReadOnlyCollection<Photo> photos = GetMockedPhotosCategory(url, json).Search(query: "порно", offset:2, count:3);
+
+            photos.Count.ShouldEqual(3);
+
+            photos[0].Id.ShouldEqual(331520481);
+            photos[0].AlbumId.ShouldEqual(182104020);
+            photos[0].OwnerId.ShouldEqual(-49512556);
+            photos[0].UserId.ShouldEqual(100);
+            photos[0].Photo75.ShouldEqual(new Uri("http://cs620223.vk.me/v620223385/bd1f/SajcsJOh7hk.jpg"));
+            photos[0].Photo130.ShouldEqual(new Uri("http://cs620223.vk.me/v620223385/bd20/85-Qkc4oNH8.jpg"));
+            photos[0].Photo604.ShouldEqual(new Uri("http://cs620223.vk.me/v620223385/bd21/88vFsC-Z_FE.jpg"));
+            photos[0].Photo807.ShouldEqual(new Uri("http://cs620223.vk.me/v620223385/bd22/YqRauv0neMY.jpg"));
+            photos[0].Width.ShouldEqual(807);
+            photos[0].Height.ShouldEqual(515);
+            photos[0].Text.ShouldEqual("🍓 [club49512556|ЗАХОДИ К НАМ]\nчастное фото секси обнаженные девочки малолетки порно голые сиськи попки эротика няша шлюха грудь секс instagirls instagram лето\n#секс #девушки #девочки #instagram #instagirls #няша #InstaSize #лето #ПОПКИ");
+            photos[0].CreateTime.ShouldEqual(new DateTime(2014, 6, 22, 20, 49, 48));  //  2014-06-22 20:49:48.000
+        }
+
+        [Test]
+        public void Search_Error26_Lat_and_Long_in_output_photo()
+        {
+            const string url = "https://api.vk.com/method/photos.search?lat=30&long=30&count=2&v=5.9&access_token=token";
+            const string json =
+                @"{
+                    'response': {
+                      'count': 12,
+                      'items': [
+                        {
+                          'id': 334408466,
+                          'album_id': 198144854,
+                          'owner_id': 258913887,
+                          'photo_75': 'http://cs617419.vk.me/v617419887/11e90/GD__Lv5FTI4.jpg',
+                          'photo_130': 'http://cs617419.vk.me/v617419887/11e91/f-4hN1xff9I.jpg',
+                          'photo_604': 'http://cs617419.vk.me/v617419887/11e92/KiTWG4Lk8sE.jpg',
+                          'photo_807': 'http://cs617419.vk.me/v617419887/11e93/LXbjRssgtso.jpg',
+                          'width': 640,
+                          'height': 640,
+                          'text': '',
+                          'date': 1404294037,
+                          'lat': 29.999996,
+                          'long': 29.999997
+                        },
+                        {
+                          'id': 326991086,
+                          'album_id': -6,
+                          'owner_id': 249390767,
+                          'photo_75': 'http://cs605216.vk.me/v605216767/5336/XeqYTC3wgwo.jpg',
+                          'photo_130': 'http://cs605216.vk.me/v605216767/5337/IdbmUgGaoys.jpg',
+                          'photo_604': 'http://cs605216.vk.me/v605216767/5338/6wIHGv9_xZ8.jpg',
+                          'width': 403,
+                          'height': 336,
+                          'text': '',
+                          'date': 1396601780,
+                          'lat': 29.942251,
+                          'long': 29.882819,
+                          'post_id': 1
+                        }
+                      ]
+                    }
+                  }";
+
+            var photos = GetMockedPhotosCategory(url, json).Search(query: "", lat: 30, longitude: 30, count: 2);
+
+            photos.Count.ShouldEqual(2);
+
+            photos[0].Latitude.ShouldEqual(29.999996185302734);
+            photos[0].Longitude.ShouldEqual(29.999996185302734);
+
+            photos[1].Latitude.ShouldEqual(29.942251205444336);
+            photos[1].Longitude.ShouldEqual(29.882818222045898);
         }
 #endregion
+
+        #region SaveWallPhoto
+        [Test]
+        public void SaveWallPhoto_NormalCase()
+        {
+            const string url = @"https://api.vk.com/method/photos.saveWallPhoto?user_id=1234&group_id=123&photo=photo&server=5678&hash=hash_hash&v=5.9&access_token=token";
+            const string json = @"{
+    'response': [
+        {
+            'id': 3446123,
+            'album_id': -12,
+            'owner_id': 234695890,
+            'photo_75': 'http://cs7004.vk.me/c625725/v625725118/8c39/XZJpyifpfkM.jpg',
+            'photo_130': 'http://cs7004.vk.me/c625725/v625725118/8c3a/cYyzeNiQCwg.jpg',
+            'photo_604': 'http://cs7004.vk.me/c625725/v625725118/8c3b/b9rHdTFfLuw.jpg',
+            'photo_807': 'http://cs7004.vk.me/c625725/v625725118/8c3c/POYM67dCGZg.jpg',
+            'photo_1280': 'http://cs7004.vk.me/c625725/v625725118/8c3d/OWWWGO1gkOI.jpg',
+            'width': 1256,
+            'height': 320,
+            'text': '',
+            'date': 1415629651
+        }
+    ]
+}";
+
+            var result = GetMockedPhotosCategory(url, json).SaveWallPhoto("photo", 1234, 123, 5678, "hash_hash");
+
+            result.Count.ShouldEqual(1);
+
+            Photo photo = result[0];
+            photo.ShouldNotBeNull();
+            photo.Id.ShouldEqual(3446123);
+            photo.AlbumId.ShouldEqual(-12);
+            photo.OwnerId.ShouldEqual(234695890);
+            photo.Photo75.ShouldEqual(new Uri("http://cs7004.vk.me/c625725/v625725118/8c39/XZJpyifpfkM.jpg"));
+            photo.Photo130.ShouldEqual(new Uri("http://cs7004.vk.me/c625725/v625725118/8c3a/cYyzeNiQCwg.jpg"));
+            photo.Photo604.ShouldEqual(new Uri("http://cs7004.vk.me/c625725/v625725118/8c3b/b9rHdTFfLuw.jpg"));
+            photo.Photo807.ShouldEqual(new Uri("http://cs7004.vk.me/c625725/v625725118/8c3c/POYM67dCGZg.jpg"));
+            photo.Photo1280.ShouldEqual(new Uri("http://cs7004.vk.me/c625725/v625725118/8c3d/OWWWGO1gkOI.jpg"));
+            photo.Width.ShouldEqual(1256);
+            photo.Height.ShouldEqual(320);
+            photo.Text.ShouldEqual(string.Empty);
+            photo.CreateTime.ShouldEqual(new DateTime(2014, 11, 10, 17, 27, 31));
+        }
+        #endregion
 
     }
 }
