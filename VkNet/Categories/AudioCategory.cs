@@ -1,17 +1,20 @@
-﻿namespace VkNet.Categories
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using JetBrains.Annotations;
-    
-    using Enums;
-    using Enums.Filters;
-    using Model;
-    using Model.Attachments;
-    using Utils;
+﻿#region Using
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using JetBrains.Annotations;
+using VkNet.Enums;
+using VkNet.Enums.Filters;
+using VkNet.Model;
+using VkNet.Model.Attachments;
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Categories
+{
     /// <summary>
     /// Методы для работы с аудиозаписями.
     /// </summary>
@@ -19,9 +22,9 @@
     {
         private readonly VkApi _vk;
 
-        internal AudioCategory(VkApi vk)
+        internal AudioCategory( VkApi vk )
         {
-            _vk = vk;
+            this._vk = vk;
         }
 
         /// <summary>
@@ -52,12 +55,12 @@
         /// </code>
         /// </example>
         [Pure]
-        [ApiVersion("5.5")]
-        public int GetCount(long ownerId)
+        [ApiVersion( "5.5" )]
+        public int GetCount( long ownerId )
         {
-            var parameters = new VkParameters { { "owner_id", ownerId }};
+            var parameters = new VkParameters { { "owner_id", ownerId } };
 
-            return _vk.Call("audio.getCount", parameters);
+            return this._vk.Call( "audio.getCount", parameters );
         }
 
         /// <summary>
@@ -72,12 +75,12 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.getLyrics"/>.
         /// </remarks>
         [Pure]
-        [ApiVersion("5.5")]
-        public Lyrics GetLyrics(long lyricsId)
+        [ApiVersion( "5.5" )]
+        public Lyrics GetLyrics( long lyricsId )
         {
-            var parameters = new VkParameters { { "lyrics_id", lyricsId }};
+            var parameters = new VkParameters { { "lyrics_id", lyricsId } };
 
-            return _vk.Call("audio.getLyrics", parameters);
+            return this._vk.Call( "audio.getLyrics", parameters );
         }
 
         /// <summary>
@@ -96,15 +99,17 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.getById"/>.
         /// </remarks>
         [Pure]
-        public ReadOnlyCollection<Audio> GetById(IEnumerable<string> audios)
+        public ReadOnlyCollection<Audio> GetById( IEnumerable<string> audios )
         {
-            if (audios == null)
-                throw new ArgumentNullException("audios");
+            if ( audios == null )
+            {
+                throw new ArgumentNullException( "audios" );
+            }
 
             var parameters = new VkParameters { { "audios", audios } };
-            VkResponseArray response = _vk.Call("audio.getById", parameters);
+            VkResponseArray response = this._vk.Call( "audio.getById", parameters );
 
-            return response.ToReadOnlyCollectionOf<Audio>(x => x);
+            return response.ToReadOnlyCollectionOf<Audio>( x => x );
         }
 
         /// <summary>
@@ -123,9 +128,9 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.getById"/>.
         /// </remarks>
         [Pure]
-        public ReadOnlyCollection<Audio> GetById(params string[] audios)
+        public ReadOnlyCollection<Audio> GetById( params string[] audios )
         {
-            return GetById((IEnumerable<string>)audios);
+            return this.GetById( (IEnumerable<string>)audios );
         }
 
         /// <summary>
@@ -147,10 +152,11 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.get"/>.
         /// </remarks>
         [Pure]
-        public ReadOnlyCollection<Audio> GetFromGroup(long gid, long? albumId = null, IEnumerable<long> aids = null, int? count = null, int? offset = null)
+        public ReadOnlyCollection<Audio> GetFromGroup( long gid, long? albumId = null, IEnumerable<long> aids = null,
+            int? count = null, int? offset = null )
         {
             User user;
-            return InternalGet("gid", gid, out user, albumId, aids, false, count, offset);
+            return this.InternalGet( "gid", gid, out user, albumId, aids, false, count, offset );
         }
 
         /// <summary>
@@ -170,9 +176,10 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.get"/>.
         /// </remarks>
         [Pure]
-        public ReadOnlyCollection<Audio> Get(long uid, out User user, long? albumId = null, IEnumerable<long> aids = null, int? count = null, int? offset = null)
+        public ReadOnlyCollection<Audio> Get( long uid, out User user, long? albumId = null,
+            IEnumerable<long> aids = null, int? count = null, int? offset = null )
         {
-            return InternalGet("uid", uid, out user, albumId, aids, true, count, offset);
+            return this.InternalGet( "uid", uid, out user, albumId, aids, true, count, offset );
         }
 
         /// <summary>
@@ -189,10 +196,11 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.get"/>.
         /// </remarks>
         [Pure]
-        public ReadOnlyCollection<Audio> Get(long uid, long? albumId = null, IEnumerable<long> aids = null, int? count = null, int? offset = null)
+        public ReadOnlyCollection<Audio> Get( long uid, long? albumId = null, IEnumerable<long> aids = null,
+            int? count = null, int? offset = null )
         {
             User user;
-            return InternalGet("uid", uid, out user, albumId, aids, false, count, offset);
+            return this.InternalGet( "uid", uid, out user, albumId, aids, false, count, offset );
         }
 
         [Pure]
@@ -204,30 +212,30 @@
             IEnumerable<long> aids = null,
             bool? needUser = null,
             int? count = null,
-            int? offset = null)
+            int? offset = null )
         {
             var parameters = new VkParameters
-                             {
-                                 { paramId, id },
-                                 { "album_id", albumId },
-                                 { "aids", aids },
-                                 { "need_user", needUser },
-                                 { "count", count },
-                                 { "offset", offset }
-                             };
+            {
+                { paramId, id },
+                { "album_id", albumId },
+                { "aids", aids },
+                { "need_user", needUser },
+                { "count", count },
+                { "offset", offset }
+            };
 
-            VkResponseArray response = _vk.Call("audio.get", parameters);
+            VkResponseArray response = this._vk.Call( "audio.get", parameters );
 
             IEnumerable<VkResponse> items = response.ToList();
 
             user = null;
-            if (needUser.HasValue && needUser.Value && items.Any())
+            if ( needUser.HasValue && needUser.Value && items.Any() )
             {
                 user = items.First();
-                items = items.Skip(1);
+                items = items.Skip( 1 );
             }
 
-            return items.ToReadOnlyCollectionOf<Audio>(r => r);
+            return items.ToReadOnlyCollectionOf<Audio>( r => r );
         }
 
         /// <summary>
@@ -243,9 +251,9 @@
         [Pure]
         public string GetUploadServer()
         {
-            var response = _vk.Call("audio.getUploadServer", VkParameters.Empty);
+            var response = this._vk.Call( "audio.getUploadServer", VkParameters.Empty );
 
-            return response["upload_url"];
+            return response[ "upload_url" ];
         }
 
         /// <summary>
@@ -271,26 +279,28 @@
             AudioSort? sort = null,
             bool? findLyrics = null,
             int? count = null,
-            int? offset = null)
+            int? offset = null )
         {
-            if (string.IsNullOrEmpty(query))
-                throw new ArgumentException("Query is null or empty.", "query");
+            if ( string.IsNullOrEmpty( query ) )
+            {
+                throw new ArgumentException( "Query is null or empty.", "query" );
+            }
 
             var parameters = new VkParameters
-                             {
-                                 { "q", query },
-                                 { "auto_complete", autoComplete },
-                                 { "sort", sort },
-                                 { "lyrics", findLyrics },
-                                 { "count", count },
-                                 { "offset", offset }
-                             };
+            {
+                { "q", query },
+                { "auto_complete", autoComplete },
+                { "sort", sort },
+                { "lyrics", findLyrics },
+                { "count", count },
+                { "offset", offset }
+            };
 
-            VkResponseArray response = _vk.Call("audio.search", parameters);
+            VkResponseArray response = this._vk.Call( "audio.search", parameters );
 
-            totalCount = response[0];
+            totalCount = response[ 0 ];
 
-            return response.Skip(1).ToReadOnlyCollectionOf<Audio>(r => r);
+            return response.Skip( 1 ).ToReadOnlyCollectionOf<Audio>( r => r );
         }
 
         /// <summary>
@@ -304,11 +314,11 @@
         /// Для вызова этого метода Ваше приложение должно иметь права с битовой маской, содержащей <see cref="Settings.Audio"/>.
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.add"/>.
         /// </remarks>
-        public long Add(long audioId, long ownerId, long? groupId = null)
+        public long Add( long audioId, long ownerId, long? groupId = null )
         {
             var parameters = new VkParameters { { "aid", audioId }, { "oid", ownerId }, { "gid", groupId } };
 
-            return _vk.Call("audio.add", parameters);
+            return this._vk.Call( "audio.add", parameters );
         }
 
         /// <summary>
@@ -321,11 +331,11 @@
         /// Для вызова этого метода Ваше приложение должно иметь права с битовой маской, содержащей <see cref="Settings.Audio"/>.
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.delete"/>.
         /// </remarks>
-        public bool Delete(long audioId, long ownerId)
+        public bool Delete( long audioId, long ownerId )
         {
             var parameters = new VkParameters { { "aid", audioId }, { "oid", ownerId } };
 
-            return _vk.Call("audio.delete", parameters);
+            return this._vk.Call( "audio.delete", parameters );
         }
 
         /// <summary>
@@ -342,28 +352,34 @@
         /// Для вызова этого метода Ваше приложение должно иметь права с битовой маской, содержащей <see cref="Settings.Audio"/>.
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.edit"/>.
         /// </remarks>
-        public long Edit(long audioId, long ownerId, string artist, string title, string text, bool noSearch = false)
+        public long Edit( long audioId, long ownerId, string artist, string title, string text, bool noSearch = false )
         {
-            if (artist == null)
-                throw new ArgumentNullException("artist", "Artist parameter can not be null.");
+            if ( artist == null )
+            {
+                throw new ArgumentNullException( "artist", "Artist parameter can not be null." );
+            }
 
-            if (title == null)
-                throw new ArgumentNullException("title", "Title parameter can not be null.");
+            if ( title == null )
+            {
+                throw new ArgumentNullException( "title", "Title parameter can not be null." );
+            }
 
-            if (text == null)
-                throw new ArgumentNullException("text", "Text parameter can not be null.");
+            if ( text == null )
+            {
+                throw new ArgumentNullException( "text", "Text parameter can not be null." );
+            }
 
             var parameters = new VkParameters
-                             {
-                                 { "aid", audioId },
-                                 { "oid", ownerId },
-                                 { "artist", artist },
-                                 { "title", title },
-                                 { "text", text },
-                                 { "no_search", noSearch }
-                             };
+            {
+                { "aid", audioId },
+                { "oid", ownerId },
+                { "artist", artist },
+                { "title", title },
+                { "text", text },
+                { "no_search", noSearch }
+            };
 
-            return _vk.Call("audio.edit", parameters);
+            return this._vk.Call( "audio.edit", parameters );
         }
 
         /// <summary>
@@ -376,11 +392,11 @@
         /// Для вызова этого метода Ваше приложение должно иметь права с битовой маской, содержащей <see cref="Settings.Audio"/>.
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.restore"/>.
         /// </remarks>
-        public Audio Restore(long audioId, long? ownerId = null)
+        public Audio Restore( long audioId, long? ownerId = null )
         {
             var parameters = new VkParameters { { "aid", audioId }, { "oid", ownerId } };
 
-            return _vk.Call("audio.restore", parameters);
+            return this._vk.Call( "audio.restore", parameters );
         }
 
         /// <summary>
@@ -395,11 +411,17 @@
         /// Для вызова этого метода Ваше приложение должно иметь права с битовой маской, содержащей <see cref="Settings.Audio"/>.
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.reorder"/>.
         /// </remarks>
-        public bool Reorder(long audioId, long ownerId, long after, long before)
+        public bool Reorder( long audioId, long ownerId, long after, long before )
         {
-            var parameters = new VkParameters { { "aid", audioId }, { "oid", ownerId }, { "after", after }, { "before", before } };
+            var parameters = new VkParameters
+            {
+                { "aid", audioId },
+                { "oid", ownerId },
+                { "after", after },
+                { "before", before }
+            };
 
-            return _vk.Call("audio.reorder", parameters);
+            return this._vk.Call( "audio.reorder", parameters );
         }
 
         /// <summary>
@@ -411,19 +433,19 @@
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.addAlbum"/>.
         /// </remarks>
-        public long AddAlbum(string title, long? groupId = null)
+        public long AddAlbum( string title, long? groupId = null )
         {
-            VkErrors.ThrowIfNullOrEmpty(() => title);
-            VkErrors.ThrowIfNumberIsNegative(() => groupId);
+            VkErrors.ThrowIfNullOrEmpty( () => title );
+            VkErrors.ThrowIfNumberIsNegative( () => groupId );
 
             var parameters = new VkParameters
-                {
-                    {"title", title},
-                    {"group_id", groupId}
-                };
+            {
+                { "title", title },
+                { "group_id", groupId }
+            };
 
-            VkResponse response = _vk.Call("audio.addAlbum", parameters);
-            return response["album_id"];
+            VkResponse response = this._vk.Call( "audio.addAlbum", parameters );
+            return response[ "album_id" ];
         }
 
         /// <summary>
@@ -436,20 +458,20 @@
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.editAlbum"/>.
         /// </remarks>
-        public bool EditAlbum(string title, long albumId, long? groupId = null)
+        public bool EditAlbum( string title, long albumId, long? groupId = null )
         {
-            VkErrors.ThrowIfNullOrEmpty(() => title);
-            VkErrors.ThrowIfNumberIsNegative(() => albumId);
-            VkErrors.ThrowIfNumberIsNegative(() => groupId);
+            VkErrors.ThrowIfNullOrEmpty( () => title );
+            VkErrors.ThrowIfNumberIsNegative( () => albumId );
+            VkErrors.ThrowIfNumberIsNegative( () => groupId );
 
             var parameters = new VkParameters
-                {
-                    {"title", title},
-                    {"group_id", groupId},
-                    {"album_id", albumId}
-                };
+            {
+                { "title", title },
+                { "group_id", groupId },
+                { "album_id", albumId }
+            };
 
-            VkResponse response = _vk.Call("audio.editAlbum", parameters);
+            VkResponse response = this._vk.Call( "audio.editAlbum", parameters );
 
             return response;
         }
@@ -463,19 +485,18 @@
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.deleteAlbum"/>.
         /// </remarks>
-        public bool DeleteAlbum(long albumId, long? groupId = null)
+        public bool DeleteAlbum( long albumId, long? groupId = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => albumId);
-            VkErrors.ThrowIfNumberIsNegative(() => groupId);
+            VkErrors.ThrowIfNumberIsNegative( () => albumId );
+            VkErrors.ThrowIfNumberIsNegative( () => groupId );
 
             var parameters = new VkParameters
-                {
-                    {"album_id", albumId},
-                    {"group_id", groupId}
+            {
+                { "album_id", albumId },
+                { "group_id", groupId }
+            };
 
-                };
-
-            return _vk.Call("audio.deleteAlbum", parameters);
+            return this._vk.Call( "audio.deleteAlbum", parameters );
         }
 
         /// <summary>
@@ -490,22 +511,23 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.getPopular"/>.
         /// </remarks>
         [Pure]
-        public ReadOnlyCollection<Audio> GetPopular(bool onlyEng = false, AudioGenre? genre = null, int? count = null, int? offset = null)
+        public ReadOnlyCollection<Audio> GetPopular( bool onlyEng = false, AudioGenre? genre = null, int? count = null,
+            int? offset = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
-            VkErrors.ThrowIfNumberIsNegative(() => count);
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
+            VkErrors.ThrowIfNumberIsNegative( () => count );
 
             var parameters = new VkParameters
-                {
-                    {"only_eng", onlyEng},
-                    {"genre_id", genre},
-                    {"offset", offset},
-                    {"count", count}
-                };
+            {
+                { "only_eng", onlyEng },
+                { "genre_id", genre },
+                { "offset", offset },
+                { "count", count }
+            };
 
-            VkResponseArray response = _vk.Call("audio.getPopular", parameters);
+            VkResponseArray response = this._vk.Call( "audio.getPopular", parameters );
 
-            return response.ToReadOnlyCollectionOf<Audio>(x => x);
+            return response.ToReadOnlyCollectionOf<Audio>( x => x );
         }
 
         /// <summary>
@@ -521,21 +543,21 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.getAlbums"/>.
         /// </remarks>
         [Pure]
-        public ReadOnlyCollection<AudioAlbum> GetAlbums(long ownerid, int? count = null, int? offset = null)
-        {   
-            VkErrors.ThrowIfNumberIsNegative(() => count);
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
+        public ReadOnlyCollection<AudioAlbum> GetAlbums( long ownerid, int? count = null, int? offset = null )
+        {
+            VkErrors.ThrowIfNumberIsNegative( () => count );
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerid},
-                    {"count", count},
-                    {"offset", offset}
-                };
+            {
+                { "owner_id", ownerid },
+                { "count", count },
+                { "offset", offset }
+            };
 
-            VkResponseArray response = _vk.Call("audio.getAlbums", parameters);
+            VkResponseArray response = this._vk.Call( "audio.getAlbums", parameters );
 
-            return response.Skip(1).ToReadOnlyCollectionOf<AudioAlbum>(x => x);
+            return response.Skip( 1 ).ToReadOnlyCollectionOf<AudioAlbum>( x => x );
         }
 
         /// <summary>
@@ -548,19 +570,19 @@
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.moveToAlbum"/>.
         /// </remarks>
-        public bool MoveToAlbum(long albumId, IEnumerable<long> audioIds, long? groupId = null)
+        public bool MoveToAlbum( long albumId, IEnumerable<long> audioIds, long? groupId = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => albumId);
-            VkErrors.ThrowIfNumberIsNegative(() => groupId);
+            VkErrors.ThrowIfNumberIsNegative( () => albumId );
+            VkErrors.ThrowIfNumberIsNegative( () => groupId );
 
             var parameters = new VkParameters
-                {
-                    {"album_id", albumId},
-                    {"group_id", groupId}
-                };
-            parameters.Add("audio_ids", audioIds);
+            {
+                { "album_id", albumId },
+                { "group_id", groupId }
+            };
+            parameters.Add( "audio_ids", audioIds );
 
-            VkResponse response = _vk.Call("audio.moveToAlbum", parameters);
+            VkResponse response = this._vk.Call( "audio.moveToAlbum", parameters );
 
             return response;
         }
@@ -581,24 +603,25 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.getRecommendations"/>.
         /// </remarks>
         [Pure]
-        public ReadOnlyCollection<Audio> GetRecommendations(long? userId = null, int? count = null, int? offset = null, bool shuffle = true, string targetAudio = "")
+        public ReadOnlyCollection<Audio> GetRecommendations( long? userId = null, int? count = null, int? offset = null,
+            bool shuffle = true, string targetAudio = "" )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => userId);
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
-            VkErrors.ThrowIfNumberIsNegative(() => count);
+            VkErrors.ThrowIfNumberIsNegative( () => userId );
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
+            VkErrors.ThrowIfNumberIsNegative( () => count );
 
             var parameters = new VkParameters
-                {
-                    {"target_audio", targetAudio},
-                    {"user_id", userId},
-                    {"offset", offset},
-                    {"count", count},
-                    {"shuffle", shuffle}
-                };
+            {
+                { "target_audio", targetAudio },
+                { "user_id", userId },
+                { "offset", offset },
+                { "count", count },
+                { "shuffle", shuffle }
+            };
 
-            VkResponseArray response = _vk.Call("audio.getRecommendations", parameters);
+            VkResponseArray response = this._vk.Call( "audio.getRecommendations", parameters );
 
-            return response.ToReadOnlyCollectionOf<Audio>(x => x);
+            return response.ToReadOnlyCollectionOf<Audio>( x => x );
         }
 
         /// <summary>
@@ -610,19 +633,19 @@
         /// Идентификаторы сообществ должны быть заданы в формате "-gid", где gid - идентификатор сообщества. Например, 1,-34384434. По умолчанию аудиозапись 
         /// транслируется текущему пользователю.</param>
         /// <returns>В случае успешного выполнения возвращает массив идентификаторов сообществ и пользователя, которым был установлен или удален аудиостатус.</returns>
-        public ReadOnlyCollection<long> SetBroadcast(string audio, IEnumerable<long> targetIds)
+        public ReadOnlyCollection<long> SetBroadcast( string audio, IEnumerable<long> targetIds )
         {
-            VkErrors.ThrowIfNullOrEmpty(() => audio);
+            VkErrors.ThrowIfNullOrEmpty( () => audio );
 
             var parameters = new VkParameters
-                {
-                    {"audio", audio}
-                };
-            parameters.Add("target_ids", targetIds);
+            {
+                { "audio", audio }
+            };
+            parameters.Add( "target_ids", targetIds );
 
-            VkResponseArray response = _vk.Call("audio.setBroadcast", parameters);
+            VkResponseArray response = this._vk.Call( "audio.setBroadcast", parameters );
 
-            return response.ToReadOnlyCollectionOf<long>(x => x);
+            return response.ToReadOnlyCollectionOf<long>( x => x );
         }
 
         /// <summary>
@@ -637,21 +660,22 @@
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/audio.save"/>.
         /// </remarks>
-        [ApiVersion("5.21")]
-        public ReadOnlyCollection<Audio> Save(long server, string audio, string hash = null, string artist = null, string title = null)
+        [ApiVersion( "5.21" )]
+        public ReadOnlyCollection<Audio> Save( long server, string audio, string hash = null, string artist = null,
+            string title = null )
         {
-            VkErrors.ThrowIfNullOrEmpty(() => audio);
+            VkErrors.ThrowIfNullOrEmpty( () => audio );
             var parameters = new VkParameters
             {
-                {"server", server},
-                {"audio", audio},
-                {"hash", hash},
-                {"artist", artist},
-                {"title", title}
+                { "server", server },
+                { "audio", audio },
+                { "hash", hash },
+                { "artist", artist },
+                { "title", title }
             };
 
-            VkResponseArray response = _vk.Call("audio.save", parameters);
-            return response.ToReadOnlyCollectionOf<Audio>(x => x);
+            VkResponseArray response = this._vk.Call( "audio.save", parameters );
+            return response.ToReadOnlyCollectionOf<Audio>( x => x );
         }
 
         /// <summary>

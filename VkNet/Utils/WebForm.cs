@@ -1,15 +1,17 @@
-﻿namespace VkNet.Utils
+﻿#region Using
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Web;
+using HtmlAgilityPack;
+using VkNet.Exception;
+
+#endregion
+
+namespace VkNet.Utils
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Web;
-
-    using HtmlAgilityPack;
-
-    using VkNet.Exception;
-
     internal sealed class WebForm
     {
         private readonly HtmlDocument _html;
@@ -22,20 +24,20 @@
 
         public Cookies Cookies { get; private set; }
 
-        private WebForm(WebCallResult result)
+        private WebForm( WebCallResult result )
         {
-            Cookies = result.Cookies;
-            _originalUrl = result.RequestUrl.OriginalString;
+            this.Cookies = result.Cookies;
+            this._originalUrl = result.RequestUrl.OriginalString;
 
-            _html = new HtmlDocument();
-            result.LoadResultTo(_html);
+            this._html = new HtmlDocument();
+            result.LoadResultTo( this._html );
 
-            _inputs = ParseInputs();
+            this._inputs = this.ParseInputs();
         }
 
-        public static WebForm From(WebCallResult result)
+        public static WebForm From( WebCallResult result )
         {
-            return new WebForm(result);
+            return new WebForm( result );
         }
 
         public WebForm And()
@@ -43,23 +45,29 @@
             return this;
         }
 
-        public WebForm WithField(string name)
+        public WebForm WithField( string name )
         {
-            _lastName = name;
+            this._lastName = name;
 
             return this;
         }
 
-        public WebForm FilledWith(string value)
+        public WebForm FilledWith( string value )
         {
-            if (string.IsNullOrEmpty(_lastName))
-                throw new InvalidOperationException("Field name not set!");
+            if ( string.IsNullOrEmpty( this._lastName ) )
+            {
+                throw new InvalidOperationException( "Field name not set!" );
+            }
 
-            string encodedValue = HttpUtility.UrlEncode(value);
-            if (_inputs.ContainsKey(_lastName))
-                _inputs[_lastName] = encodedValue;
+            string encodedValue = HttpUtility.UrlEncode( value );
+            if ( this._inputs.ContainsKey( this._lastName ) )
+            {
+                this._inputs[ this._lastName ] = encodedValue;
+            }
             else
-                _inputs.Add(_lastName, encodedValue);
+            {
+                this._inputs.Add( this._lastName, encodedValue );
+            }
 
             return this;
         }
@@ -68,39 +76,43 @@
         {
             get
             {
-                var formNode = GetFormNode();
-                return formNode.Attributes["action"] != null ? formNode.Attributes["action"].Value : OriginalUrl;
+                var formNode = this.GetFormNode();
+                return formNode.Attributes[ "action" ] != null
+                    ? formNode.Attributes[ "action" ].Value
+                    : this.OriginalUrl;
             }
         }
 
         public string OriginalUrl
         {
-            get { return _originalUrl; }
+            get { return this._originalUrl; }
         }
 
         public byte[] GetRequest()
         {
-            string uri = _inputs.Select(x => string.Format("{0}={1}", x.Key, x.Value)).JoinNonEmpty("&");
-            return Encoding.UTF8.GetBytes(uri);
+            string uri = this._inputs.Select( x => string.Format( "{0}={1}", x.Key, x.Value ) ).JoinNonEmpty( "&" );
+            return Encoding.UTF8.GetBytes( uri );
         }
 
         private Dictionary<string, string> ParseInputs()
         {
             var inputs = new Dictionary<string, string>();
 
-            var form = GetFormNode();
-            foreach (var node in form.SelectNodes("//input"))
+            var form = this.GetFormNode();
+            foreach ( var node in form.SelectNodes( "//input" ) )
             {
-                var nameAttribute = node.Attributes["name"];
-                var valueAttribute = node.Attributes["value"];
+                var nameAttribute = node.Attributes[ "name" ];
+                var valueAttribute = node.Attributes[ "value" ];
 
                 string name = nameAttribute != null ? nameAttribute.Value : string.Empty;
                 string value = valueAttribute != null ? valueAttribute.Value : string.Empty;
 
-                if (string.IsNullOrEmpty(name))
+                if ( string.IsNullOrEmpty( name ) )
+                {
                     continue;
+                }
 
-                inputs.Add(name, HttpUtility.UrlEncode(value));
+                inputs.Add( name, HttpUtility.UrlEncode( value ) );
             }
 
             return inputs;
@@ -108,10 +120,12 @@
 
         private HtmlNode GetFormNode()
         {
-            HtmlNode.ElementsFlags.Remove("form");
-            HtmlNode form = _html.DocumentNode.SelectSingleNode("//form");
-            if (form == null)
-                throw new VkApiException("Form element not found.");
+            HtmlNode.ElementsFlags.Remove( "form" );
+            HtmlNode form = this._html.DocumentNode.SelectSingleNode( "//form" );
+            if ( form == null )
+            {
+                throw new VkApiException( "Form element not found." );
+            }
 
             return form;
         }

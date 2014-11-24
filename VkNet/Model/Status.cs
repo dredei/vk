@@ -1,9 +1,12 @@
-﻿using VkNet.Model.Attachments;
+﻿#region Using
+
+using VkNet.Model.Attachments;
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model
 {
-    using VkNet.Utils;
-
     /// <summary>
     /// Информация о статусе пользователя.
     /// См. описание <see href="http://vk.com/dev/status.get"/>.
@@ -22,12 +25,12 @@ namespace VkNet.Model
 
         #region Методы
 
-        internal static Status FromJson(VkResponse response)
+        internal static Status FromJson( VkResponse response )
         {
             var status = new Status();
 
-            status.Text = response["text"];
-            status.Audio = response["audio"];
+            status.Text = response[ "text" ];
+            status.Audio = response[ "audio" ];
 
             return status;
         }

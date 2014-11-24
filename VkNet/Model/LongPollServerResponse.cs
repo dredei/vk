@@ -1,7 +1,11 @@
-﻿namespace VkNet.Model
-{
-    using VkNet.Utils;
+﻿#region Using
 
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Объект, с помощью которого можно подключиться к серверу быстрых сообщений для мгновенного 
     /// получения приходящих сообщений и других событий.  
@@ -26,13 +30,13 @@
 
         #region Методы
 
-        internal static LongPollServerResponse FromJson(VkResponse response)
+        internal static LongPollServerResponse FromJson( VkResponse response )
         {
             var longPollServerResponse = new LongPollServerResponse();
 
-            longPollServerResponse.Key = response["key"];
-            longPollServerResponse.Server = response["server"];
-            longPollServerResponse.Ts = response["ts"];
+            longPollServerResponse.Key = response[ "key" ];
+            longPollServerResponse.Server = response[ "server" ];
+            longPollServerResponse.Ts = response[ "ts" ];
 
             return longPollServerResponse;
         }

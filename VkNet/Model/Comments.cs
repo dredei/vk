@@ -1,7 +1,11 @@
-﻿namespace VkNet.Model
-{
-    using VkNet.Utils;
+﻿#region Using
 
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Информация о количестве комментариев к записи.
     /// См. описание <see href="http://vk.com/dev/post"/>. Раздел comments.
@@ -20,12 +24,12 @@
 
         #region Методы
 
-        internal static Comments FromJson(VkResponse response)
+        internal static Comments FromJson( VkResponse response )
         {
             var comments = new Comments();
 
-            comments.Count = response["count"];
-            comments.CanPost = response["can_post"];
+            comments.Count = response[ "count" ];
+            comments.CanPost = response[ "can_post" ];
 
             return comments;
         }

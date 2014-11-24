@@ -1,4 +1,8 @@
-﻿using VkNet.Utils;
+﻿#region Using
+
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Enums
 {
@@ -10,8 +14,7 @@ namespace VkNet.Enums
         /// <summary>
         /// Пользователь не является другом.
         /// </summary>
-		[DefaultValue]
-        NotFriend = 0,
+        [DefaultValue] NotFriend = 0,
 
         /// <summary>
         /// Пользователю отправлена заявка/подписка.

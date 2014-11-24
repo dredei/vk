@@ -1,8 +1,12 @@
-﻿namespace VkNet.Exception
-{
-    using System;
-    using System.Runtime.Serialization;
+﻿#region Using
 
+using System;
+using System.Runtime.Serialization;
+
+#endregion
+
+namespace VkNet.Exception
+{
     /// <summary>
     /// Исключение, которое выбрасывается в случае, если параметр принимал недействительное значение.
     /// </summary>
@@ -20,7 +24,7 @@
         /// Инициализирует новый экземпляр класса <see cref="InvalidParameterException"/> с указанным описанием.
         /// </summary>
         /// <param name="message">Описание исключения.</param>
-        public InvalidParameterException(string message) : base(message)
+        public InvalidParameterException( string message ) : base( message )
         {
         }
 
@@ -29,7 +33,8 @@
         /// </summary>
         /// <param name="message">Описание исключения.</param>
         /// <param name="innerException">Внутреннее исключение.</param>
-        public InvalidParameterException(string message, Exception innerException) : base(message, innerException)
+        public InvalidParameterException( string message, System.Exception innerException )
+            : base( message, innerException )
         {
         }
 
@@ -38,7 +43,7 @@
         /// </summary>
         /// <param name="message">Описание исключения.</param>
         /// <param name="code">Код ошибки, полученный от сервера ВКонтакте.</param>
-        public InvalidParameterException(string message, int code) : base(message, code)
+        public InvalidParameterException( string message, int code ) : base( message, code )
         {
         }
 
@@ -48,7 +53,8 @@
         /// <param name="message">Описание исключения.</param>
         /// <param name="code">Код ошибки, полученный от сервера ВКонтакте.</param>
         /// <param name="innerException">Внутреннее исключение.</param>
-        public InvalidParameterException(string message, int code, Exception innerException) : base(message, code, innerException)
+        public InvalidParameterException( string message, int code, System.Exception innerException )
+            : base( message, code, innerException )
         {
         }
 
@@ -58,7 +64,7 @@
         /// <param name="info">Содержит все данные, необходимые для десериализации.</param>
         /// <param name="context">Описывает источник и назначение данного сериализованного потока и предоставляет дополнительный, 
         /// определяемый вызывающим, контекст.</param>
-        protected InvalidParameterException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected InvalidParameterException( SerializationInfo info, StreamingContext context ) : base( info, context )
         {
         }
     }

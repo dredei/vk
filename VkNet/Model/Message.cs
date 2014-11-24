@@ -1,13 +1,15 @@
-﻿using VkNet.Model.Attachments;
+﻿#region Using
+
+using System;
+using System.Collections.ObjectModel;
+using VkNet.Enums;
+using VkNet.Model.Attachments;
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model
 {
-    using System;
-    using System.Collections.ObjectModel;
-
-    using Enums;
-    using Utils;
-
     /// <summary>
     /// Личное сообщение пользователя.
     /// См. описание <see href="http://vk.com/dev/message"/>.
@@ -109,29 +111,29 @@ namespace VkNet.Model
 
         #region Методы
 
-        internal static Message FromJson(VkResponse response)
+        internal static Message FromJson( VkResponse response )
         {
             var message = new Message();
 
-            message.Id = response["id"];
-            message.UserId = response["user_id"];
-            message.Date = response["date"];
-            message.ReadState = response["read_state"];
-            message.Type = response["out"];
-            message.Title = response["title"];
-            message.Body = response["body"];
-            message.Attachments = response["attachments"];
-            message.ForwardedMessages = response["fwd_messages"];
-            message.ContainsEmojiSmiles = response["emoji"];
-            message.IsImportant = response["important"];
-            message.IsDeleted = response["deleted"];
+            message.Id = response[ "id" ];
+            message.UserId = response[ "user_id" ];
+            message.Date = response[ "date" ];
+            message.ReadState = response[ "read_state" ];
+            message.Type = response[ "out" ];
+            message.Title = response[ "title" ];
+            message.Body = response[ "body" ];
+            message.Attachments = response[ "attachments" ];
+            message.ForwardedMessages = response[ "fwd_messages" ];
+            message.ContainsEmojiSmiles = response[ "emoji" ];
+            message.IsImportant = response[ "important" ];
+            message.IsDeleted = response[ "deleted" ];
 
             // дополнительные поля бесед
 
-            message.ChatId = response["chat_id"];
-            message.ChatActiveIds = response["chat_active"];
-            message.UsersCount = response["users_count"];
-            message.AdminId = response["admin_id"];
+            message.ChatId = response[ "chat_id" ];
+            message.ChatActiveIds = response[ "chat_active" ];
+            message.UsersCount = response[ "users_count" ];
+            message.AdminId = response[ "admin_id" ];
             message.PhotoPreviews = response;
 
             return message;

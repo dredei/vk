@@ -1,11 +1,15 @@
-﻿namespace VkNet.Utils
-{
-    using System;
+﻿#region Using
 
+using System;
+
+#endregion
+
+namespace VkNet.Utils
+{
     /// <summary>
     /// Задает название метода на сервере ВК (используется генератором юнит-тестов)
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    [AttributeUsage( AttributeTargets.Method, AllowMultiple = false )]
     public class ApiMethodNameAttribute : Attribute
     {
         /// <summary>
@@ -30,9 +34,9 @@
         /// Конструктор
         /// </summary>
         /// <param name="name">Название метода</param>
-        public ApiMethodNameAttribute(string name)
+        public ApiMethodNameAttribute( string name )
         {
-            Name = name;
+            this.Name = name;
         }
     }
 }

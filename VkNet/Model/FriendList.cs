@@ -1,4 +1,8 @@
-﻿using VkNet.Utils;
+﻿#region Using
+
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model
 {
@@ -19,12 +23,12 @@ namespace VkNet.Model
 
         #region Internal Methods
 
-        internal static FriendList FromJson(VkResponse response)
+        internal static FriendList FromJson( VkResponse response )
         {
             var list = new FriendList();
 
-            list.Id = response["lid"];
-            list.Name = response["name"];
+            list.Id = response[ "lid" ];
+            list.Name = response[ "name" ];
 
             return list;
         }

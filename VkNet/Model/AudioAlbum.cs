@@ -1,4 +1,8 @@
-﻿using VkNet.Utils;
+﻿#region Using
+
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model
 {
@@ -27,13 +31,13 @@ namespace VkNet.Model
 
         #region Методы
 
-        internal static AudioAlbum FromJson(VkResponse response)
+        internal static AudioAlbum FromJson( VkResponse response )
         {
             var album = new AudioAlbum();
 
-            album.OwnerId = response["owner_id"];
-            album.AlbumId = response["album_id"];
-            album.Title = response["title"];
+            album.OwnerId = response[ "owner_id" ];
+            album.AlbumId = response[ "album_id" ];
+            album.Title = response[ "title" ];
 
             return album;
         }

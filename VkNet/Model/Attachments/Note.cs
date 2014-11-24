@@ -1,20 +1,24 @@
-﻿using System;
+﻿#region Using
+
+using System;
 using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model.Attachments
 {
-	/// <summary>
+    /// <summary>
     /// Заметка пользователя.
     /// См. описание <see href="http://vk.com/dev/note"/>.
     /// </summary>
     public class Note : MediaAttachment
     {
-		static Note()
-		{
-			RegisterType(typeof (Note), "note");
-		}
-		
-		/// <summary>
+        static Note()
+        {
+            RegisterType( typeof( Note ), "note" );
+        }
+
+        /// <summary>
         /// Заголовок заметки.
         /// </summary>
         public string Title { get; set; }
@@ -41,18 +45,18 @@ namespace VkNet.Model.Attachments
 
         #region Методы
 
-        internal static Note FromJson(VkResponse response)
+        internal static Note FromJson( VkResponse response )
         {
             // TODO: TEST IT!!!!!
             var note = new Note();
 
-            note.Id = response["id"];
-            note.OwnerId = response["owner_id"];
-            note.Title = response["title"];
-            note.Text = response["text"];
-            note.Date = response["date"];
-            note.CommentsCount = response["comments"];
-            note.ReadCommentsCount = response["read_comments"];
+            note.Id = response[ "id" ];
+            note.OwnerId = response[ "owner_id" ];
+            note.Title = response[ "title" ];
+            note.Text = response[ "text" ];
+            note.Date = response[ "date" ];
+            note.CommentsCount = response[ "comments" ];
+            note.ReadCommentsCount = response[ "read_comments" ];
 
             return note;
         }

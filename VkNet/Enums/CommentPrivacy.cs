@@ -1,7 +1,11 @@
-﻿namespace VkNet.Enums
-{
-    using Utils;
+﻿#region Using
 
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Enums
+{
     /// <summary>
     /// Уровень доступа к комментированию альбома
     /// </summary>
@@ -10,8 +14,7 @@
         /// <summary>
         /// Все пользователи
         /// </summary>
-        [DefaultValue]
-        AllUsers = 0,
+        [DefaultValue] AllUsers = 0,
 
         /// <summary>
         /// Только друзья
@@ -27,6 +30,5 @@
         /// Только я
         /// </summary>
         OnlyMe = 3
-
     }
 }

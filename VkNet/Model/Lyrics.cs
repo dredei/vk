@@ -1,7 +1,11 @@
-﻿namespace VkNet.Model
-{
-    using VkNet.Utils;
+﻿#region Using
 
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Текст аудиозаписи.
     /// См. описание <see href="http://vk.com/dev/audio.getLyrics"/>.
@@ -20,12 +24,12 @@
 
         #region Методы
 
-        internal static Lyrics FromJson(VkResponse re)
+        internal static Lyrics FromJson( VkResponse re )
         {
             var lyrics = new Lyrics();
 
-            lyrics.Id = re["lyrics_id"];
-            lyrics.Text = re["text"];
+            lyrics.Id = re[ "lyrics_id" ];
+            lyrics.Text = re[ "text" ];
 
             return lyrics;
         }

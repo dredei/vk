@@ -1,23 +1,27 @@
-﻿using System;
+﻿#region Using
+
+using System;
 using System.Diagnostics;
 using VkNet.Categories;
 using VkNet.Utils;
 
+#endregion
+
 namespace VkNet.Model.Attachments
 {
-	/// <summary>
+    /// <summary>
     /// Видеозапись пользователя или группы.
     /// </summary>
     /// <remarks>
     /// См. описание <see href="http://vk.com/dev/video_object"/>.
     /// </remarks>
-    [DebuggerDisplay("Id = {Id}, Title = {Title}")]
+    [DebuggerDisplay( "Id = {Id}, Title = {Title}" )]
     public class Video : MediaAttachment
     {
-		static Video()
-		{
-			RegisterType(typeof(Video), "video");
-		}
+        static Video()
+        {
+            RegisterType( typeof( Video ), "video" );
+        }
 
         /// <summary>
         /// Название видеозаписи.
@@ -117,31 +121,31 @@ namespace VkNet.Model.Attachments
 
         #region Методы
 
-        internal static Video FromJson(VkResponse video)
+        internal static Video FromJson( VkResponse video )
         {
             var result = new Video();
 
-            result.Id = video["id"] ?? video["video_id"];
-            result.OwnerId = video["owner_id"];
-            result.Title = video["title"];
-            result.Description = video["description"];
-            result.Duration = video["duration"];
-            result.Link = video["link"];
-            result.Photo130 = video["photo_130"];
-            result.Photo320 = video["photo_320"];
-            result.Photo640 = video["photo_640"];
-            result.Date = video["date"];
-            result.ViewsCount = video["views"];
-            result.CommentsCount = video["comments"];
-            result.Player = video["player"];
+            result.Id = video[ "id" ] ?? video[ "video_id" ];
+            result.OwnerId = video[ "owner_id" ];
+            result.Title = video[ "title" ];
+            result.Description = video[ "description" ];
+            result.Duration = video[ "duration" ];
+            result.Link = video[ "link" ];
+            result.Photo130 = video[ "photo_130" ];
+            result.Photo320 = video[ "photo_320" ];
+            result.Photo640 = video[ "photo_640" ];
+            result.Date = video[ "date" ];
+            result.ViewsCount = video[ "views" ];
+            result.CommentsCount = video[ "comments" ];
+            result.Player = video[ "player" ];
 
-            result.CanComment = video["can_comment"];
-            result.CanRepost = video["can_repost"];
-            result.Repeat = video["repeat"];
-            result.Likes = video["likes"];
-            result.AlbumId = Utilities.GetNullableLongId(video["album_id"]);
-            result.UploadUrl = video["upload_url"];
-            result.AccessKey = video["access_key"];
+            result.CanComment = video[ "can_comment" ];
+            result.CanRepost = video[ "can_repost" ];
+            result.Repeat = video[ "repeat" ];
+            result.Likes = video[ "likes" ];
+            result.AlbumId = Utilities.GetNullableLongId( video[ "album_id" ] );
+            result.UploadUrl = video[ "upload_url" ];
+            result.AccessKey = video[ "access_key" ];
 
             result.Tag = video;
 

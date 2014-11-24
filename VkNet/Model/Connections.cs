@@ -1,7 +1,11 @@
-﻿namespace VkNet.Model
-{
-    using VkNet.Utils;
+﻿#region Using
 
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Информация о социальных контактах пользователя.
     /// См. описание <see href="http://vk.com/pages?oid=-1&amp;p=Описание_полей_параметра_fields"/> 
@@ -37,15 +41,15 @@
 
         #region Методы
 
-        internal static Connections FromJson(VkResponse response)
+        internal static Connections FromJson( VkResponse response )
         {
             var connections = new Connections();
 
-            connections.Skype = response["skype"];
-            connections.FacebookId = Utilities.GetNullableLongId(response["facebook"]);
-            connections.FacebookName = response["facebook_name"];
-            connections.Twitter = response["twitter"];
-            connections.Instagram = response["instagram"];
+            connections.Skype = response[ "skype" ];
+            connections.FacebookId = Utilities.GetNullableLongId( response[ "facebook" ] );
+            connections.FacebookName = response[ "facebook_name" ];
+            connections.Twitter = response[ "twitter" ];
+            connections.Instagram = response[ "instagram" ];
 
             return connections;
         }

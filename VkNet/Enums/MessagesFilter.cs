@@ -1,7 +1,11 @@
-﻿namespace VkNet.Enums
-{
-    using System;
+﻿#region Using
 
+using System;
+
+#endregion
+
+namespace VkNet.Enums
+{
     /// <summary>
     /// Фильтр для отбора сообщений.
     /// </summary>
@@ -13,7 +17,7 @@
         /// </summary>
         All = 0,
 
-		/// <summary>
+        /// <summary>
         /// Важные сообщения 
         /// </summary>
         Important = 8

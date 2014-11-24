@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region Using
+
+using System;
 using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model
 {
@@ -74,26 +78,28 @@ namespace VkNet.Model
         public string ThumbSrc { get; set; }
 
         #region Methods
-        internal static PhotoAlbum FromJson(VkResponse response)
+
+        internal static PhotoAlbum FromJson( VkResponse response )
         {
             var album = new PhotoAlbum();
 
-            album.Id = response["id"];
-            album.ThumbId = Utilities.GetNullableLongId(response["thumb_id"]);
-            album.OwnerId = Utilities.GetNullableLongId(response["owner_id"]);
-            album.Title = response["title"];
-            album.Description = response["description"];
-            album.Created = response["created"];
-            album.Updated = response["updated"];
-            album.Size = response["size"];
-            album.Privacy = Utilities.GetNullableLongId(response["privacy"]);
-            album.CommentPrivacy = Utilities.GetNullableLongId(response["comment_privacy"]);
-            album.CanUpload = response["can_upload"];
-            album.PrivacyView = response["privacy_view"];
-            album.ThumbSrc = response["thumb_src"];
+            album.Id = response[ "id" ];
+            album.ThumbId = Utilities.GetNullableLongId( response[ "thumb_id" ] );
+            album.OwnerId = Utilities.GetNullableLongId( response[ "owner_id" ] );
+            album.Title = response[ "title" ];
+            album.Description = response[ "description" ];
+            album.Created = response[ "created" ];
+            album.Updated = response[ "updated" ];
+            album.Size = response[ "size" ];
+            album.Privacy = Utilities.GetNullableLongId( response[ "privacy" ] );
+            album.CommentPrivacy = Utilities.GetNullableLongId( response[ "comment_privacy" ] );
+            album.CanUpload = response[ "can_upload" ];
+            album.PrivacyView = response[ "privacy_view" ];
+            album.ThumbSrc = response[ "thumb_src" ];
 
             return album;
         }
+
         #endregion
     }
 }

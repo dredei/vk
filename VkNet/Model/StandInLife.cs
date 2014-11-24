@@ -1,10 +1,13 @@
-﻿namespace VkNet.Model
+﻿#region Using
+
+using System.Collections.ObjectModel;
+using VkNet.Enums;
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
 {
-    using System.Collections.ObjectModel;    
-
-    using Enums;
-    using Utils;
-
     /// <summary>
     /// Жизненная позиция (Personal).
     /// Данная информация не документирована в официальном API ВКонтакте и восстановлена по ответам.
@@ -53,18 +56,18 @@
 
         #region Методы
 
-        internal static StandInLife FromJson(VkResponse response)
+        internal static StandInLife FromJson( VkResponse response )
         {
             var standInLife = new StandInLife();
 
-            standInLife.Political = response["political"];
-            standInLife.Languages = response["langs"];
-            standInLife.Religion = response["religion"];
-            standInLife.InspiredBy = response["inspired_by"];
-            standInLife.PeopleMain = response["people_main"];
-            standInLife.LifeMain = response["life_main"];
-            standInLife.Smoking = response["smoking"];
-            standInLife.Alcohol = response["alcohol"];
+            standInLife.Political = response[ "political" ];
+            standInLife.Languages = response[ "langs" ];
+            standInLife.Religion = response[ "religion" ];
+            standInLife.InspiredBy = response[ "inspired_by" ];
+            standInLife.PeopleMain = response[ "people_main" ];
+            standInLife.LifeMain = response[ "life_main" ];
+            standInLife.Smoking = response[ "smoking" ];
+            standInLife.Alcohol = response[ "alcohol" ];
 
             return standInLife;
         }

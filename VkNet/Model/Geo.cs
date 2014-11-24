@@ -1,7 +1,11 @@
-﻿namespace VkNet.Model
-{
-    using VkNet.Utils;
+﻿#region Using
 
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Информация о географическом месте, в котором была сделана запись. 
     /// См. описание <see href="http://vk.com/pages?oid=-1&amp;p=Описание_поля_geo"/>.
@@ -26,14 +30,14 @@
 
         #region Методы
 
-        internal static Geo FromJson(VkResponse response)
+        internal static Geo FromJson( VkResponse response )
         {
             // TODO: TEST IT!!!!!
             var geo = new Geo();
 
-            geo.Place = response["place"];
-            geo.Coordinates = response["coordinates"];
-            geo.Type = response["type"];
+            geo.Place = response[ "place" ];
+            geo.Coordinates = response[ "coordinates" ];
+            geo.Type = response[ "type" ];
 
             return geo;
         }

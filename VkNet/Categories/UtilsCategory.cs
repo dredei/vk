@@ -1,14 +1,15 @@
-﻿using VkNet.Enums.SafetyEnums;
+﻿#region Using
+
+using System;
+using JetBrains.Annotations;
+using VkNet.Enums.SafetyEnums;
+using VkNet.Model;
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Categories
 {
-    using System;
-    using JetBrains.Annotations;
-
-    using Enums;
-    using Model;
-    using Utils;
-
     /// <summary>
     /// Служебные методы.
     /// </summary>
@@ -16,9 +17,9 @@ namespace VkNet.Categories
     {
         private readonly VkApi _vk;
 
-        internal UtilsCategory(VkApi vk)
+        internal UtilsCategory( VkApi vk )
         {
-            _vk = vk;
+            this._vk = vk;
         }
 
         /// <summary>
@@ -30,13 +31,13 @@ namespace VkNet.Categories
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/utils.checkLink"/>.
         /// </remarks>
         [Pure]
-        public LinkAccessType CheckLink([NotNull] string url)
+        public LinkAccessType CheckLink( [NotNull] string url )
         {
-            VkErrors.ThrowIfNullOrEmpty(() => url);
+            VkErrors.ThrowIfNullOrEmpty( () => url );
 
-            var parameters = new VkParameters { {"url", url} };
+            var parameters = new VkParameters { { "url", url } };
 
-            VkResponse response = _vk.Call("utils.checkLink", parameters, true);
+            VkResponse response = this._vk.Call( "utils.checkLink", parameters, true );
             return response;
         }
 
@@ -49,18 +50,21 @@ namespace VkNet.Categories
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/utils.resolveScreenName"/>.
         /// </remarks>
         [Pure]
-        public VkObject ResolveScreenName([NotNull] string screenName)
+        public VkObject ResolveScreenName( [NotNull] string screenName )
         {
-            VkErrors.ThrowIfNullOrEmpty(() => screenName);
+            VkErrors.ThrowIfNullOrEmpty( () => screenName );
 
-            var parameters = new VkParameters {{"screen_name", screenName}};
+            var parameters = new VkParameters { { "screen_name", screenName } };
 
-            VkResponse response = _vk.Call("utils.resolveScreenName", parameters, true);
+            VkResponse response = this._vk.Call( "utils.resolveScreenName", parameters, true );
 
-            if (response == null) return null;
+            if ( response == null )
+            {
+                return null;
+            }
             return response;
         }
-        
+
         /// <summary>
         /// Возвращает текущее время на сервере ВКонтакте в unixtime.
         /// </summary>
@@ -71,7 +75,7 @@ namespace VkNet.Categories
         [Pure]
         public DateTime GetServerTime()
         {
-            return _vk.Call("utils.getServerTime", VkParameters.Empty, true);
+            return this._vk.Call( "utils.getServerTime", VkParameters.Empty, true );
         }
     }
 }

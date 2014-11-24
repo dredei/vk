@@ -1,18 +1,20 @@
-﻿using VkNet.Enums.Filters;
+﻿#region Using
+
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using JetBrains.Annotations;
+using VkNet.Enums;
+using VkNet.Enums.Filters;
 using VkNet.Enums.SafetyEnums;
+using VkNet.Model;
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Categories
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using JetBrains.Annotations;
-
-    using Enums;
-    using Model;
-    using Utils;
-
     /// <summary>
     /// Методы для работы с друзьями.
     /// </summary>
@@ -20,41 +22,55 @@ namespace VkNet.Categories
     {
         private readonly VkApi _vk;
 
-        internal FriendsCategory(VkApi vk)
+        internal FriendsCategory( VkApi vk )
         {
-            _vk = vk;
+            this._vk = vk;
         }
 
-	    /// <summary>
-	    /// Возвращает список идентификаторов друзей пользователя или расширенную информацию о друзьях пользователя (при использовании параметра fields).
-	    /// </summary>
-	    /// <param name="uid">Идентификатор пользователя, для которого необходимо получить список друзей.</param>
-	    /// <param name="fields">Поля анкеты (профиля), которые необходимо получить.</param>
-	    /// <param name="count">Количество друзей, которое нужно вернуть. (по умолчанию – все друзья).</param>
-	    /// <param name="offset">Смещение, необходимое для выборки определенного подмножества друзей.</param>
-	    /// <param name="order">Порядок, в котором нужно вернуть список друзей.</param>
-	    /// <param name="nameCase">Падеж для склонения имени и фамилии пользователя.</param>
-	    /// <param name="listId">Идентификатор списка друзей, полученный методом <see cref="FriendsCategory.GetLists"/>, друзей из которого необходимо получить. Данный параметр учитывается, только когда параметр uid равен идентификатору текущего пользователя.</param>
-	    /// <returns>Список друзей пользователя с заполненными полями (указанными в параметре <paramref name="fields"/>).
-	    /// Если значение поля <paramref name="fields"/> не указано, то у возвращаемых друзей заполняется только поле Id.
-	    /// </returns>
-	    /// <remarks>
-	    /// Страница документации ВКонтакте <see href="http://vk.com/dev/friends.get"/>.
-	    /// </remarks>
-	    [Pure]
-		[ApiVersion("5.24")]
-        public ReadOnlyCollection<User> Get(long uid, ProfileFields fields = null, int? count = null, int? offset = null, FriendsOrder order = null, NameCase nameCase = null, int? listId = null)
+        /// <summary>
+        /// Возвращает список идентификаторов друзей пользователя или расширенную информацию о друзьях пользователя (при использовании параметра fields).
+        /// </summary>
+        /// <param name="uid">Идентификатор пользователя, для которого необходимо получить список друзей.</param>
+        /// <param name="fields">Поля анкеты (профиля), которые необходимо получить.</param>
+        /// <param name="count">Количество друзей, которое нужно вернуть. (по умолчанию – все друзья).</param>
+        /// <param name="offset">Смещение, необходимое для выборки определенного подмножества друзей.</param>
+        /// <param name="order">Порядок, в котором нужно вернуть список друзей.</param>
+        /// <param name="nameCase">Падеж для склонения имени и фамилии пользователя.</param>
+        /// <param name="listId">Идентификатор списка друзей, полученный методом <see cref="FriendsCategory.GetLists"/>, друзей из которого необходимо получить. Данный параметр учитывается, только когда параметр uid равен идентификатору текущего пользователя.</param>
+        /// <returns>Список друзей пользователя с заполненными полями (указанными в параметре <paramref name="fields"/>).
+        /// Если значение поля <paramref name="fields"/> не указано, то у возвращаемых друзей заполняется только поле Id.
+        /// </returns>
+        /// <remarks>
+        /// Страница документации ВКонтакте <see href="http://vk.com/dev/friends.get"/>.
+        /// </remarks>
+        [Pure]
+        [ApiVersion( "5.24" )]
+        public ReadOnlyCollection<User> Get( long uid, ProfileFields fields = null, int? count = null,
+            int? offset = null, FriendsOrder order = null, NameCase nameCase = null, int? listId = null )
         {
-            if(listId != null && listId < 0)
-				throw new ArgumentOutOfRangeException("listId", "listId must be a positive number.");
-			
-			var parameters = new VkParameters { { "user_id", uid }, { "fields", fields }, { "count", count }, { "offset", offset }, { "order", order }, {"list_id", listId} , {"name_case", nameCase}};
+            if ( listId != null && listId < 0 )
+            {
+                throw new ArgumentOutOfRangeException( "listId", "listId must be a positive number." );
+            }
 
-            var response = _vk.Call("friends.get", parameters);
+            var parameters = new VkParameters
+            {
+                { "user_id", uid },
+                { "fields", fields },
+                { "count", count },
+                { "offset", offset },
+                { "order", order },
+                { "list_id", listId },
+                { "name_case", nameCase }
+            };
 
-		    if (fields != null)
-                return response["items"].ToReadOnlyCollectionOf<User>(x => x);
-		    return response.ToReadOnlyCollectionOf(id => new User { Id = id });
+            var response = this._vk.Call( "friends.get", parameters );
+
+            if ( fields != null )
+            {
+                return response[ "items" ].ToReadOnlyCollectionOf<User>( x => x );
+            }
+            return response.ToReadOnlyCollectionOf( id => new User { Id = id } );
         }
 
         /// <summary>
@@ -67,11 +83,11 @@ namespace VkNet.Categories
         /// Для вызова этого метода Ваше приложение должно иметь права с битовой маской, содержащей <see cref="Settings.Friends"/>.
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/friends.getAppUsers"/>.
         /// </remarks>      
-        [Pure] 
+        [Pure]
         public ReadOnlyCollection<long> GetAppUsers()
         {
-            VkResponseArray response = _vk.Call("friends.getAppUsers", VkParameters.Empty);
-            return response.ToReadOnlyCollectionOf<long>(x => x);
+            VkResponseArray response = this._vk.Call( "friends.getAppUsers", VkParameters.Empty );
+            return response.ToReadOnlyCollectionOf<long>( x => x );
         }
 
         /// <summary>
@@ -88,12 +104,12 @@ namespace VkNet.Categories
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/friends.getOnline"/>.
         /// </remarks>
         [Pure]
-        public ReadOnlyCollection<long> GetOnline(long uid)
+        public ReadOnlyCollection<long> GetOnline( long uid )
         {
             var parameters = new VkParameters { { "uid", uid } };
 
-            VkResponseArray response = _vk.Call("friends.getOnline", parameters);
-            return response.ToReadOnlyCollectionOf<long>(x => x);
+            VkResponseArray response = this._vk.Call( "friends.getOnline", parameters );
+            return response.ToReadOnlyCollectionOf<long>( x => x );
         }
 
         /// <summary>
@@ -108,13 +124,13 @@ namespace VkNet.Categories
         /// Для вызова этого метода Ваше приложение должно иметь права с битовой маской, содержащей <see cref="Settings.Friends"/>.
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/friends.getMutual"/>.
         /// </remarks>
-        [Pure]  
-        public ReadOnlyCollection<long> GetMutual(long targetUid, long sourceUid)
+        [Pure]
+        public ReadOnlyCollection<long> GetMutual( long targetUid, long sourceUid )
         {
             var parameters = new VkParameters { { "target_uid", targetUid }, { "source_uid", sourceUid } };
 
-            VkResponseArray response = _vk.Call("friends.getMutual", parameters);
-            return response.ToReadOnlyCollectionOf<long>(x => x);
+            VkResponseArray response = this._vk.Call( "friends.getMutual", parameters );
+            return response.ToReadOnlyCollectionOf<long>( x => x );
         }
 
         /// <summary>
@@ -128,16 +144,18 @@ namespace VkNet.Categories
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/friends.areFriends"/>.
         /// </remarks>
         [Pure]
-        public IDictionary<long, FriendStatus> AreFriends([NotNull] IEnumerable<long> uids)
+        public IDictionary<long, FriendStatus> AreFriends( [NotNull] IEnumerable<long> uids )
         {
-            if (uids == null)
-                throw new ArgumentNullException("uids");
+            if ( uids == null )
+            {
+                throw new ArgumentNullException( "uids" );
+            }
 
             var parameters = new VkParameters { { "uids", uids } };
 
-            VkResponseArray ids = _vk.Call("friends.areFriends", parameters);
+            VkResponseArray ids = this._vk.Call( "friends.areFriends", parameters );
 
-            return ids.ToDictionary(r => (long)r["uid"], r => (FriendStatus)r["friend_status"]);
+            return ids.ToDictionary( r => (long)r[ "uid" ], r => (FriendStatus)r[ "friend_status" ] );
         }
 
         /// <summary>
@@ -149,9 +167,9 @@ namespace VkNet.Categories
         /// Для вызова этого метода Ваше приложение должно иметь права с битовой маской, содержащей <see cref="Settings.Friends"/>.
         ///  Страница документации ВКонтакте <see href="http://vk.com/dev/friends.addList"/>.
         /// </remarks>
-        public long AddList(string name)
+        public long AddList( string name )
         {
-            return AddList(name, null);
+            return this.AddList( name, null );
         }
 
         /// <summary>
@@ -164,19 +182,19 @@ namespace VkNet.Categories
         /// Для вызова этого метода Ваше приложение должно иметь права с битовой маской, содержащей <see cref="Settings.Friends"/>.
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/friends.addList"/>.
         /// </remarks>
-        public long AddList(string name, IEnumerable<long> userIds)
+        public long AddList( string name, IEnumerable<long> userIds )
         {
-            VkErrors.ThrowIfNullOrEmpty(() => name);
+            VkErrors.ThrowIfNullOrEmpty( () => name );
 
             var parameters = new VkParameters
-                {
-                    {"name", name}
-                };
-            parameters.Add("user_ids", userIds);
+            {
+                { "name", name }
+            };
+            parameters.Add( "user_ids", userIds );
 
-            VkResponse response = _vk.Call("friends.addList", parameters);
+            VkResponse response = this._vk.Call( "friends.addList", parameters );
 
-            return response["lid"];
+            return response[ "lid" ];
         }
 
         /// <summary>
@@ -187,13 +205,13 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/friends.deleteList"/>.
         /// </remarks>
-        public bool DeleteList(long listId)
+        public bool DeleteList( long listId )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => listId);
+            VkErrors.ThrowIfNumberIsNegative( () => listId );
 
-            var parameters = new VkParameters {{"list_id", listId}};
+            var parameters = new VkParameters { { "list_id", listId } };
 
-            VkResponse response = _vk.Call("friends.deleteList", parameters);
+            VkResponse response = this._vk.Call( "friends.deleteList", parameters );
 
             return response;
         }
@@ -208,9 +226,9 @@ namespace VkNet.Categories
         [Pure]
         public ReadOnlyCollection<FriendList> GetLists()
         {
-            VkResponseArray response = _vk.Call("friends.getLists", VkParameters.Empty);
+            VkResponseArray response = this._vk.Call( "friends.getLists", VkParameters.Empty );
 
-            return response.ToReadOnlyCollectionOf<FriendList>(x => x);
+            return response.ToReadOnlyCollectionOf<FriendList>( x => x );
         }
 
         /// <summary>
@@ -225,20 +243,21 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/friends.editList"/>.
         /// </remarks>
-        public bool EditList(long listId, string name = null, IEnumerable<long> userIds = null, IEnumerable<long> addUserIds = null, IEnumerable<long> deleteUserIds = null)
+        public bool EditList( long listId, string name = null, IEnumerable<long> userIds = null,
+            IEnumerable<long> addUserIds = null, IEnumerable<long> deleteUserIds = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => listId);
+            VkErrors.ThrowIfNumberIsNegative( () => listId );
 
             var parameters = new VkParameters
-                {
-                    {"name", name},
-                    {"list_id", listId}
-                };
-            parameters.Add("user_ids", userIds);
-            parameters.Add("add_user_ids", addUserIds);
-            parameters.Add("delete_user_ids", deleteUserIds);
+            {
+                { "name", name },
+                { "list_id", listId }
+            };
+            parameters.Add( "user_ids", userIds );
+            parameters.Add( "add_user_ids", addUserIds );
+            parameters.Add( "delete_user_ids", deleteUserIds );
 
-            VkResponse response = _vk.Call("friends.editList", parameters);
+            VkResponse response = this._vk.Call( "friends.editList", parameters );
 
             return response;
         }
@@ -252,7 +271,7 @@ namespace VkNet.Categories
         /// </remarks>
         public bool DeleteAllRequests()
         {
-            return _vk.Call("friends.deleteAllRequests", VkParameters.Empty);
+            return this._vk.Call( "friends.deleteAllRequests", VkParameters.Empty );
         }
 
         /// <summary>
@@ -271,19 +290,19 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/friends.add"/>.
         /// </remarks>
-        public AddFriendStatus Add(long userId, string text = "", long? captchaSid = null, string captchaKey = null)
+        public AddFriendStatus Add( long userId, string text = "", long? captchaSid = null, string captchaKey = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => userId);
-            
-            var parameters = new VkParameters
-                {
-                    {"user_id", userId},
-                    {"text", text},
-                    {"captcha_sid", captchaSid},
-                    {"captcha_key", captchaKey}
-                };
+            VkErrors.ThrowIfNumberIsNegative( () => userId );
 
-            VkResponse response = _vk.Call("friends.add", parameters);
+            var parameters = new VkParameters
+            {
+                { "user_id", userId },
+                { "text", text },
+                { "captcha_sid", captchaSid },
+                { "captcha_key", captchaKey }
+            };
+
+            VkResponse response = this._vk.Call( "friends.add", parameters );
             return response;
         }
 
@@ -300,13 +319,13 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/friends.delete"/>.
         /// </remarks>
-        public DeleteFriendStatus Delete(long userId)
+        public DeleteFriendStatus Delete( long userId )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => userId);
+            VkErrors.ThrowIfNumberIsNegative( () => userId );
 
-            var parameters = new VkParameters {{"user_id", userId}};
+            var parameters = new VkParameters { { "user_id", userId } };
 
-            VkResponse response = _vk.Call("friends.delete", parameters);
+            VkResponse response = this._vk.Call( "friends.delete", parameters );
             return response;
         }
 
@@ -319,14 +338,14 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/friends.edit"/>.
         /// </remarks>
-        public bool Edit(long userId, IEnumerable<long> listIds)
+        public bool Edit( long userId, IEnumerable<long> listIds )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => userId);
+            VkErrors.ThrowIfNumberIsNegative( () => userId );
 
             var parameters = new VkParameters { { "user_id", userId } };
-            parameters.Add("list_ids", listIds);
+            parameters.Add( "list_ids", listIds );
 
-            VkResponse response = _vk.Call("friends.edit", parameters);
+            VkResponse response = this._vk.Call( "friends.edit", parameters );
 
             return response;
         }
@@ -340,17 +359,17 @@ namespace VkNet.Categories
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/friends.getRecent"/>.
         /// </remarks>
         [Pure]
-        public ReadOnlyCollection<long> GetRecent(int? count = null)
+        public ReadOnlyCollection<long> GetRecent( int? count = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => count);
+            VkErrors.ThrowIfNumberIsNegative( () => count );
 
             var parameters = new VkParameters { { "count", count } };
-            VkResponseArray response = _vk.Call("friends.getRecent", parameters);
+            VkResponseArray response = this._vk.Call( "friends.getRecent", parameters );
 
-            return response.ToReadOnlyCollectionOf<long>(x => x);
+            return response.ToReadOnlyCollectionOf<long>( x => x );
         }
 
-        
+
         /// <summary>
         /// Возвращает информацию о полученных или отправленных заявках на добавление в друзья для текущего пользователя
         /// </summary>
@@ -379,32 +398,33 @@ namespace VkNet.Categories
         /// </remarks>
         // todo add more tests on out, suggested and mutual params
         [Pure]
-        public ReadOnlyCollection<long> GetRequests(int? count = null, int? offset = null, bool extended = false, bool needMutual = false, bool @out = false, bool sort = false, bool suggested = false)
+        public ReadOnlyCollection<long> GetRequests( int? count = null, int? offset = null, bool extended = false,
+            bool needMutual = false, bool @out = false, bool sort = false, bool suggested = false )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => count);
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
+            VkErrors.ThrowIfNumberIsNegative( () => count );
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
 
             var parameters = new VkParameters
-                {
-                    {"offset", offset},
-                    {"count", count},
-                    {"extended", extended},
-                    {"need_mutual", needMutual},
-                    {"out", @out},
-                    {"sort", sort},
-                    {"suggested", suggested}
-                };
+            {
+                { "offset", offset },
+                { "count", count },
+                { "extended", extended },
+                { "need_mutual", needMutual },
+                { "out", @out },
+                { "sort", sort },
+                { "suggested", suggested }
+            };
 
-            VkResponseArray response = _vk.Call("friends.getRequests", parameters);
+            VkResponseArray response = this._vk.Call( "friends.getRequests", parameters );
 
             // Проверка возвращается ли список объектов или идентификаторы пользователя
-            if (response.Count > 0 && response[0].ContainsKey("uid"))
+            if ( response.Count > 0 && response[ 0 ].ContainsKey( "uid" ) )
             {
-                var users = response.ToReadOnlyCollectionOf<User>(x => x);
-                return users.Select(u => u.Id).ToReadOnlyCollection();
+                var users = response.ToReadOnlyCollectionOf<User>( x => x );
+                return users.Select( u => u.Id ).ToReadOnlyCollection();
             }
 
-            return response.ToReadOnlyCollectionOf<long>(x => x);
+            return response.ToReadOnlyCollectionOf<long>( x => x );
         }
     }
 }

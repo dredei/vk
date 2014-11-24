@@ -1,7 +1,11 @@
-﻿namespace VkNet.Model
-{
-    using Utils;
+﻿#region Using
 
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Информация информацию о том, каким образом (через интерфейс сайта, виджет и т.п.) была создана запись на стене. 
     /// Используя данные из этого поля, разработчик может вывести уточняющую информацию о том, как была создана запись на стене 
@@ -34,12 +38,12 @@
 
         #region Методы
 
-        internal static PostSource FromJson(VkResponse response)
+        internal static PostSource FromJson( VkResponse response )
         {
             var postSource = new PostSource();
 
-            postSource.Type = response["type"];
-            postSource.Data = response["data"];
+            postSource.Type = response[ "type" ];
+            postSource.Data = response[ "data" ];
 
             return postSource;
         }

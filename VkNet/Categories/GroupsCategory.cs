@@ -1,17 +1,20 @@
-﻿namespace VkNet.Categories
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using JetBrains.Annotations;
-    
-    using Enums;
-    using Enums.Filters;
-    using Enums.SafetyEnums;
-    using Model;
-    using Utils;
+﻿#region Using
 
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using JetBrains.Annotations;
+using VkNet.Enums;
+using VkNet.Enums.Filters;
+using VkNet.Enums.SafetyEnums;
+using VkNet.Model;
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Categories
+{
     /// <summary>
     /// Методы для работы с сообществами (группами).
     /// </summary>
@@ -19,9 +22,9 @@
     {
         private readonly VkApi _vk;
 
-        internal GroupsCategory(VkApi vk)
+        internal GroupsCategory( VkApi vk )
         {
-            _vk = vk;
+            this._vk = vk;
         }
 
         /// <summary>
@@ -34,11 +37,11 @@
         /// Для вызова этого метода Ваше приложение должно иметь права с битовой маской, содержащей <see cref="Settings.Groups"/>.
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/groups.join"/>.
         /// </remarks>
-        public bool Join(long gid, bool notSure = false)
+        public bool Join( long gid, bool notSure = false )
         {
             var parameters = new VkParameters { { "gid", gid }, { "not_sure", notSure } };
 
-            return _vk.Call("groups.join", parameters);
+            return this._vk.Call( "groups.join", parameters );
         }
 
         /// <summary>
@@ -50,11 +53,11 @@
         /// Для вызова этого метода Ваше приложение должно иметь права с битовой маской, содержащей <see cref="Settings.Groups"/>.
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/groups.leave"/>.
         /// </remarks>
-        public bool Leave(long gid)
+        public bool Leave( long gid )
         {
             var parameters = new VkParameters { { "gid", gid } };
 
-            return _vk.Call("groups.leave", parameters);
+            return this._vk.Call( "groups.leave", parameters );
         }
 
         /// <summary>
@@ -69,17 +72,26 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/groups.get"/>.
         /// </remarks>
         [Pure]
-        public ReadOnlyCollection<Group> Get(long uid, bool extended = false, GroupsFilters filters = null, GroupsFields fields = null)
+        public ReadOnlyCollection<Group> Get( long uid, bool extended = false, GroupsFilters filters = null,
+            GroupsFields fields = null )
         {
-            var parameters = new VkParameters { { "uid", uid }, { "extended", extended }, { "filter", filters }, { "fields", fields } };
+            var parameters = new VkParameters
+            {
+                { "uid", uid },
+                { "extended", extended },
+                { "filter", filters },
+                { "fields", fields }
+            };
 
-            VkResponseArray response = _vk.Call("groups.get", parameters);
+            VkResponseArray response = this._vk.Call( "groups.get", parameters );
 
-            if (!extended)
-                return response.Select(id => new Group { Id = id }).ToReadOnlyCollection();
+            if ( !extended )
+            {
+                return response.Select( id => new Group { Id = id } ).ToReadOnlyCollection();
+            }
 
             // в первой записи количество членов группы
-            return response.Skip(1).ToReadOnlyCollectionOf<Group>(r => r);
+            return response.Skip( 1 ).ToReadOnlyCollectionOf<Group>( r => r );
         }
 
         /// <summary>
@@ -92,12 +104,12 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/groups.getById"/>.
         /// </remarks>
         [Pure]
-        public ReadOnlyCollection<Group> GetById(IEnumerable<long> gids, GroupsFields fields = null)
+        public ReadOnlyCollection<Group> GetById( IEnumerable<long> gids, GroupsFields fields = null )
         {
             var parameters = new VkParameters { { "gids", gids }, { "fields", fields } };
 
-            VkResponseArray response = _vk.Call("groups.getById", parameters);
-            return response.ToReadOnlyCollectionOf<Group>(x => x);
+            VkResponseArray response = this._vk.Call( "groups.getById", parameters );
+            return response.ToReadOnlyCollectionOf<Group>( x => x );
         }
 
         /// <summary>
@@ -110,11 +122,11 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/groups.getById"/>.
         /// </remarks>
         [Pure]
-        public Group GetById(long gid, GroupsFields fields = null)
+        public Group GetById( long gid, GroupsFields fields = null )
         {
             var parameters = new VkParameters { { "gid", gid }, { "fields", fields } };
 
-            return _vk.Call("groups.getById", parameters)[0];
+            return this._vk.Call( "groups.getById", parameters )[ 0 ];
         }
 
         /// <summary>
@@ -130,19 +142,22 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/groups.getMembers"/>.
         /// </remarks>
         [Pure]
-        public ReadOnlyCollection<long> GetMembers(long gid, out int totalCount, int? count = null, int? offset = null, GroupsSort sort = null)
+        public ReadOnlyCollection<long> GetMembers( long gid, out int totalCount, int? count = null, int? offset = null,
+            GroupsSort sort = null )
         {
             var parameters = new VkParameters { { "gid", gid }, { "offset", offset }, { "sort", sort } };
 
-            if (count.HasValue && count.Value > 0 && count.Value < 1000)
-                parameters.Add("count", count);
+            if ( count.HasValue && count.Value > 0 && count.Value < 1000 )
+            {
+                parameters.Add( "count", count );
+            }
 
-            var response = _vk.Call("groups.getMembers", parameters, true);
+            var response = this._vk.Call( "groups.getMembers", parameters, true );
 
-            totalCount = response["count"];
+            totalCount = response[ "count" ];
 
-            VkResponseArray users = response["users"];
-            return users.ToReadOnlyCollectionOf<long>(x => x);
+            VkResponseArray users = response[ "users" ];
+            return users.ToReadOnlyCollectionOf<long>( x => x );
         }
 
         /// <summary>
@@ -155,11 +170,11 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/groups.isMember"/>.
         /// </remarks>
         [Pure]
-        public bool IsMember(long gid, long uid)
+        public bool IsMember( long gid, long uid )
         {
             var parameters = new VkParameters { { "gid", gid }, { "uid", uid } };
 
-            return _vk.Call("groups.isMember", parameters);
+            return this._vk.Call( "groups.isMember", parameters );
         }
 
         /// <summary>
@@ -174,17 +189,18 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/groups.search"/>.
         /// </remarks>
         [Pure]
-        public ReadOnlyCollection<Group> Search([NotNull] string query, out int totalCount, int? offset = null, int? count = null)
+        public ReadOnlyCollection<Group> Search( [NotNull] string query, out int totalCount, int? offset = null,
+            int? count = null )
         {
-            VkErrors.ThrowIfNullOrEmpty(() => query);
-            
+            VkErrors.ThrowIfNullOrEmpty( () => query );
+
             var parameters = new VkParameters { { "q", query }, { "offset", offset }, { "count", count } };
 
-            VkResponseArray response = _vk.Call("groups.search", parameters);
+            VkResponseArray response = this._vk.Call( "groups.search", parameters );
 
-            totalCount = response[0];
+            totalCount = response[ 0 ];
 
-            return response.Skip(1).ToReadOnlyCollectionOf<Group>(r => r);
+            return response.Skip( 1 ).ToReadOnlyCollectionOf<Group>( r => r );
         }
 
         /// <summary>
@@ -197,19 +213,19 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/groups.getInvites"/>.
         /// </remarks>
         [Pure]
-        public ReadOnlyCollection<Group> GetInvites(int? count = null, int? offset = null)
+        public ReadOnlyCollection<Group> GetInvites( int? count = null, int? offset = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => count);
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
+            VkErrors.ThrowIfNumberIsNegative( () => count );
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
 
             var parameters = new VkParameters
-                {
-                    {"count", count},
-                    {"offset", offset}
-                };
-            VkResponseArray response = _vk.Call("groups.getInvites", parameters);
+            {
+                { "count", count },
+                { "offset", offset }
+            };
+            VkResponseArray response = this._vk.Call( "groups.getInvites", parameters );
 
-            return response.Skip(1).ToReadOnlyCollectionOf<Group>(x => x);
+            return response.Skip( 1 ).ToReadOnlyCollectionOf<Group>( x => x );
         }
 
         /// <summary>
@@ -226,23 +242,23 @@
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/groups.banUser"/>.
         /// </remarks>
-        public bool BanUser(long groupId, long userId, DateTime? endDate = null, BanReason? reason = null,
-                            string comment = "", bool commentVisible = false)
+        public bool BanUser( long groupId, long userId, DateTime? endDate = null, BanReason? reason = null,
+            string comment = "", bool commentVisible = false )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => groupId);
-            VkErrors.ThrowIfNumberIsNegative(() => userId);
+            VkErrors.ThrowIfNumberIsNegative( () => groupId );
+            VkErrors.ThrowIfNumberIsNegative( () => userId );
 
             var parameters = new VkParameters
-                {
-                    {"group_id", groupId},
-                    {"user_id", userId},
-                    {"end_date", endDate},
-                    {"comment", comment},
-                    {"comment_visible", commentVisible}
-                };
-            parameters.Add("reason", reason);
+            {
+                { "group_id", groupId },
+                { "user_id", userId },
+                { "end_date", endDate },
+                { "comment", comment },
+                { "comment_visible", commentVisible }
+            };
+            parameters.Add( "reason", reason );
 
-            return _vk.Call("groups.banUser", parameters);
+            return this._vk.Call( "groups.banUser", parameters );
         }
 
         /// <summary>
@@ -256,22 +272,22 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/groups.getBanned"/>.
         /// </remarks>
         [Pure]
-        public ReadOnlyCollection<User> GetBanned(long groupId, int? count = null, int? offset = null)
+        public ReadOnlyCollection<User> GetBanned( long groupId, int? count = null, int? offset = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => groupId);
-            VkErrors.ThrowIfNumberIsNegative(() => count);
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
+            VkErrors.ThrowIfNumberIsNegative( () => groupId );
+            VkErrors.ThrowIfNumberIsNegative( () => count );
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
 
             var parameters = new VkParameters
-                {
-                    {"group_id", groupId},
-                    {"offset", offset},
-                    {"count", count}
-                };
+            {
+                { "group_id", groupId },
+                { "offset", offset },
+                { "count", count }
+            };
 
-            VkResponseArray response = _vk.Call("groups.getBanned", parameters);
+            VkResponseArray response = this._vk.Call( "groups.getBanned", parameters );
 
-            return response.Skip(1).ToReadOnlyCollectionOf<User>(x => x);
+            return response.Skip( 1 ).ToReadOnlyCollectionOf<User>( x => x );
         }
 
         /// <summary>
@@ -283,18 +299,18 @@
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/groups.unbanUser"/>.
         /// </remarks>
-        public bool UnbanUser(long groupId, long userId)
+        public bool UnbanUser( long groupId, long userId )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => groupId);
-            VkErrors.ThrowIfNumberIsNegative(() => userId);
+            VkErrors.ThrowIfNumberIsNegative( () => groupId );
+            VkErrors.ThrowIfNumberIsNegative( () => userId );
 
             var parameters = new VkParameters
-                {
-                    {"group_id", groupId},
-                    {"user_id", userId}
-                };
+            {
+                { "group_id", groupId },
+                { "user_id", userId }
+            };
 
-            return _vk.Call("groups.unbanUser", parameters);
+            return this._vk.Call( "groups.unbanUser", parameters );
         }
     }
 }

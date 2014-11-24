@@ -1,7 +1,11 @@
-﻿namespace VkNet.Model
-{
-    using Utils;
+﻿#region Using
 
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Адрес сервера для загрузки фотографий
     /// </summary>
@@ -23,16 +27,18 @@
         public long? UserId { get; set; }
 
         #region Methods
-        internal static UploadServerInfo FromJson(VkResponse response)
+
+        internal static UploadServerInfo FromJson( VkResponse response )
         {
             var info = new UploadServerInfo();
 
-            info.UploadUrl = response["upload_url"];
-            info.AlbumId = Utilities.GetNullableLongId(response["album_id"] ?? response["aid"]);
-            info.UserId = Utilities.GetNullableLongId(response["user_id"] ?? response["mid"]);
+            info.UploadUrl = response[ "upload_url" ];
+            info.AlbumId = Utilities.GetNullableLongId( response[ "album_id" ] ?? response[ "aid" ] );
+            info.UserId = Utilities.GetNullableLongId( response[ "user_id" ] ?? response[ "mid" ] );
 
             return info;
         }
+
         #endregion
     }
 }

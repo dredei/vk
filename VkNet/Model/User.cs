@@ -1,19 +1,22 @@
-﻿namespace VkNet.Model
+﻿#region Using
+
+using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using VkNet.Categories;
+using VkNet.Enums;
+using VkNet.Exception;
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
 {
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Diagnostics;
-
-    using Categories;
-    using Enums;
-    using Exception;
-    using Utils;
-
     /// <summary>
     /// Информация о пользователя.
     /// См. описание <see href="http://vk.com/dev/fields"/> и <see href="http://vk.com/pages?oid=-1&amp;p=users.get"/>.
     /// </summary>
-    [DebuggerDisplay("[{Id}] {FirstName} {LastName} ({Domain})")]
+    [DebuggerDisplay( "[{Id}] {FirstName} {LastName} ({Domain})" )]
     public class User
     {
         #region Стандартные поля
@@ -284,114 +287,116 @@
 
         #endregion
 
-		#region Поля, доступные через запрос https://vk.com/dev/account.getProfileInfo
+        #region Поля, доступные через запрос https://vk.com/dev/account.getProfileInfo
 
-		/// <summary>
-		/// Девичья фамилия (только для женского пола)
-		/// </summary>
-	    public string MaidenName { get; set; }
+        /// <summary>
+        /// Девичья фамилия (только для женского пола)
+        /// </summary>
+        public string MaidenName { get; set; }
 
-		/// <summary>
-		/// Видимость даты рождения.
-		/// </summary>
-		public BirthdayVisibility BirthdayVisibility { get; set; }
+        /// <summary>
+        /// Видимость даты рождения.
+        /// </summary>
+        public BirthdayVisibility BirthdayVisibility { get; set; }
 
-		/// <summary>
-		/// Родной город пользователя.
-		/// </summary>
-		public string HomeTown { get; set; }
+        /// <summary>
+        /// Родной город пользователя.
+        /// </summary>
+        public string HomeTown { get; set; }
 
-		/// <summary>
-		/// Информация о заявке на смену имени.
-		/// </summary>
-		public ChangeNameRequest ChangeNameRequest { get; set; }
+        /// <summary>
+        /// Информация о заявке на смену имени.
+        /// </summary>
+        public ChangeNameRequest ChangeNameRequest { get; set; }
 
-		#endregion
+        #endregion
 
-		#region Методы
+        #region Методы
 
-		internal static User FromJson(VkResponse response)
+        internal static User FromJson( VkResponse response )
         {
             var user = new User();
 
             // ---- стандартные поля ----
 
-            VkResponse id = response["uid"] ?? response["id"];
-            user.Id = Convert.ToInt64(id.ToString());
+            VkResponse id = response[ "uid" ] ?? response[ "id" ];
+            user.Id = Convert.ToInt64( id.ToString() );
 
-            user.FirstName = response["first_name"];
-            user.LastName = response["last_name"];
+            user.FirstName = response[ "first_name" ];
+            user.LastName = response[ "last_name" ];
 
-            if (response["name"] != null)
+            if ( response[ "name" ] != null )
             {
                 // split for name and surname
-                var parts = ((string)response["name"]).Split(' ');
-                if (parts.Length < 2)
-                    throw new VkApiException("Invalid name in response");
+                var parts = ( (string)response[ "name" ] ).Split( ' ' );
+                if ( parts.Length < 2 )
+                {
+                    throw new VkApiException( "Invalid name in response" );
+                }
 
-                user.FirstName = parts[0];
-                user.LastName = parts[1];
+                user.FirstName = parts[ 0 ];
+                user.LastName = parts[ 1 ];
             }
 
             // ---- дополнительные поля ----
 
-            user.Sex = response["sex"];
-            user.BirthDate = response["bdate"];
-            user.City =response["city"];
-            user.Country = response["country"];
+            user.Sex = response[ "sex" ];
+            user.BirthDate = response[ "bdate" ];
+            user.City = response[ "city" ];
+            user.Country = response[ "country" ];
             user.PhotoPreviews = response;
-            user.Online = response["online"];
-            user.FriendLists = response["lists"];
-            user.Domain = response["domain"];
-            user.HasMobile = response["has_mobile"];
-            user.MobilePhone = response["mobile_phone"];
-            user.HomePhone = response["home_phone"];
+            user.Online = response[ "online" ];
+            user.FriendLists = response[ "lists" ];
+            user.Domain = response[ "domain" ];
+            user.HasMobile = response[ "has_mobile" ];
+            user.MobilePhone = response[ "mobile_phone" ];
+            user.HomePhone = response[ "home_phone" ];
             user.Connections = response;
-            user.Site = response["site"];
+            user.Site = response[ "site" ];
             user.Education = response;
-            user.Universities = response["universities"];
-            user.Schools = response["schools"];
-            user.CanPost = response["can_post"];
-            user.CanSeeAllPosts = response["can_see_all_posts"];
-            user.CanSeeAudio = response["can_see_audio"];
-            user.CanWritePrivateMessage = response["can_write_private_message"];
-            user.Status = response["status"];
-            user.LastSeen = response["last_seen"] != null ? response["last_seen"]["time"] : null;
-            user.CommonCount = response["common_count"];
-            user.Relation = response["relation"];
-            user.Relatives = response["relatives"];
-            user.Counters = response["counters"];
+            user.Universities = response[ "universities" ];
+            user.Schools = response[ "schools" ];
+            user.CanPost = response[ "can_post" ];
+            user.CanSeeAllPosts = response[ "can_see_all_posts" ];
+            user.CanSeeAudio = response[ "can_see_audio" ];
+            user.CanWritePrivateMessage = response[ "can_write_private_message" ];
+            user.Status = response[ "status" ];
+            user.LastSeen = response[ "last_seen" ] != null ? response[ "last_seen" ][ "time" ] : null;
+            user.CommonCount = response[ "common_count" ];
+            user.Relation = response[ "relation" ];
+            user.Relatives = response[ "relatives" ];
+            user.Counters = response[ "counters" ];
 
             // -- дополнительные поля из http://vk.com/pages?oid=-1p=users.get
 
-            user.Nickname = response["nickname"];
-            user.Timezone = response["timezone"];
+            user.Nickname = response[ "nickname" ];
+            user.Timezone = response[ "timezone" ];
 
             // поля, установленные экспериментально
-            user.Language = response["language"];
-            user.OnlineMobile = response["online_mobile"];
-            user.OnlineApp = response["online_app"];
-            user.RelationPartner = response["relation_partner"];
-            user.StandInLife = response["personal"];
-            user.Interests = response["interests"];
-            user.Music = response["music"];
-            user.Activities = response["activities"];
-            user.Movies = response["movies"];
-            user.Tv = response["tv"];
-            user.Books = response["books"];
-            user.Games = response["games"];
-            user.About = response["about"];
-            user.Quotes = response["quotes"];
-            user.InvitedBy = response["invited_by"];
-            user.BanInfo = response["ban_info"];
-            user.DeactiveReason = response["deactivated"];
-            user.IsDeactivated = !string.IsNullOrEmpty(user.DeactiveReason);
+            user.Language = response[ "language" ];
+            user.OnlineMobile = response[ "online_mobile" ];
+            user.OnlineApp = response[ "online_app" ];
+            user.RelationPartner = response[ "relation_partner" ];
+            user.StandInLife = response[ "personal" ];
+            user.Interests = response[ "interests" ];
+            user.Music = response[ "music" ];
+            user.Activities = response[ "activities" ];
+            user.Movies = response[ "movies" ];
+            user.Tv = response[ "tv" ];
+            user.Books = response[ "books" ];
+            user.Games = response[ "games" ];
+            user.About = response[ "about" ];
+            user.Quotes = response[ "quotes" ];
+            user.InvitedBy = response[ "invited_by" ];
+            user.BanInfo = response[ "ban_info" ];
+            user.DeactiveReason = response[ "deactivated" ];
+            user.IsDeactivated = !string.IsNullOrEmpty( user.DeactiveReason );
 
-			//Поля, доступные через запрос https://vk.com/dev/account.getProfileInfo
-			user.MaidenName = response["maiden_name"];
-			user.BirthdayVisibility = (BirthdayVisibility)(response["bdate_visibility"] ?? 0);
-			user.HomeTown = response["home_town"];
-			user.ChangeNameRequest = response["name_request"];
+            //Поля, доступные через запрос https://vk.com/dev/account.getProfileInfo
+            user.MaidenName = response[ "maiden_name" ];
+            user.BirthdayVisibility = (BirthdayVisibility)( response[ "bdate_visibility" ] ?? 0 );
+            user.HomeTown = response[ "home_town" ];
+            user.ChangeNameRequest = response[ "name_request" ];
 
             return user;
         }

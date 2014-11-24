@@ -1,7 +1,11 @@
-﻿namespace VkNet.Model
-{
-    using VkNet.Utils;
+﻿#region Using
 
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Высшее учебное заведение, в котором учился пользователь.
     /// См. описание <see href="http://vk.com/dev/fields"/>. Раздел universities.
@@ -69,23 +73,23 @@
 
         #region Методы
 
-        internal static University FromJson(VkResponse response)
+        internal static University FromJson( VkResponse response )
         {
             var university = new University();
 
-            university.Id = response["id"];
-            university.Country = response["country"];
-            university.City = response["city"];
-            university.Name = response["name"] ?? response["title"];
-            university.Faculty = response["faculty"];
-            university.FacultyName = response["faculty_name"];
-            university.Chair = response["chair"];
-            university.ChairName = response["chair_name"];
-            university.Graduation = response["graduation"];
+            university.Id = response[ "id" ];
+            university.Country = response[ "country" ];
+            university.City = response[ "city" ];
+            university.Name = response[ "name" ] ?? response[ "title" ];
+            university.Faculty = response[ "faculty" ];
+            university.FacultyName = response[ "faculty_name" ];
+            university.Chair = response[ "chair" ];
+            university.ChairName = response[ "chair_name" ];
+            university.Graduation = response[ "graduation" ];
 
             // установлено экcпериментальным путем
-            university.EducationForm = response["education_form"];
-            university.EducationStatus = response["education_status"];
+            university.EducationForm = response[ "education_form" ];
+            university.EducationStatus = response[ "education_status" ];
 
             return university;
         }

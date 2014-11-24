@@ -1,14 +1,17 @@
-﻿namespace VkNet.Model
-{
-    using System.Diagnostics;
+﻿#region Using
 
-    using Enums;
-    using Utils;
-    
+using System.Diagnostics;
+using VkNet.Enums;
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Определяет тип объекта
     /// </summary>
-    [DebuggerDisplay("Id = {Id}, Type = {Type}")]
+    [DebuggerDisplay( "Id = {Id}, Type = {Type}" )]
     public class VkObject
     {
         /// <summary>
@@ -21,19 +24,19 @@
         /// </summary>
         public VkObjectType Type { get; set; }
 
-        internal static VkObject FromJson(VkResponse response)
+        internal static VkObject FromJson( VkResponse response )
         {
             var obj = new VkObject();
-            
-            obj.Id = Utilities.GetNullableLongId(response["object_id"]);
 
-            string type = response["type"];
-            switch (type)
+            obj.Id = Utilities.GetNullableLongId( response[ "object_id" ] );
+
+            string type = response[ "type" ];
+            switch ( type )
             {
                 case "group":
                     obj.Type = VkObjectType.Group;
                     break;
- 
+
                 case "user":
                     obj.Type = VkObjectType.User;
                     break;

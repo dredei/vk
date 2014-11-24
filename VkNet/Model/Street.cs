@@ -1,4 +1,8 @@
-﻿using VkNet.Utils;
+﻿#region Using
+
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model
 {
@@ -19,12 +23,12 @@ namespace VkNet.Model
 
         #region Internal Methods
 
-        internal static Street FromJson(VkResponse response)
+        internal static Street FromJson( VkResponse response )
         {
             var street = new Street();
 
-            street.Id = response["sid"];
-            street.Title = response["name"];
+            street.Id = response[ "sid" ];
+            street.Title = response[ "name" ];
 
             return street;
         }

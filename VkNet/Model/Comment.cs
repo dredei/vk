@@ -1,19 +1,21 @@
-﻿using VkNet.Model.Attachments;
+﻿#region Using
+
+using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using VkNet.Model.Attachments;
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model
 {
-    using System;
-    using System.Collections.ObjectModel;
-    using System.Linq;
-    using System.Diagnostics;
-
-    using Utils;
-
     /// <summary>
     /// Комментарий к записи.
     /// См. описание <see href="http://vk.com/devcomment_object"/>.
     /// </summary>
-    [DebuggerDisplay("Id = {Id}, Text = {Text}, Date = {Date}")]
+    [DebuggerDisplay( "Id = {Id}, Text = {Text}, Date = {Date}" )]
     public class Comment
     {
         /// <summary>
@@ -56,7 +58,7 @@ namespace VkNet.Model
         /// </summary>
         public Attachment Attachment
         {
-            get { return Attachments.FirstOrDefault(); }
+            get { return this.Attachments.FirstOrDefault(); }
         }
 
         #region Поля, установленные экспериментально
@@ -70,19 +72,19 @@ namespace VkNet.Model
 
         #region Методы
 
-        internal static Comment FromJson(VkResponse response)
+        internal static Comment FromJson( VkResponse response )
         {
             var comment = new Comment();
 
-            comment.Id = response["id"];
-            comment.FromId = response["from_id"];
-            comment.Date = response["date"];
-            comment.Text = response["text"];
-            comment.ReplyToUserId = response["reply_to_user"];
-            comment.ReplyToCommentId = response["reply_to_comment"];
-            comment.Attachments = response["attachments"];
+            comment.Id = response[ "id" ];
+            comment.FromId = response[ "from_id" ];
+            comment.Date = response[ "date" ];
+            comment.Text = response[ "text" ];
+            comment.ReplyToUserId = response[ "reply_to_user" ];
+            comment.ReplyToCommentId = response[ "reply_to_comment" ];
+            comment.Attachments = response[ "attachments" ];
 
-            comment.Likes = response["likes"]; // установлено экcпериментальным путем
+            comment.Likes = response[ "likes" ]; // установлено экcпериментальным путем
 
             return comment;
         }

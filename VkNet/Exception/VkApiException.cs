@@ -1,13 +1,17 @@
-﻿namespace VkNet.Exception
-{
-    using System;
-    using System.Runtime.Serialization;
+﻿#region Using
 
+using System;
+using System.Runtime.Serialization;
+
+#endregion
+
+namespace VkNet.Exception
+{
     /// <summary>
     /// Базовый класс для всех исключений, выбрасываемых библиотекой.
     /// </summary>
     [Serializable]
-    public class VkApiException : Exception
+    public class VkApiException : System.Exception
     {
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="VkApiException"/>.
@@ -20,7 +24,7 @@
         /// Инициализирует новый экземпляр класса <see cref="VkApiException"/> с указанным описанием.
         /// </summary>
         /// <param name="message">Описание исключения.</param>
-        public VkApiException(string message) : base(message)
+        public VkApiException( string message ) : base( message )
         {
         }
 
@@ -29,7 +33,7 @@
         /// </summary>
         /// <param name="message">Описание исключения.</param>
         /// <param name="innerException">Внутреннее исключение.</param>
-        public VkApiException(string message, Exception innerException) : base(message, innerException)
+        public VkApiException( string message, System.Exception innerException ) : base( message, innerException )
         {
         }
 
@@ -39,7 +43,7 @@
         /// <param name="info">Содержит все данные, необходимые для десериализации.</param>
         /// <param name="context">Описывает источник и назначение данного сериализованного потока и предоставляет дополнительный, 
         /// определяемый вызывающим, контекст.</param>
-        protected VkApiException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected VkApiException( SerializationInfo info, StreamingContext context ) : base( info, context )
         {
         }
     }

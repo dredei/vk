@@ -1,8 +1,12 @@
-﻿namespace VkNet.Utils
-{
-    using System;
-    using System.Collections.Generic;
+﻿#region Using
 
+using System;
+using System.Collections.Generic;
+
+#endregion
+
+namespace VkNet.Utils
+{
     /// <summary>
     /// Параметры запроса к ВКонтакте.
     /// </summary>
@@ -22,7 +26,7 @@
         /// <param name="parameters">
         /// Параметры запроса.
         /// </param>
-        public VkParameters(IDictionary<string, string> parameters) : base(parameters)
+        public VkParameters( IDictionary<string, string> parameters ) : base( parameters )
         {
         }
 
@@ -40,20 +44,24 @@
         /// <typeparam name="T">Тип значения параметра запроса.</typeparam>
         /// <param name="name">Имя параметра запроса.</param>
         /// <param name="value">Значение параметра запроса.</param>
-        public void Add<T>(string name, T value)
+        public void Add<T>( string name, T value )
         {
-            if (value == null)
-                return;
-
-            if (typeof(T).IsEnum)
+            if ( value == null )
             {
-                Add(name, (int)(object)value);
+                return;
+            }
+
+            if ( typeof( T ).IsEnum )
+            {
+                this.Add( name, (int)(object)value );
                 return;
             }
 
             var stringValue = value.ToString();
-            if (!string.IsNullOrEmpty(stringValue))
-                base.Add(name, stringValue);
+            if ( !string.IsNullOrEmpty( stringValue ) )
+            {
+                base.Add( name, stringValue );
+            }
         }
 
         /// <summary>
@@ -63,10 +71,10 @@
         /// <typeparam name="T">Имя типа элементов последовательности.</typeparam>
         /// <param name="name">Имя параметра запроса.</param>
         /// <param name="collection">Последовательность, представляющая значение параметра запроса.</param>
-        public void Add<T>(string name, IEnumerable<T> collection)
+        public void Add<T>( string name, IEnumerable<T> collection )
         {
             var value = collection.JoinNonEmpty();
-            Add(name, value);
+            Add( name, value );
         }
 
         /// <summary>
@@ -76,9 +84,9 @@
         /// <typeparam name="T">Имя типа элементов коллекции.</typeparam>
         /// <param name="name">Имя параметра запроса.</param>
         /// <param name="collection">Коллекция, представляющая значение параметра запроса.</param>
-        public void Add<T>(string name, List<T> collection)
+        public void Add<T>( string name, List<T> collection )
         {
-            Add(name, (IEnumerable<T>)collection);
+            this.Add( name, (IEnumerable<T>)collection );
         }
 
         /// <summary>
@@ -88,12 +96,14 @@
         /// <typeparam name="T">Тип значения параметра запроса.</typeparam>
         /// <param name="name">Имя параметра запроса.</param>
         /// <param name="nullableValue">Значение параметра запроса.</param>
-        public void Add<T>(string name, T? nullableValue) where T : struct
+        public void Add<T>( string name, T? nullableValue ) where T : struct
         {
-            if (!nullableValue.HasValue)
+            if ( !nullableValue.HasValue )
+            {
                 return;
+            }
 
-            Add(name, nullableValue.Value);
+            Add( name, nullableValue.Value );
         }
 
         /// <summary>
@@ -102,16 +112,20 @@
         /// </summary>
         /// <param name="name">Имя параметра запроса.</param>
         /// <param name="nullableDateTime">Значение параметра.</param>
-        public void Add(string name, DateTime? nullableDateTime)
+        public void Add( string name, DateTime? nullableDateTime )
         {
-            if (!nullableDateTime.HasValue)
+            if ( !nullableDateTime.HasValue )
+            {
                 return;
+            }
 
             //var offset = DateTime.Now - nullableDateTime.Value;
-            double totalSeconds = (nullableDateTime.Value.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
-            long offset = Convert.ToInt64(totalSeconds);
+            double totalSeconds =
+                ( nullableDateTime.Value.ToUniversalTime() - new DateTime( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc ) )
+                    .TotalSeconds;
+            long offset = Convert.ToInt64( totalSeconds );
 
-            Add(name, offset);
+            Add( name, offset );
         }
 
         /// <summary>
@@ -120,12 +134,14 @@
         /// </summary>
         /// <param name="name">Имя параметра запроса.</param>
         /// <param name="nullableValue">Значение параметра.</param>
-        public void Add(string name, bool? nullableValue)
+        public void Add( string name, bool? nullableValue )
         {
-            if (!nullableValue.HasValue || !nullableValue.Value)
+            if ( !nullableValue.HasValue || !nullableValue.Value )
+            {
                 return;
+            }
 
-            base.Add(name, "1");
+            base.Add( name, "1" );
         }
 
         /// <summary>
@@ -134,9 +150,9 @@
         /// </summary>
         /// <param name="name">Имя параметра запроса.</param>
         /// <param name="value">Значение параметра.</param>
-        public void Add(string name, bool value)
+        public void Add( string name, bool value )
         {
-            base.Add(name, value ? "1" : "0");
+            base.Add( name, value ? "1" : "0" );
         }
     }
 }

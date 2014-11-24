@@ -1,4 +1,8 @@
-﻿using VkNet.Utils;
+﻿#region Using
+
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model
 {
@@ -19,12 +23,12 @@ namespace VkNet.Model
 
         #region Internal Methods
 
-        internal static Faculty FromJson(VkResponse response)
+        internal static Faculty FromJson( VkResponse response )
         {
             var faculty = new Faculty();
 
-            faculty.Id = response["id"];
-            faculty.Title = response["title"];
+            faculty.Id = response[ "id" ];
+            faculty.Title = response[ "title" ];
 
             return faculty;
         }

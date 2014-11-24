@@ -1,17 +1,21 @@
-﻿using VkNet.Utils;
+﻿#region Using
+
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model.Attachments
 {
-	/// <summary>
+    /// <summary>
     /// Граффити.
     /// См. описание <see href="http://vk.com/dev/attachments_w"/>. Раздел "Граффити".
     /// </summary>
     public class Graffiti : MediaAttachment
     {
-		static Graffiti()
-		{
-			RegisterType(typeof (Graffiti), "graffiti");
-		}
+        static Graffiti()
+        {
+            RegisterType( typeof( Graffiti ), "graffiti" );
+        }
 
         /// <summary>
         /// Адрес изображения для предпросмотра.
@@ -25,14 +29,14 @@ namespace VkNet.Model.Attachments
 
         #region Методы
 
-        internal static Graffiti FromJson(VkResponse response)
+        internal static Graffiti FromJson( VkResponse response )
         {
             var graffiti = new Graffiti();
 
-            graffiti.Id = response["id"];
-            graffiti.OwnerId = response["owner_id"];
-            graffiti.Photo200 = response["photo_200"];
-            graffiti.Photo586 = response["photo_586"];
+            graffiti.Id = response[ "id" ];
+            graffiti.OwnerId = response[ "owner_id" ];
+            graffiti.Photo200 = response[ "photo_200" ];
+            graffiti.Photo586 = response[ "photo_586" ];
 
             return graffiti;
         }

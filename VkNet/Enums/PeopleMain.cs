@@ -1,4 +1,8 @@
-﻿using VkNet.Utils;
+﻿#region Using
+
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Enums
 {
@@ -10,8 +14,7 @@ namespace VkNet.Enums
         /// <summary>
         /// Не указано.
         /// </summary>
-		[DefaultValue]
-		Unknown = 0,
+        [DefaultValue] Unknown = 0,
 
         /// <summary>
         /// Ум и креативность.
@@ -21,7 +24,6 @@ namespace VkNet.Enums
         /// <summary>
         /// Доброта и честность.
         /// </summary>
-
         KindnessAndHonesty = 2,
 
         /// <summary>

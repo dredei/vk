@@ -1,25 +1,29 @@
-﻿using System;
+﻿#region Using
+
+using System;
 using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model.Attachments
 {
-	/// <summary>
+    /// <summary>
     /// Альбом с фотографиями пользователя.
     /// См. описание <see href="http://vk.com/dev/attachments_w"/>. Раздел "Альбом с фотографиями".
     /// </summary>
     public class Album : MediaAttachment
-	{
-		static Album()
-		{
-			RegisterType(typeof (Album), "album");
-		}
+    {
+        static Album()
+        {
+            RegisterType( typeof( Album ), "album" );
+        }
 
-		/// <summary>
+        /// <summary>
         /// Обложка альбома.
         /// </summary>
         public Photo Thumb { get; set; }
 
-		/// <summary>
+        /// <summary>
         /// Название альбома.
         /// </summary>
         public string Title { get; set; }
@@ -46,22 +50,22 @@ namespace VkNet.Model.Attachments
 
         #region Методы
 
-		internal static Album FromJson(VkResponse response)
-		{
-			var album = new Album();
+        internal static Album FromJson( VkResponse response )
+        {
+            var album = new Album();
 
-			album.Id = response["aid"] ?? response["id"];
-			album.Thumb = response["thumb"];
-			album.OwnerId = response["owner_id"];
-			album.Title = response["title"];
-			album.Description = response["description"];
-			album.CreateTime = response["created"];
-			album.UpdateTime = response["updated"];
-			album.Size = response["size"];
+            album.Id = response[ "aid" ] ?? response[ "id" ];
+            album.Thumb = response[ "thumb" ];
+            album.OwnerId = response[ "owner_id" ];
+            album.Title = response[ "title" ];
+            album.Description = response[ "description" ];
+            album.CreateTime = response[ "created" ];
+            album.UpdateTime = response[ "updated" ];
+            album.Size = response[ "size" ];
 
-			return album;
-		}
+            return album;
+        }
 
-		#endregion
+        #endregion
     }
 }

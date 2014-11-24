@@ -1,7 +1,11 @@
-﻿namespace VkNet.Model
-{
-    using Utils;
+﻿#region Using
 
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Видеоальбом.
     /// </summary>
@@ -40,16 +44,16 @@
         /// </summary>
         public string Photo320 { get; set; }
 
-        internal static VideoAlbum FromJson(VkResponse response)
+        internal static VideoAlbum FromJson( VkResponse response )
         {
             var album = new VideoAlbum();
 
-            album.Id = Utilities.GetNullableLongId(response["id"]);
-            album.OwnerId = response["owner_id"];
-            album.Title = response["title"];
-            album.Count = Utilities.GetNullableLongId(response["count"]);
-            album.Photo160 = response["photo_160"];
-            album.Photo320 = response["photo_320"];
+            album.Id = Utilities.GetNullableLongId( response[ "id" ] );
+            album.OwnerId = response[ "owner_id" ];
+            album.Title = response[ "title" ];
+            album.Count = Utilities.GetNullableLongId( response[ "count" ] );
+            album.Photo160 = response[ "photo_160" ];
+            album.Photo320 = response[ "photo_320" ];
 
             return album;
         }

@@ -1,9 +1,13 @@
-﻿using VkNet.Enums;
+﻿#region Using
+
+using VkNet.Enums;
 using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model.Attachments
 {
-	/// <summary>
+    /// <summary>
     /// Информация о вики-странице сообщества. 
     /// См. описание <see href="http://vk.com/dev/pages.get"/>.
     /// </summary>
@@ -12,9 +16,10 @@ namespace VkNet.Model.Attachments
         /// <summary>
         /// Идентификатор сообщества.
         /// </summary>
-        public long? GroupId {
-	        get { return OwnerId; }
-	        set { OwnerId = value; }
+        public long? GroupId
+        {
+            get { return this.OwnerId; }
+            set { this.OwnerId = value; }
         }
 
         /// <summary>
@@ -90,35 +95,35 @@ namespace VkNet.Model.Attachments
 
         #region Методы
 
-        internal static Page FromJson(VkResponse response)
+        internal static Page FromJson( VkResponse response )
         {
             var page = new Page();
 
-            page.Id = response["pid"] ?? response["id"];
-            page.GroupId = response["group_id"] ?? response["gid"];
-            page.CreatorId = response["creator_id"];
-            page.Title = response["title"];
-            page.Source = response["source"];
-            page.CurrentUserCanEdit = response["current_user_can_edit"];
-            page.CurrentUserCanEditAccess = response["current_user_can_edit_access"];
-            page.WhoCanView = response["who_can_view"];
-            page.WhoCanEdit = response["who_can_edit"];
-            page.EditorId = response["editor_id"];
-            page.Edited = response["edited"];
-            page.CreateTime = response["created"];
-            page.Parent = response["parent"];
-            page.Parent2 = response["parent2"];
+            page.Id = response[ "pid" ] ?? response[ "id" ];
+            page.GroupId = response[ "group_id" ] ?? response[ "gid" ];
+            page.CreatorId = response[ "creator_id" ];
+            page.Title = response[ "title" ];
+            page.Source = response[ "source" ];
+            page.CurrentUserCanEdit = response[ "current_user_can_edit" ];
+            page.CurrentUserCanEditAccess = response[ "current_user_can_edit_access" ];
+            page.WhoCanView = response[ "who_can_view" ];
+            page.WhoCanEdit = response[ "who_can_edit" ];
+            page.EditorId = response[ "editor_id" ];
+            page.Edited = response[ "edited" ];
+            page.CreateTime = response[ "created" ];
+            page.Parent = response[ "parent" ];
+            page.Parent2 = response[ "parent2" ];
 
-            page.Html = response["html"]; // установлено экcпериментальным путем
-            page.ViewUrl = response["view_url"];
+            page.Html = response[ "html" ]; // установлено экcпериментальным путем
+            page.ViewUrl = response[ "view_url" ];
 
             return page;
         }
 
-		public override string ToString()
-		{
-			return string.Format("page{0}_{1}", GroupId, Id);
-		}
+        public override string ToString()
+        {
+            return string.Format( "page{0}_{1}", this.GroupId, this.Id );
+        }
 
         #endregion
     }

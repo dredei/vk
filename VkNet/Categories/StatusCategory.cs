@@ -1,15 +1,16 @@
-﻿using VkNet.Enums.Filters;
+﻿#region Using
+
+using System;
+using JetBrains.Annotations;
+using VkNet.Enums.Filters;
+using VkNet.Model;
 using VkNet.Model.Attachments;
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Categories
 {
-    using System;
-    using JetBrains.Annotations;
-
-    using Enums;
-    using Model;
-    using Utils;
-
     /// <summary>
     /// Методы для работы со статусом пользователя или сообщества.
     /// </summary>
@@ -17,9 +18,9 @@ namespace VkNet.Categories
     {
         private readonly VkApi _vk;
 
-        internal StatusCategory(VkApi vk)
+        internal StatusCategory( VkApi vk )
         {
-            _vk = vk;
+            this._vk = vk;
         }
 
         /// <summary>
@@ -36,11 +37,11 @@ namespace VkNet.Categories
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/status.get"/>.
         /// </remarks>
         [Pure]
-        public Status Get(long uid)
+        public Status Get( long uid )
         {
             var parameters = new VkParameters { { "uid", uid } };
 
-            return _vk.Call("status.get", parameters);
+            return this._vk.Call( "status.get", parameters );
         }
 
         /// <summary>
@@ -61,18 +62,24 @@ namespace VkNet.Categories
         /// Для вызова этого метода Ваше приложение должно иметь права с битовой маской, содержащей <see cref="Settings.Status"/>. 
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/status.set"/>.
         /// </remarks>
-        public bool Set([NotNull] string text, Audio audio = null)
+        public bool Set( [NotNull] string text, Audio audio = null )
         {
-            if (text == null)
-                throw new ArgumentNullException("text");
+            if ( text == null )
+            {
+                throw new ArgumentNullException( "text" );
+            }
 
             var parameters = new VkParameters();
-            if (audio != null)
-                parameters.Add("audio", string.Format("{0}_{1}", audio.OwnerId, audio.Id));
+            if ( audio != null )
+            {
+                parameters.Add( "audio", string.Format( "{0}_{1}", audio.OwnerId, audio.Id ) );
+            }
             else
-                parameters.Add("text", text);
+            {
+                parameters.Add( "text", text );
+            }
 
-            return _vk.Call("status.set", parameters);
+            return this._vk.Call( "status.set", parameters );
         }
 
         /// <summary>
@@ -89,14 +96,16 @@ namespace VkNet.Categories
         /// Для вызова этого метода Ваше приложение должно иметь права с битовой маской, содержащей <see cref="Settings.Status"/>. 
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/status.set"/>.
         /// </remarks>
-        public bool Set([NotNull] Audio audio)
+        public bool Set( [NotNull] Audio audio )
         {
-            if (audio == null)
-                throw new ArgumentNullException("audio");
+            if ( audio == null )
+            {
+                throw new ArgumentNullException( "audio" );
+            }
 
-            var parameters = new VkParameters { { "audio", string.Format("{0}_{1}", audio.OwnerId, audio.Id) } };
+            var parameters = new VkParameters { { "audio", string.Format( "{0}_{1}", audio.OwnerId, audio.Id ) } };
 
-            return _vk.Call("status.set", parameters);
+            return this._vk.Call( "status.set", parameters );
         }
     }
 }

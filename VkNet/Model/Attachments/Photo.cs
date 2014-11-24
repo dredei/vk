@@ -1,10 +1,13 @@
-﻿namespace VkNet.Model.Attachments
+﻿#region Using
+
+using System;
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model.Attachments
 {
-    using System;
-
-    using Utils;
-
-	/// <summary>
+    /// <summary>
     /// Фотография.
     /// </summary>
     /// <remarks>
@@ -12,10 +15,10 @@
     /// </remarks>
     public class Photo : MediaAttachment
     {
-		static Photo()
-		{
-			RegisterType(typeof (Photo), "photo");
-		}
+        static Photo()
+        {
+            RegisterType( typeof( Photo ), "photo" );
+        }
 
         /// <summary>
         /// Идентификатор альбома, в котором находится фотография.
@@ -125,15 +128,15 @@
         public Uri PhotoSrc { get; set; }
         public Uri PhotoHash { get; set; }
 
-	    /// <summary>
-	    /// Географическая широта отметки, заданная в градусах
-	    /// </summary>
-	    public double? Latitude;
+        /// <summary>
+        /// Географическая широта отметки, заданная в градусах
+        /// </summary>
+        public double? Latitude;
 
         /// <summary>
         /// Географическая долгота отметки, заданная в градусах
         /// </summary>
-	    public double? Longitude;
+        public double? Longitude;
 
         #region Методы
 
@@ -172,44 +175,44 @@
             }
         }
 
-        internal static Photo FromJson(VkResponse response)
+        internal static Photo FromJson( VkResponse response )
         {
             var photo = new Photo();
 
-            photo.Id = response["id"];
-            photo.AlbumId = response["album_id"] ?? response["aid"];
-            photo.OwnerId = response["owner_id"];
-            photo.Photo75 = response["photo_75"];
-            photo.Photo130 = response["photo_130"];
-            photo.Photo604 = response["photo_604"];
-            photo.Photo807 = response["photo_807"];
-            photo.Photo1280 = response["photo_1280"];
-            photo.Photo2560 = response["photo_2560"];
-            photo.Width = response["width"];
-            photo.Height = response["height"];
-            photo.Text = response["text"];
-            photo.CreateTime = response["date"];
+            photo.Id = response[ "id" ];
+            photo.AlbumId = response[ "album_id" ] ?? response[ "aid" ];
+            photo.OwnerId = response[ "owner_id" ];
+            photo.Photo75 = response[ "photo_75" ];
+            photo.Photo130 = response[ "photo_130" ];
+            photo.Photo604 = response[ "photo_604" ];
+            photo.Photo807 = response[ "photo_807" ];
+            photo.Photo1280 = response[ "photo_1280" ];
+            photo.Photo2560 = response[ "photo_2560" ];
+            photo.Width = response[ "width" ];
+            photo.Height = response[ "height" ];
+            photo.Text = response[ "text" ];
+            photo.CreateTime = response[ "date" ];
 
-            photo.UserId = Utilities.GetNullableLongId(response["user_id"]);
-            photo.PostId = Utilities.GetNullableLongId(response["post_id"]);
+            photo.UserId = Utilities.GetNullableLongId( response[ "user_id" ] );
+            photo.PostId = Utilities.GetNullableLongId( response[ "post_id" ] );
 
             // из описания альбом с фотографиями
-            photo.AccessKey = response["access_key"];
+            photo.AccessKey = response[ "access_key" ];
 
-            photo.PlacerId = Utilities.GetNullableLongId(response["placer_id"]);
-            photo.TagCreated = response["tag_created"];
-            photo.TagId = response["tag_id"];
+            photo.PlacerId = Utilities.GetNullableLongId( response[ "placer_id" ] );
+            photo.TagCreated = response[ "tag_created" ];
+            photo.TagId = response[ "tag_id" ];
 
-            photo.Likes = response["likes"];
-            photo.Comments = response["comments"];
-            photo.CanComment = response["can_comment"];
-            photo.Tags = response["tags"];
+            photo.Likes = response[ "likes" ];
+            photo.Comments = response[ "comments" ];
+            photo.CanComment = response[ "can_comment" ];
+            photo.Tags = response[ "tags" ];
 
-            photo.PhotoSrc = response["photo_src"];
-            photo.PhotoHash = response["photo_hash"];
+            photo.PhotoSrc = response[ "photo_src" ];
+            photo.PhotoHash = response[ "photo_hash" ];
 
-            photo.Latitude = response["lat"];
-            photo.Longitude = response["long"];
+            photo.Latitude = response[ "lat" ];
+            photo.Longitude = response[ "long" ];
 
             return photo;
         }

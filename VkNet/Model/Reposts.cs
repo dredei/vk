@@ -1,7 +1,11 @@
-﻿namespace VkNet.Model
-{
-    using VkNet.Utils;
+﻿#region Using
 
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Информация о репостах записи. 
     /// См. описание <see href="http://vk.com/dev/post"/>. Раздел reposts.
@@ -20,12 +24,12 @@
 
         #region Методы
 
-        internal static Reposts FromJson(VkResponse response)
+        internal static Reposts FromJson( VkResponse response )
         {
             var reposts = new Reposts();
 
-            reposts.Count = response["count"];
-            reposts.UserReposted = response["user_reposted"];
+            reposts.Count = response[ "count" ];
+            reposts.UserReposted = response[ "user_reposted" ];
 
             return reposts;
         }

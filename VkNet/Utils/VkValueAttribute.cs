@@ -1,11 +1,15 @@
-﻿namespace VkNet.Utils
-{
-    using System;
+﻿#region Using
 
+using System;
+
+#endregion
+
+namespace VkNet.Utils
+{
     /// <summary>
     /// Указывает параметры метода на сервере ВК
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    [AttributeUsage( AttributeTargets.Method, AllowMultiple = true )]
     public class VkValueAttribute : Attribute
     {
         /// <summary>
@@ -23,10 +27,10 @@
         /// </summary>
         /// <param name="name">Название параметра</param>
         /// <param name="value">Значение параметра</param>
-        public VkValueAttribute(string name, object value)
+        public VkValueAttribute( string name, object value )
         {
-            Name = name;
-            Value = value;
+            this.Name = name;
+            this.Value = value;
         }
     }
 }

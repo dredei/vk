@@ -1,19 +1,23 @@
-﻿using VkNet.Utils;
+﻿#region Using
+
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model.Attachments
 {
-	/// <summary>
+    /// <summary>
     /// Информация о документе.
     /// См. описание <see href="http://vk.com/dev/doc"/>.
     /// </summary>
     public class Document : MediaAttachment
     {
-		static Document()
-		{
-			RegisterType(typeof (Document), "doc");
-		}
+        static Document()
+        {
+            RegisterType( typeof( Document ), "doc" );
+        }
 
-		/// <summary>
+        /// <summary>
         /// Название документа.
         /// </summary>
         public string Title { get; set; }
@@ -50,19 +54,19 @@ namespace VkNet.Model.Attachments
 
         #region Методы
 
-        internal static Document FromJson(VkResponse response)
+        internal static Document FromJson( VkResponse response )
         {
             var document = new Document();
 
-            document.Id = response["did"] ?? response["id"];
-            document.OwnerId = response["owner_id"];
-            document.Title = response["title"];
-            document.Size = response["size"];
-            document.Ext = response["ext"];
-            document.Url = response["url"];
-            document.Photo100 = response["photo_100"];
-            document.Photo130 = response["photo_130"];
-            document.AccessKey = response["access_key"];
+            document.Id = response[ "did" ] ?? response[ "id" ];
+            document.OwnerId = response[ "owner_id" ];
+            document.Title = response[ "title" ];
+            document.Size = response[ "size" ];
+            document.Ext = response[ "ext" ];
+            document.Url = response[ "url" ];
+            document.Photo100 = response[ "photo_100" ];
+            document.Photo130 = response[ "photo_130" ];
+            document.AccessKey = response[ "access_key" ];
 
             return document;
         }

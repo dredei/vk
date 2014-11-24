@@ -1,21 +1,25 @@
-﻿using System;
+﻿#region Using
+
+using System;
 using VkNet.Enums;
 using VkNet.Utils;
 
+#endregion
+
 namespace VkNet.Model.Attachments
 {
-	/// <summary>
+    /// <summary>
     /// Аудиозапись пользователя или группы.
     /// См. описание <see href="http://vk.com/dev/audio_object"/>.
     /// </summary>
     public class Audio : MediaAttachment
     {
-		static Audio()
-		{
-			RegisterType(typeof (Audio), "audio");
-		}
+        static Audio()
+        {
+            RegisterType( typeof( Audio ), "audio" );
+        }
 
-		/// <summary>
+        /// <summary>
         /// Исполнитель аудиозаписи.
         /// </summary>
         public string Artist { get; set; }
@@ -52,21 +56,21 @@ namespace VkNet.Model.Attachments
 
         #region Методы
 
-        internal static Audio FromJson(VkResponse response)
+        internal static Audio FromJson( VkResponse response )
         {
             var audio = new Audio();
 
-            VkResponse id = response["id"] ?? response["aid"];
+            VkResponse id = response[ "id" ] ?? response[ "aid" ];
 
-            audio.Id = Convert.ToInt64(id.ToString());
-            audio.OwnerId = response["owner_id"];
-            audio.Artist = response["artist"];
-            audio.Title = response["title"];
-            audio.Duration = response["duration"];
-            audio.Url = response["url"];
-            audio.LyricsId = Utilities.GetNullableLongId(response["lyrics_id"]);
-            audio.AlbumId = Utilities.GetNullableLongId(response["album_id"]);
-            audio.Genre = response["genre_id"] ?? response["genre"];
+            audio.Id = Convert.ToInt64( id.ToString() );
+            audio.OwnerId = response[ "owner_id" ];
+            audio.Artist = response[ "artist" ];
+            audio.Title = response[ "title" ];
+            audio.Duration = response[ "duration" ];
+            audio.Url = response[ "url" ];
+            audio.LyricsId = Utilities.GetNullableLongId( response[ "lyrics_id" ] );
+            audio.AlbumId = Utilities.GetNullableLongId( response[ "album_id" ] );
+            audio.Genre = response[ "genre_id" ] ?? response[ "genre" ];
 
             return audio;
         }

@@ -1,7 +1,11 @@
-﻿namespace VkNet.Exception
-{
-    using System;
+﻿#region Using
 
+using System;
+
+#endregion
+
+namespace VkNet.Exception
+{
     /// <summary>
     /// Исключение, выбрасываемое при необходимости ввода капчи для вызова метода
     /// </summary>
@@ -24,9 +28,8 @@
         /// </summary>
         /// <param name="sid">Сид</param>
         /// <param name="img">Url-адрес изображения с капчей</param>
-        public CaptchaNeededException(long sid, string img) : this(sid, new Uri(img))
+        public CaptchaNeededException( long sid, string img ) : this( sid, new Uri( img ) )
         {
-            
         }
 
         /// <summary>
@@ -34,10 +37,10 @@
         /// </summary>
         /// <param name="sid">Сид</param>
         /// <param name="img">Url-адрес изображения с капчей</param>
-        public CaptchaNeededException(long sid, Uri img)
+        public CaptchaNeededException( long sid, Uri img )
         {
-            Sid = sid;
-            Img = img;
+            this.Sid = sid;
+            this.Img = img;
         }
     }
 }

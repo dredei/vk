@@ -1,7 +1,11 @@
-﻿namespace VkNet.Model
-{
-    using Utils;
+﻿#region Using
 
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Вариант ответа в опросе
     /// </summary>
@@ -27,14 +31,14 @@
         /// </summary>
         public double? Rate { get; set; }
 
-        internal static PollAnswer FromJson(VkResponse response)
+        internal static PollAnswer FromJson( VkResponse response )
         {
             var answer = new PollAnswer();
 
-            answer.Id = response["id"];
-            answer.Text = response["text"];
-            answer.Votes = response["votes"];
-            answer.Rate = response["rate"];
+            answer.Id = response[ "id" ];
+            answer.Text = response[ "text" ];
+            answer.Votes = response[ "votes" ];
+            answer.Rate = response[ "rate" ];
 
             return answer;
         }

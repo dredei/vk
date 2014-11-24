@@ -8,31 +8,31 @@
         /// <summary>
         /// Именительный.
         /// </summary>
-        public static readonly NameCase Nom = RegisterPossibleValue("nom");
+        public static readonly NameCase Nom = RegisterPossibleValue( "nom" );
 
         /// <summary>
         /// Родительный.
         /// </summary>
-        public static readonly NameCase Gen = RegisterPossibleValue("gen");
+        public static readonly NameCase Gen = RegisterPossibleValue( "gen" );
 
         /// <summary>
         /// Дательный.
         /// </summary>
-        public static readonly NameCase Dat = RegisterPossibleValue("dat");
+        public static readonly NameCase Dat = RegisterPossibleValue( "dat" );
 
         /// <summary>
         /// Винительный.
         /// </summary>
-        public static readonly NameCase Acc = RegisterPossibleValue("acc");
+        public static readonly NameCase Acc = RegisterPossibleValue( "acc" );
 
         /// <summary>
         /// Творительный.
         /// </summary>
-        public static readonly NameCase Ins = RegisterPossibleValue("ins");
+        public static readonly NameCase Ins = RegisterPossibleValue( "ins" );
 
         /// <summary>
         /// Предложный.
         /// </summary>
-        public static readonly NameCase Abl = RegisterPossibleValue("abl");
+        public static readonly NameCase Abl = RegisterPossibleValue( "abl" );
     }
 }

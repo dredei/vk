@@ -1,8 +1,12 @@
-﻿namespace VkNet.Model
-{
-    using VkNet.Exception;
-    using VkNet.Utils;
+﻿#region Using
 
+using VkNet.Exception;
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Координаты места, в котором была сделана запись.
     /// См. описание <see href="http://vk.com/pages?oid=-1&amp;p=Описание_поля_geo"/>.
@@ -23,20 +27,26 @@
 
         #region Методы
 
-        internal static Coordinates FromJson(VkResponse response)
+        internal static Coordinates FromJson( VkResponse response )
         {
             // TODO: TEST IT!!!!!
-            var latitudeWithLongitude = ((string)response).Split(' ');
-            if (latitudeWithLongitude.Length != 2)
-                throw new VkApiException("Coordinates must have latitude and longitude!");
+            var latitudeWithLongitude = ( (string)response ).Split( ' ' );
+            if ( latitudeWithLongitude.Length != 2 )
+            {
+                throw new VkApiException( "Coordinates must have latitude and longitude!" );
+            }
 
             double latitude;
-            if (!double.TryParse(latitudeWithLongitude[0].Replace(".", ","), out latitude))
-                throw new VkApiException("Invalid latitude!");
+            if ( !double.TryParse( latitudeWithLongitude[ 0 ].Replace( ".", "," ), out latitude ) )
+            {
+                throw new VkApiException( "Invalid latitude!" );
+            }
 
             double longitude;
-            if (!double.TryParse(latitudeWithLongitude[1].Replace(".", ","), out longitude))
-                throw new VkApiException("Invalid longitude!");
+            if ( !double.TryParse( latitudeWithLongitude[ 1 ].Replace( ".", "," ), out longitude ) )
+            {
+                throw new VkApiException( "Invalid longitude!" );
+            }
 
             var coordinates = new Coordinates { Latitude = latitude, Longitude = longitude };
 

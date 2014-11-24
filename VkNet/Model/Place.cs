@@ -1,8 +1,12 @@
-﻿namespace VkNet.Model
-{
-    using Categories;
-    using Utils;
+﻿#region Using
 
+using VkNet.Categories;
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Информация о месте, в котором была сделана запись.
     /// См. описание <see href="http://vk.com/pages?oid=-1&amp;p=Описание_поля_geo"/> и <see href="http://vk.com/dev/fields_groups"/>. Раздел place.
@@ -70,22 +74,22 @@
 
         #region Методы
 
-        internal static Place FromJson(VkResponse response)
+        internal static Place FromJson( VkResponse response )
         {
             var place = new Place();
 
-            place.Id = response["place_id"] ?? response["id"];
-            place.Title = response["title"];
-            place.Latitude = (int?)(double?)response["latitude"];       // TODO: refactor this shit
-            place.Longitude = (int?)(double?)response["longitude"];     // TODO: refactor this shit
-            place.TypeId = response["type"];
-            place.CountryId = response["country_id"];
-            place.CityId = response["city_id"];
-            place.Address = response["address"];
-            place.ShowMap = response["showmap"];
+            place.Id = response[ "place_id" ] ?? response[ "id" ];
+            place.Title = response[ "title" ];
+            place.Latitude = (int?)(double?)response[ "latitude" ]; // TODO: refactor this shit
+            place.Longitude = (int?)(double?)response[ "longitude" ]; // TODO: refactor this shit
+            place.TypeId = response[ "type" ];
+            place.CountryId = response[ "country_id" ];
+            place.CityId = response[ "city_id" ];
+            place.Address = response[ "address" ];
+            place.ShowMap = response[ "showmap" ];
 
-            place.Country = response["country"]; // установлено экcпериментальным путем
-            place.City = response["city"]; // установлено экcпериментальным путем
+            place.Country = response[ "country" ]; // установлено экcпериментальным путем
+            place.City = response[ "city" ]; // установлено экcпериментальным путем
 
             return place;
         }

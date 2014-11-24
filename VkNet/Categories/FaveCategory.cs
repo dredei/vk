@@ -1,12 +1,15 @@
-﻿namespace VkNet.Categories
+﻿#region Using
+
+using System.Collections.ObjectModel;
+using JetBrains.Annotations;
+using VkNet.Model;
+using VkNet.Model.Attachments;
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Categories
 {
-    using System.Collections.ObjectModel;
-    using JetBrains.Annotations;
-
-    using Model;
-    using Model.Attachments;
-    using Utils;
-
     /// <summary>
     /// Категория работы с закладками.
     /// </summary>
@@ -14,9 +17,9 @@
     {
         private readonly VkApi _vk;
 
-        internal FaveCategory(VkApi vk)
+        internal FaveCategory( VkApi vk )
         {
-            _vk = vk;
+            this._vk = vk;
         }
 
         /// <summary>
@@ -29,21 +32,21 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/fave.getUsers"/>.
         /// </remarks>
         [Pure]
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<User> GetUsers(int? count = null, int? offset = null)
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<User> GetUsers( int? count = null, int? offset = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => count);
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
+            VkErrors.ThrowIfNumberIsNegative( () => count );
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
 
             var parameters = new VkParameters
-                {
-                    {"count", count},
-                    {"offset", offset}
-                };
+            {
+                { "count", count },
+                { "offset", offset }
+            };
 
-            VkResponseArray response = _vk.Call("fave.getUsers", parameters);
+            VkResponseArray response = this._vk.Call( "fave.getUsers", parameters );
 
-            return response.ToReadOnlyCollectionOf<User>(x => x);
+            return response.ToReadOnlyCollectionOf<User>( x => x );
         }
 
         /// <summary>
@@ -56,20 +59,20 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/fave.getPhotos"/>.
         /// </remarks>
         [Pure]
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<Photo> GetPhotos(int? count = null, int? offset = null)
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<Photo> GetPhotos( int? count = null, int? offset = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => count);
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
+            VkErrors.ThrowIfNumberIsNegative( () => count );
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
 
             var parameters = new VkParameters
-                {
-                    {"count", count},
-                    {"offset", offset}
-                };
+            {
+                { "count", count },
+                { "offset", offset }
+            };
 
-            VkResponseArray response = _vk.Call("fave.getPhotos", parameters);
-            return response.ToReadOnlyCollectionOf<Photo>(x => x);
+            VkResponseArray response = this._vk.Call( "fave.getPhotos", parameters );
+            return response.ToReadOnlyCollectionOf<Photo>( x => x );
         }
 
         /// <summary>
@@ -82,21 +85,21 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/fave.getPosts"/>.
         /// </remarks>
         [Pure]
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<Post> GetPosts(int? count = null, int? offset = null)//, bool extended = false)
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<Post> GetPosts( int? count = null, int? offset = null ) //, bool extended = false)
         {
-            VkErrors.ThrowIfNumberIsNegative(() => count);
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
+            VkErrors.ThrowIfNumberIsNegative( () => count );
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
 
             var parameters = new VkParameters
-                {
-                    {"count", count},
-                    {"offset", offset},
-                    //{"extended", extended}
-                };
+            {
+                { "count", count },
+                { "offset", offset },
+                //{"extended", extended}
+            };
 
-            VkResponseArray response = _vk.Call("fave.getPosts", parameters);
-            return response.ToReadOnlyCollectionOf<Post>(x => x);
+            VkResponseArray response = this._vk.Call( "fave.getPosts", parameters );
+            return response.ToReadOnlyCollectionOf<Post>( x => x );
         }
 
         /// <summary>
@@ -109,21 +112,21 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/fave.getVideos"/>.
         /// </remarks>
         [Pure]
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<Video> GetVideos(int? count = null, int? offset = null)
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<Video> GetVideos( int? count = null, int? offset = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => count);
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
+            VkErrors.ThrowIfNumberIsNegative( () => count );
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
 
             var parameters = new VkParameters
-                {
-                    {"count", count},
-                    {"offset", offset}
-                };
+            {
+                { "count", count },
+                { "offset", offset }
+            };
 
-            VkResponseArray response = _vk.Call("fave.getVideos", parameters);
+            VkResponseArray response = this._vk.Call( "fave.getVideos", parameters );
 
-            return response.ToReadOnlyCollectionOf<Video>(x => x);
+            return response.ToReadOnlyCollectionOf<Video>( x => x );
         }
 
         /// <summary>
@@ -136,21 +139,21 @@
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/fave.getLinks"/>.
         /// </remarks>
         [Pure]
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<Link> GetLinks(int? count = null, int? offset = null)
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<Link> GetLinks( int? count = null, int? offset = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => count);
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
+            VkErrors.ThrowIfNumberIsNegative( () => count );
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
 
             var parameters = new VkParameters
-                {
-                    {"count", count},
-                    {"offset", offset}
-                };
+            {
+                { "count", count },
+                { "offset", offset }
+            };
 
-            VkResponseArray response = _vk.Call("fave.getLinks", parameters);
+            VkResponseArray response = this._vk.Call( "fave.getLinks", parameters );
 
-            return response.ToReadOnlyCollectionOf<Link>(x => x);
+            return response.ToReadOnlyCollectionOf<Link>( x => x );
         }
     }
 }

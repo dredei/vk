@@ -1,4 +1,8 @@
-﻿using VkNet.Utils;
+﻿#region Using
+
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Enums
 {
@@ -10,8 +14,7 @@ namespace VkNet.Enums
         /// <summary>
         /// Статус в случае ошибки ответа
         /// </summary>
-        [DefaultValue]
-        Unknown = 0,
+        [DefaultValue] Unknown = 0,
 
         /// <summary>
         /// заявка на добавление данного пользователя в друзья отправлена

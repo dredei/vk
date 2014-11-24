@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region Using
+
+using System;
 using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model
 {
@@ -18,14 +22,14 @@ namespace VkNet.Model
         /// </summary>
         public string Title { get; set; }
 
-        internal static Region FromJson(VkResponse response)
+        internal static Region FromJson( VkResponse response )
         {
             var region = new Region();
 
-            string regionId = response["region_id"];
+            string regionId = response[ "region_id" ];
 
-            region.Id = Convert.ToInt32(regionId);
-            region.Title = response["title"];
+            region.Id = Convert.ToInt32( regionId );
+            region.Title = response[ "title" ];
 
             return region;
         }

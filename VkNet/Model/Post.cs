@@ -1,20 +1,23 @@
-﻿namespace VkNet.Model
+﻿#region Using
+
+using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using VkNet.Model.Attachments;
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
 {
-    using System;
-    using System.Linq;
-    using System.Collections.ObjectModel;
-    using System.Diagnostics;
-
-    using Attachments;
-    using Utils;
-
     /// <summary>
     /// Запись со стены пользователя или сообщества.
     /// </summary>
     /// <remarks>
     /// См. описание <see href="http://vk.com/dev/post"/>.
     /// </remarks>
-    [DebuggerDisplay("[{Id}] {Text}")]
+    [DebuggerDisplay( "[{Id}] {Text}" )]
     public class Post
     {
         /// <summary>
@@ -92,7 +95,7 @@
         /// </summary>
         public Attachment Attachment
         {
-            get { return Attachments.FirstOrDefault(); }
+            get { return this.Attachments.FirstOrDefault(); }
         }
 
         /// <summary>
@@ -161,42 +164,44 @@
 
         #region Методы
 
-        internal static Post FromJson(VkResponse response)
+        internal static Post FromJson( VkResponse response )
         {
             var post = new Post();
 
-            long? postId = Utilities.GetNullableLongId(response["id"]);
-            if (postId == null)
+            long? postId = Utilities.GetNullableLongId( response[ "id" ] );
+            if ( postId == null )
+            {
                 return null;
+            }
 
-            post.Id = response["id"];
-            post.OwnerId = response["owner_id"];
-            post.FromId = response["from_id"];
-            post.Date = response["date"];
-            post.Text = response["text"];
-            post.ReplyOwnerId = response["reply_owner_id"];
-            post.ReplyPostId = response["reply_post_id"];
-            post.FriendsOnly = response["friends_only"];
-            post.Comments = response["comments"];
-            post.Likes = response["likes"];
-            post.Reposts = response["reposts"];
-            post.PostType = response["post_type"];
-            post.PostSource = response["post_source"];
-            post.Attachments = response["attachments"];
-            post.Geo = response["geo"];
-            post.SignerId = response["signer_id"];
-            post.CopyPostDate = response["copy_post_date"];
-            post.CopyPostType = response["copy_post_type"];
-            post.CopyOwnerId = response["copy_owner_id"];
-            post.CopyPostId = response["copy_post_id"];
-            post.CopyText = response["copy_text"];
-            post.CopyHistory = response["copy_history"];
+            post.Id = response[ "id" ];
+            post.OwnerId = response[ "owner_id" ];
+            post.FromId = response[ "from_id" ];
+            post.Date = response[ "date" ];
+            post.Text = response[ "text" ];
+            post.ReplyOwnerId = response[ "reply_owner_id" ];
+            post.ReplyPostId = response[ "reply_post_id" ];
+            post.FriendsOnly = response[ "friends_only" ];
+            post.Comments = response[ "comments" ];
+            post.Likes = response[ "likes" ];
+            post.Reposts = response[ "reposts" ];
+            post.PostType = response[ "post_type" ];
+            post.PostSource = response[ "post_source" ];
+            post.Attachments = response[ "attachments" ];
+            post.Geo = response[ "geo" ];
+            post.SignerId = response[ "signer_id" ];
+            post.CopyPostDate = response[ "copy_post_date" ];
+            post.CopyPostType = response[ "copy_post_type" ];
+            post.CopyOwnerId = response[ "copy_owner_id" ];
+            post.CopyPostId = response[ "copy_post_id" ];
+            post.CopyText = response[ "copy_text" ];
+            post.CopyHistory = response[ "copy_history" ];
 
             // далее идут поля, установленные экcпериментальным путем
-            post.CopyCommenterId = response["copy_commenter_id"];
-            post.CopyCommentId = response["copy_comment_id"];
-            post.CanDelete = response["can_delete"];
-            post.CanEdit = response["can_edit"];
+            post.CopyCommenterId = response[ "copy_commenter_id" ];
+            post.CopyCommentId = response[ "copy_comment_id" ];
+            post.CanDelete = response[ "can_delete" ];
+            post.CanEdit = response[ "can_edit" ];
 
             return post;
         }

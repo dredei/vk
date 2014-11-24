@@ -1,7 +1,11 @@
-﻿namespace VkNet.Model
-{
-    using System.Collections.Generic;
+﻿#region Using
 
+using System.Collections.Generic;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Ответ при поиске диалогов по строке поиска.
     /// См. описание <see href="http://vk.com/dev/messages.searchDialogs"/>.
@@ -23,8 +27,8 @@
         /// </summary>
         public SearchDialogsResponse()
         {
-            Users = new List<User>();
-            Chats = new List<Chat>();
+            this.Users = new List<User>();
+            this.Chats = new List<Chat>();
         }
     }
 }

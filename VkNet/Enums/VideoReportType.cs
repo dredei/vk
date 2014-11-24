@@ -33,7 +33,7 @@
         /// <summary>
         /// Материал для взрослых.
         /// </summary>
-        AdultMaterial  = 5,
+        AdultMaterial = 5,
 
         /// <summary>
         /// Оскорбление.

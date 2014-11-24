@@ -1,4 +1,8 @@
-﻿using VkNet.Utils;
+﻿#region Using
+
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Enums
 {
@@ -10,8 +14,7 @@ namespace VkNet.Enums
         /// <summary>
         /// Неопределенный статус ответа
         /// </summary>
-		[DefaultValue]
-		Unknown = 0,
+        [DefaultValue] Unknown = 0,
 
         /// <summary>
         /// Пользователь удален из списка друзей
@@ -27,6 +30,5 @@ namespace VkNet.Enums
         /// Рекомендация добавить в друзья данного пользователя удалена
         /// </summary>
         RecommendationDeleted = 3
-
     }
 }

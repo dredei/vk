@@ -1,11 +1,14 @@
-﻿namespace VkNet.Utils
+﻿#region Using
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using VkNet.Exception;
+
+#endregion
+
+namespace VkNet.Utils
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using VkNet.Exception;
-
     /// <summary>
     /// Информация об авторизации приложения на действия.
     /// </summary>
@@ -13,9 +16,9 @@
     {
         private readonly List<NameValue> _decodedAnswer;
 
-        private VkAuthorization(Uri responseUrl)
+        private VkAuthorization( Uri responseUrl )
         {
-            _decodedAnswer = Decode(responseUrl);
+            this._decodedAnswer = Decode( responseUrl );
         }
 
         /// <summary>
@@ -25,9 +28,9 @@
         /// URL, на которую произошло перенаправление при авторизации.
         /// </param>
         /// <returns>Информация об авторизации.</returns>
-        public static VkAuthorization From(Uri responseUrl)
+        public static VkAuthorization From( Uri responseUrl )
         {
-            return new VkAuthorization(responseUrl);
+            return new VkAuthorization( responseUrl );
         }
 
         /// <summary>
@@ -35,7 +38,7 @@
         /// </summary>
         public bool IsAuthorized
         {
-            get { return AccessToken != null; }
+            get { return this.AccessToken != null; }
         }
 
         /// <summary>
@@ -43,7 +46,7 @@
         /// </summary>
         public bool IsAuthorizationRequired
         {
-            get { return GetFieldValue("__q_hash") != null; }
+            get { return this.GetFieldValue( "__q_hash" ) != null; }
         }
 
         /// <summary>
@@ -51,7 +54,7 @@
         /// </summary>
         public string AccessToken
         {
-            get { return GetFieldValue("access_token"); }
+            get { return this.GetFieldValue( "access_token" ); }
         }
 
         /// <summary>
@@ -59,7 +62,7 @@
         /// </summary>
         public string ExpiresIn
         {
-            get { return GetFieldValue("expires_in"); }
+            get { return this.GetFieldValue( "expires_in" ); }
         }
 
         /// <summary>
@@ -69,18 +72,20 @@
         {
             get
             {
-                var userIdFieldValue = GetFieldValue("user_id");
+                var userIdFieldValue = this.GetFieldValue( "user_id" );
                 long userId;
-                if (!long.TryParse(userIdFieldValue, out userId))
-                    throw new VkApiException("UserId is not integer value.");
+                if ( !long.TryParse( userIdFieldValue, out userId ) )
+                {
+                    throw new VkApiException( "UserId is not integer value." );
+                }
 
                 return userId;
             }
         }
 
-        private string GetFieldValue(string fieldName)
+        private string GetFieldValue( string fieldName )
         {
-            return _decodedAnswer.Where(i => i.Name == fieldName).Select(i => i.Value).FirstOrDefault();
+            return this._decodedAnswer.Where( i => i.Name == fieldName ).Select( i => i.Value ).FirstOrDefault();
         }
 
         internal sealed class NameValue
@@ -89,38 +94,48 @@
 
             public string Value { get; set; }
 
-            public NameValue(string name, string value)
+            public NameValue( string name, string value )
             {
-                Name = name;
-                Value = value;
+                this.Name = name;
+                this.Value = value;
             }
 
             public override string ToString()
             {
-                return string.Format("{0}={1}", Name, Value);
+                return string.Format( "{0}={1}", this.Name, this.Value );
             }
         }
 
-        private static List<NameValue> Decode(Uri url)
+        private static List<NameValue> Decode( Uri url )
         {
-            if (!string.IsNullOrEmpty(url.Query))
-                return DecodeQuery(url);
+            if ( !string.IsNullOrEmpty( url.Query ) )
+            {
+                return DecodeQuery( url );
+            }
 
-            return DecodeFragment(url);
+            return DecodeFragment( url );
         }
 
-        private static List<NameValue> DecodeQuery(Uri url)
+        private static List<NameValue> DecodeQuery( Uri url )
         {
             var urlQuery = url.Query;
-            var query = urlQuery.StartsWith("?") || urlQuery.StartsWith("#") ? urlQuery.Substring(1) : urlQuery;
-            return query.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Split('=')).Select(s => new NameValue(s[0], s[1])).ToList();
+            var query = urlQuery.StartsWith( "?" ) || urlQuery.StartsWith( "#" ) ? urlQuery.Substring( 1 ) : urlQuery;
+            return
+                query.Split( new[] { '&' }, StringSplitOptions.RemoveEmptyEntries )
+                    .Select( s => s.Split( '=' ) )
+                    .Select( s => new NameValue( s[ 0 ], s[ 1 ] ) )
+                    .ToList();
         }
 
-        private static List<NameValue> DecodeFragment(Uri url)
+        private static List<NameValue> DecodeFragment( Uri url )
         {
             var urlQuery = url.Fragment;
-            var query = urlQuery.StartsWith("#") ? urlQuery.Substring(1) : urlQuery;
-            return query.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Split('=')).Select(s => new NameValue(s[0], s[1])).ToList();
+            var query = urlQuery.StartsWith( "#" ) ? urlQuery.Substring( 1 ) : urlQuery;
+            return
+                query.Split( new[] { '&' }, StringSplitOptions.RemoveEmptyEntries )
+                    .Select( s => s.Split( '=' ) )
+                    .Select( s => new NameValue( s[ 0 ], s[ 1 ] ) )
+                    .ToList();
         }
     }
 }

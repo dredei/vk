@@ -1,8 +1,12 @@
-﻿namespace VkNet.Exception
-{
-    using System;
-    using System.Runtime.Serialization;
+﻿#region Using
 
+using System;
+using System.Runtime.Serialization;
+
+#endregion
+
+namespace VkNet.Exception
+{
     /// <summary>
     /// Исключение, которое выбрасывается при отсутствии авторизации на выполнение запрошенной операции.
     /// </summary>
@@ -12,7 +16,7 @@
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="UserAuthorizationFailException"/>.
         /// </summary>
-        public UserAuthorizationFailException(string message) : base(message)
+        public UserAuthorizationFailException( string message ) : base( message )
         {
         }
 
@@ -21,7 +25,7 @@
         /// </summary>
         /// <param name="message">Описание исключения.</param>
         /// <param name="code">Код ошибки, полученный от сервера ВКонтакте.</param>
-        public UserAuthorizationFailException(string message, int code) : base(message, code)
+        public UserAuthorizationFailException( string message, int code ) : base( message, code )
         {
         }
 
@@ -31,7 +35,8 @@
         /// <param name="info">Содержит все данные, необходимые для десериализации.</param>
         /// <param name="context">Описывает источник и назначение данного сериализованного потока и предоставляет дополнительный, 
         /// определяемый вызывающим, контекст.</param>
-        protected UserAuthorizationFailException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected UserAuthorizationFailException( SerializationInfo info, StreamingContext context )
+            : base( info, context )
         {
         }
     }

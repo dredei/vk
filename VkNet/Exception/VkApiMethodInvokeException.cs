@@ -1,8 +1,12 @@
-﻿namespace VkNet.Exception
-{
-    using System;
-    using System.Runtime.Serialization;
+﻿#region Using
 
+using System;
+using System.Runtime.Serialization;
+
+#endregion
+
+namespace VkNet.Exception
+{
     /// <summary>
     /// Базовый класс, для всех исключений, которые могут произойти при вызове методов API ВКонтакте.
     /// </summary>
@@ -25,16 +29,17 @@
         /// Инициализирует новый экземпляр класса <see cref="VkApiMethodInvokeException"/> с указанным описанием.
         /// </summary>
         /// <param name="message">Описание исключения.</param>
-        public VkApiMethodInvokeException(string message) : base(message)
+        public VkApiMethodInvokeException( string message ) : base( message )
         {
         }
-        
+
         /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="VkApiMethodInvokeException"/> с указанным описанием и внутренним исключением.
         /// </summary>
         /// <param name="message">Описание исключения.</param>
         /// <param name="innerException">Внутреннее исключение.</param>
-        public VkApiMethodInvokeException(string message, Exception innerException) : base(message, innerException)
+        public VkApiMethodInvokeException( string message, System.Exception innerException )
+            : base( message, innerException )
         {
         }
 
@@ -43,9 +48,9 @@
         /// </summary>
         /// <param name="message">Описание исключения.</param>
         /// <param name="code">Код ошибки, полученный от сервера ВКонтакте.</param>
-        public VkApiMethodInvokeException(string message, int code) : base(message)
+        public VkApiMethodInvokeException( string message, int code ) : base( message )
         {
-            ErrorCode = code;
+            this.ErrorCode = code;
         }
 
         /// <summary>
@@ -54,9 +59,10 @@
         /// <param name="message">Описание исключения.</param>
         /// <param name="code">Код ошибки, полученный от сервера ВКонтакте.</param>
         /// <param name="innerException">Внутреннее исключение.</param>
-        public VkApiMethodInvokeException(string message, int code, Exception innerException) : base(message, innerException)
+        public VkApiMethodInvokeException( string message, int code, System.Exception innerException )
+            : base( message, innerException )
         {
-            ErrorCode = code;
+            this.ErrorCode = code;
         }
 
         /// <summary>
@@ -65,7 +71,7 @@
         /// <param name="info">Содержит все данные, необходимые для десериализации.</param>
         /// <param name="context">Описывает источник и назначение данного сериализованного потока и предоставляет дополнительный, 
         /// определяемый вызывающим, контекст.</param>
-        protected VkApiMethodInvokeException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected VkApiMethodInvokeException( SerializationInfo info, StreamingContext context ) : base( info, context )
         {
         }
     }

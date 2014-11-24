@@ -1,8 +1,12 @@
+#region Using
+
 using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model.Attachments
 {
-	/// <summary>
+    /// <summary>
     /// Контент приложения.
     /// См. описание <see href="http://vk.com/dev/attachments_w"/>. Раздел "Контент приложения".
     /// </summary>
@@ -30,14 +34,14 @@ namespace VkNet.Model.Attachments
 
         #region Методы
 
-        internal static ApplicationContent FromJson(VkResponse response)
+        internal static ApplicationContent FromJson( VkResponse response )
         {
             var application = new ApplicationContent();
 
-            application.Id = response["id"];
-            application.Name = response["name"];
-            application.Photo130 = response["photo_130"];
-            application.Photo604 = response["photo_604"];
+            application.Id = response[ "id" ];
+            application.Name = response[ "name" ];
+            application.Photo130 = response[ "photo_130" ];
+            application.Photo604 = response[ "photo_604" ];
 
             return application;
         }

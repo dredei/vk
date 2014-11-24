@@ -1,9 +1,12 @@
-﻿namespace VkNet.Model
+﻿#region Using
+
+using System;
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
 {
-    using System;
-
-    using Utils;
-
     /// <summary>
     /// Информация о последней активности пользователя.
     /// См. описание <see href="http://vk.com/dev/messages.getLastActivity"/>.
@@ -27,12 +30,12 @@
 
         #region Методы
 
-        internal static LastActivity FromJson(VkResponse re)
+        internal static LastActivity FromJson( VkResponse re )
         {
             var lastActivity = new LastActivity();
 
-            lastActivity.IsOnline = re["online"];
-            lastActivity.Time = re["time"];
+            lastActivity.IsOnline = re[ "online" ];
+            lastActivity.Time = re[ "time" ];
 
             return lastActivity;
         }

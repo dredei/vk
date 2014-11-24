@@ -1,15 +1,18 @@
-﻿namespace VkNet.Model.Attachments
+﻿#region Using
+
+using System;
+using System.Collections.ObjectModel;
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model.Attachments
 {
-    using System;
-    using System.Collections.ObjectModel;
-
-    using Utils;
-
     public class Wall : MediaAttachment
     {
         static Wall()
         {
-            RegisterType(typeof(Wall), "wall");
+            RegisterType( typeof( Wall ), "wall" );
         }
 
         public long? FromId { get; set; }
@@ -45,22 +48,22 @@
 #warning add properties to wall class, see MessagesCategoryTest.GetHistory_ContainsRepost_Error46 method.
         // TODO add properties, 
 
-        internal static Wall FromJson(VkResponse response)
+        internal static Wall FromJson( VkResponse response )
         {
             var wall = new Wall();
 
-            wall.Id = response["id"];
-            wall.FromId = response["from_id"];
-            wall.ToId = response["to_id"];
-            wall.Date = response["date"];
-            wall.PostType = response["post_type"];
-            wall.Text = response["text"];
+            wall.Id = response[ "id" ];
+            wall.FromId = response[ "from_id" ];
+            wall.ToId = response[ "to_id" ];
+            wall.Date = response[ "date" ];
+            wall.PostType = response[ "post_type" ];
+            wall.Text = response[ "text" ];
 
-            wall.Attachments = response["attachments"];
-            wall.Comments = response["comments"];
-            wall.Likes = response["likes"];
-            wall.Reposts = response["reposts"];
-            wall.PostSource = response["post_source"];
+            wall.Attachments = response[ "attachments" ];
+            wall.Comments = response[ "comments" ];
+            wall.Likes = response[ "likes" ];
+            wall.Reposts = response[ "reposts" ];
+            wall.PostSource = response[ "post_source" ];
 
             return wall;
         }

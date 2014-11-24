@@ -8,16 +8,16 @@
         /// <summary>
         /// Фотографии со стены
         /// </summary>
-        public static readonly PhotoAlbumType Wall = RegisterPossibleValue("wall");
+        public static readonly PhotoAlbumType Wall = RegisterPossibleValue( "wall" );
 
         /// <summary>
         /// Аватары
         /// </summary>
-        public static readonly PhotoAlbumType Profile = RegisterPossibleValue("profile");
+        public static readonly PhotoAlbumType Profile = RegisterPossibleValue( "profile" );
 
         /// <summary>
         /// Сохраненные фотографии
         /// </summary>
-        public static readonly PhotoAlbumType Saved = RegisterPossibleValue("saved");
+        public static readonly PhotoAlbumType Saved = RegisterPossibleValue( "saved" );
     }
 }

@@ -1,4 +1,8 @@
-﻿using VkNet.Utils;
+﻿#region Using
+
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Enums
 {
@@ -10,8 +14,7 @@ namespace VkNet.Enums
         /// <summary>
         /// Не указан.
         /// </summary>
-		[DefaultValue]
-		Unknown = 0,
+        [DefaultValue] Unknown = 0,
 
         /// <summary>
         /// Женский.

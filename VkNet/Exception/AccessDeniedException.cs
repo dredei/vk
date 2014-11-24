@@ -1,9 +1,12 @@
-﻿namespace VkNet.Exception
+﻿#region Using
+
+using System;
+using System.Runtime.Serialization;
+
+#endregion
+
+namespace VkNet.Exception
 {
-    using System;
-    using System.Runtime.Serialization;
-
-
     /// <summary>
     /// Исключение, которое выбрасывается при отказе в доступе на выполнение операции сервером ВКонтакте.
     /// </summary>
@@ -21,7 +24,7 @@
         /// Инициализирует новый экземпляр класса <see cref="AccessDeniedException"/> с указанным описанием.
         /// </summary>
         /// <param name="message">Описание исключения.</param>
-        public AccessDeniedException(string message) : base(message)
+        public AccessDeniedException( string message ) : base( message )
         {
         }
 
@@ -30,7 +33,8 @@
         /// </summary>
         /// <param name="message">Описание исключения.</param>
         /// <param name="innerException">Внутреннее исключение.</param>
-        public AccessDeniedException(string message, Exception innerException) : base(message, innerException)
+        public AccessDeniedException( string message, System.Exception innerException )
+            : base( message, innerException )
         {
         }
 
@@ -39,7 +43,7 @@
         /// </summary>
         /// <param name="message">Описание исключения.</param>
         /// <param name="code">Код ошибки, полученный от сервера ВКонтакте.</param>
-        public AccessDeniedException(string message, int code) : base(message, code)
+        public AccessDeniedException( string message, int code ) : base( message, code )
         {
         }
 
@@ -49,7 +53,8 @@
         /// <param name="message">Описание исключения.</param>
         /// <param name="code">Код ошибки, полученный от сервера ВКонтакте.</param>
         /// <param name="innerException">Внутреннее исключение.</param>
-        public AccessDeniedException(string message, int code, Exception innerException) : base(message, code, innerException)
+        public AccessDeniedException( string message, int code, System.Exception innerException )
+            : base( message, code, innerException )
         {
         }
 
@@ -59,7 +64,7 @@
         /// <param name="info">Содержит все данные, необходимые для десериализации.</param>
         /// <param name="context">Описывает источник и назначение данного сериализованного потока и предоставляет дополнительный, 
         /// определяемый вызывающим, контекст.</param>
-        protected AccessDeniedException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected AccessDeniedException( SerializationInfo info, StreamingContext context ) : base( info, context )
         {
         }
     }

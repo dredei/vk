@@ -1,9 +1,12 @@
-﻿using VkNet.Utils;
+﻿#region Using
+
+using System;
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model
 {
-    using System;
-
     /// <summary>
     /// Город.
     /// </summary>
@@ -39,16 +42,16 @@ namespace VkNet.Model
 
         #region Inernal Methods
 
-        internal static City FromJson(VkResponse response)
+        internal static City FromJson( VkResponse response )
         {
             var city = new City();
 
-            VkResponse id = response["cid"] ?? response["id"];
-            city.Id = Convert.ToInt64(id.ToString());
-            city.Title = response["title"] ?? response["name"];
-            city.Area = response["area"];
-            city.Region = response["region"];
-            city.Important = response["important"] ?? false;
+            VkResponse id = response[ "cid" ] ?? response[ "id" ];
+            city.Id = Convert.ToInt64( id.ToString() );
+            city.Title = response[ "title" ] ?? response[ "name" ];
+            city.Area = response[ "area" ];
+            city.Region = response[ "region" ];
+            city.Important = response[ "important" ] ?? false;
 
             return city;
         }

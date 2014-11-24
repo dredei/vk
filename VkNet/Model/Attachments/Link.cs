@@ -1,9 +1,13 @@
-﻿using System;
+﻿#region Using
+
+using System;
 using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model.Attachments
 {
-	/// <summary>
+    /// <summary>
     /// Ссылка на Web-страницу.
     /// См. описание <see href="http://vk.com/dev/attachments_w"/>. Раздел "Ссылка".
     /// </summary>
@@ -34,22 +38,22 @@ namespace VkNet.Model.Attachments
         /// </summary>
         public string PreviewPage { get; set; }
 
-		public override string ToString()
-		{
-			return Url.ToString();
-		}
+        public override string ToString()
+        {
+            return this.Url.ToString();
+        }
 
-		#region Методы
+        #region Методы
 
-        internal static Link FromJson(VkResponse response)
+        internal static Link FromJson( VkResponse response )
         {
             var link = new Link();
 
-            link.Url = response["url"];
-            link.Title = response["title"];
-            link.Description = response["description"];
-            link.Image = response["image_src"];
-            link.PreviewPage = response["preview_page"];
+            link.Url = response[ "url" ];
+            link.Title = response[ "title" ];
+            link.Description = response[ "description" ];
+            link.Image = response[ "image_src" ];
+            link.PreviewPage = response[ "preview_page" ];
 
             return link;
         }

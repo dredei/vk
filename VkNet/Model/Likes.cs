@@ -1,7 +1,11 @@
-﻿namespace VkNet.Model
-{
-    using VkNet.Utils;
+﻿#region Using
 
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Информация о лайках к записи.
     /// См. описание <see href="http://vk.com/dev/post"/>. Раздел likes.
@@ -30,14 +34,14 @@
 
         #region Методы
 
-        internal static Likes FromJson(VkResponse response)
+        internal static Likes FromJson( VkResponse response )
         {
             var likes = new Likes();
 
-            likes.Count = response["count"];
-            likes.UserLikes = response["user_likes"];
-            likes.CanLike = response["can_like"];
-            likes.CanPublish = response["can_publish"];
+            likes.Count = response[ "count" ];
+            likes.UserLikes = response[ "user_likes" ];
+            likes.CanLike = response[ "can_like" ];
+            likes.CanPublish = response[ "can_publish" ];
 
             return likes;
         }

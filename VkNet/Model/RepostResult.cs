@@ -1,48 +1,50 @@
+#region Using
+
 using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model
 {
-	/// <summary>
-	/// Результат копирования записи на стену и информация о ней.
-	/// </summary>
-	public class RepostResult
-	{
-		/// <summary>
-		/// Результат копирования
-		/// </summary>
-		public bool Success { get; set; }
+    /// <summary>
+    /// Результат копирования записи на стену и информация о ней.
+    /// </summary>
+    public class RepostResult
+    {
+        /// <summary>
+        /// Результат копирования
+        /// </summary>
+        public bool Success { get; set; }
 
-		/// <summary>
-		/// Идентификатор созданной записи
-		/// </summary>
-		public long? PostId { get; set; }
+        /// <summary>
+        /// Идентификатор созданной записи
+        /// </summary>
+        public long? PostId { get; set; }
 
-		/// <summary>
-		/// Число копирований исходной записи с учетом осуществленного
-		/// </summary>
-		public int? RepostsCount { get; set; }
+        /// <summary>
+        /// Число копирований исходной записи с учетом осуществленного
+        /// </summary>
+        public int? RepostsCount { get; set; }
 
-		/// <summary>
-		/// Число отметок "Мне нравится" у исходной записи
-		/// </summary>
-		public int? LikesCount { get; set; }
+        /// <summary>
+        /// Число отметок "Мне нравится" у исходной записи
+        /// </summary>
+        public int? LikesCount { get; set; }
 
+        #region Методы
 
-		#region Методы
+        internal static RepostResult FromJson( VkResponse response )
+        {
+            var result = new RepostResult();
 
-		internal static RepostResult FromJson(VkResponse response)
-		{
-			var result = new RepostResult();
+            result.Success = response[ "success" ];
+            result.PostId = response[ "post_id" ];
+            result.RepostsCount = response[ "reposts_count" ];
+            result.LikesCount = response[ "likes_count" ];
 
-			result.Success = response["success"];
-			result.PostId = response["post_id"];
-			result.RepostsCount = response["reposts_count"];
-			result.LikesCount = response["likes_count"];
+            return result;
+        }
 
-			return result;
-		}
-
-		#endregion
-
-	}
+        #endregion
+    }
 }

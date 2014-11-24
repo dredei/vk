@@ -1,7 +1,11 @@
-﻿namespace VkNet.Utils
-{
-    using Enums.Filters;
+﻿#region Using
 
+using VkNet.Enums.Filters;
+
+#endregion
+
+namespace VkNet.Utils
+{
     /// <summary>
     /// Интерфейс браузера, с помощью которого осуществляется сетевое взаимодействие.
     /// Интерфейс введен с целью обеспечения возможности выполнения модульного тестирования.
@@ -13,14 +17,14 @@
         /// </summary>
         /// <param name="url">URL, в котором закодированы параметры запроса.</param>
         /// <returns>Результат выполнения запроса, полученный от сервера в формате JSON.</returns>
-        string GetJson(string url);
+        string GetJson( string url );
 
 #if false
-        /// <summary>
-        /// Выполняет асинхронный JSON-запрос к ВКонтакте.
-        /// </summary>
-        /// <param name="url">URL, в котором закодированы параметры запроса.</param>
-        /// <returns></returns>
+    /// <summary>
+    /// Выполняет асинхронный JSON-запрос к ВКонтакте.
+    /// </summary>
+    /// <param name="url">URL, в котором закодированы параметры запроса.</param>
+    /// <returns></returns>
         Task<string> GetJsonAsync(string url);
 #endif
 
@@ -36,6 +40,6 @@
         /// <returns>
         /// Информация об авторизации приложения.
         /// </returns>
-        VkAuthorization Authorize(int appId, string email, string password, Settings settings);
+        VkAuthorization Authorize( int appId, string email, string password, Settings settings );
     }
 }

@@ -1,3 +1,4 @@
+﻿
 #if false // TODO Сделать когда будут тестовые примеры
 namespace VkNet.Categories
 {

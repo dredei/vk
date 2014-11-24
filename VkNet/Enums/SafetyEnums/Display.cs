@@ -5,20 +5,19 @@
     /// </summary>
     internal sealed class Display : SafetyEnum<Display>
     {
-		/// <summary>
+        /// <summary>
         /// Обычная страница.
         /// </summary>
-        public static readonly Display Page = RegisterPossibleValue("page");
+        public static readonly Display Page = RegisterPossibleValue( "page" );
 
         /// <summary>
         /// Всплывающее окно.
         /// </summary>
-        public static readonly Display Popup = RegisterPossibleValue("popup");
+        public static readonly Display Popup = RegisterPossibleValue( "popup" );
 
         /// <summary>
         /// Для мобильных устройств.
         /// </summary>
-        public static readonly Display Wap = RegisterPossibleValue("wap");
-
+        public static readonly Display Wap = RegisterPossibleValue( "wap" );
     }
 }

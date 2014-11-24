@@ -1,15 +1,18 @@
+﻿#region Using
+
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using VkNet.Enums;
+using VkNet.Enums.SafetyEnums;
+using VkNet.Model;
+using VkNet.Model.Attachments;
+using VkNet.Utils;
+
+#endregion
+
 namespace VkNet.Categories
 {
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System;
-
-    using Utils;
-    using Enums;
-    using Enums.SafetyEnums;
-    using Model;
-    using Model.Attachments;
-    
     /// <summary>
     /// Методы для работы с фотографиями.
     /// </summary>
@@ -17,10 +20,11 @@ namespace VkNet.Categories
     {
         private readonly VkApi _vk;
 
-        internal PhotoCategory(VkApi vk)
+        internal PhotoCategory( VkApi vk )
         {
-            _vk = vk;
+            this._vk = vk;
         }
+
         /// <summary>
         /// Создает пустой альбом для фотографий. 
         /// </summary>
@@ -33,19 +37,20 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.createAlbum"/>.
         /// </remarks>
-        [ApiVersion("5.9")]
-        public PhotoAlbum CreateAlbum(string title, long? groupId = null, string description = null, CommentPrivacy? commentPrivacy = null, CommentPrivacy? privacy = null)
+        [ApiVersion( "5.9" )]
+        public PhotoAlbum CreateAlbum( string title, long? groupId = null, string description = null,
+            CommentPrivacy? commentPrivacy = null, CommentPrivacy? privacy = null )
         {
             var parameters = new VkParameters
-                {
-                    {"title", title},
-                    {"group_id", groupId},
-                    {"description", description},
-                    {"comment_privacy", commentPrivacy},
-                    {"privacy", privacy}
-                };
+            {
+                { "title", title },
+                { "group_id", groupId },
+                { "description", description },
+                { "comment_privacy", commentPrivacy },
+                { "privacy", privacy }
+            };
 
-            VkResponse response = _vk.Call("photos.createAlbum", parameters);
+            VkResponse response = this._vk.Call( "photos.createAlbum", parameters );
 
             return response;
         }
@@ -63,22 +68,23 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.editAlbum"/>.
         /// </remarks>
-        [ApiVersion("5.9")]
-        public bool EditAlbum(long albumId, string title = null, string description = null, long? ownerId = null, CommentPrivacy? privacy = null, CommentPrivacy? commentPrivacy = null)
+        [ApiVersion( "5.9" )]
+        public bool EditAlbum( long albumId, string title = null, string description = null, long? ownerId = null,
+            CommentPrivacy? privacy = null, CommentPrivacy? commentPrivacy = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => albumId);
+            VkErrors.ThrowIfNumberIsNegative( () => albumId );
 
             var parameters = new VkParameters
-                {
-                    {"album_id", albumId},
-                    {"title", title},
-                    {"description", description},
-                    {"owner_id", ownerId},
-                    {"privacy", privacy},
-                    {"comment_privacy", commentPrivacy}
-                };
+            {
+                { "album_id", albumId },
+                { "title", title },
+                { "description", description },
+                { "owner_id", ownerId },
+                { "privacy", privacy },
+                { "comment_privacy", commentPrivacy }
+            };
 
-            VkResponse response = _vk.Call("photos.editAlbum", parameters);
+            VkResponse response = this._vk.Call( "photos.editAlbum", parameters );
 
             return response;
         }
@@ -97,26 +103,28 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.getAlbums"/>.
         /// </remarks>
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<PhotoAlbum> GetAlbums(long? ownerId = null, IEnumerable<long> albumIds = null, int? offset = null, int? count = null, bool? needSystem = null, bool? needCovers = null, bool? photoSizes = null)
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<PhotoAlbum> GetAlbums( long? ownerId = null, IEnumerable<long> albumIds = null,
+            int? offset = null, int? count = null, bool? needSystem = null, bool? needCovers = null,
+            bool? photoSizes = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
-            VkErrors.ThrowIfNumberIsNegative(() => count);
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
+            VkErrors.ThrowIfNumberIsNegative( () => count );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"album_ids", albumIds},
-                    {"offset", offset},
-                    {"count", count},
-                    {"need_system", needSystem},
-                    {"need_covers", needCovers},
-                    {"photo_sizes", photoSizes}
-                };
+            {
+                { "owner_id", ownerId },
+                { "album_ids", albumIds },
+                { "offset", offset },
+                { "count", count },
+                { "need_system", needSystem },
+                { "need_covers", needCovers },
+                { "photo_sizes", photoSizes }
+            };
 
-            VkResponseArray response = _vk.Call("photos.getAlbums", parameters);
+            VkResponseArray response = this._vk.Call( "photos.getAlbums", parameters );
 
-            return response.ToReadOnlyCollectionOf<PhotoAlbum>(x => x);
+            return response.ToReadOnlyCollectionOf<PhotoAlbum>( x => x );
         }
 
         /// <summary>
@@ -144,30 +152,32 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.get"/>.
         /// </remarks>
-        [ApiMethodName("photos.get", Skip = true)]
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<Photo> Get(long? ownerId = null, long? albumId = null, IEnumerable<long> photoIds = null, bool? rev = null, bool? extended = null, PhotoFeedType feedType = null, DateTime? feed = null, bool? photoSizes = null, int? offset = null, int? count = null)
+        [ApiMethodName( "photos.get", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<Photo> Get( long? ownerId = null, long? albumId = null,
+            IEnumerable<long> photoIds = null, bool? rev = null, bool? extended = null, PhotoFeedType feedType = null,
+            DateTime? feed = null, bool? photoSizes = null, int? offset = null, int? count = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
-            VkErrors.ThrowIfNumberIsNegative(() => count);
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
+            VkErrors.ThrowIfNumberIsNegative( () => count );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"album_id", albumId},
-                    {"photo_ids", photoIds},
-                    {"rev", rev},
-                    {"extended", extended},
-                    {"feed_type", feedType},
-                    {"feed", feed},
-                    {"photo_sizes", photoSizes},
-                    {"offset", offset},
-                    {"count", count}
-                };
+            {
+                { "owner_id", ownerId },
+                { "album_id", albumId },
+                { "photo_ids", photoIds },
+                { "rev", rev },
+                { "extended", extended },
+                { "feed_type", feedType },
+                { "feed", feed },
+                { "photo_sizes", photoSizes },
+                { "offset", offset },
+                { "count", count }
+            };
 
-            VkResponseArray response = _vk.Call("photos.get", parameters);
+            VkResponseArray response = this._vk.Call( "photos.get", parameters );
 
-            return response.ToReadOnlyCollectionOf<Photo>(x => x);
+            return response.ToReadOnlyCollectionOf<Photo>( x => x );
         }
 
         /// <summary>
@@ -179,18 +189,18 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.getAlbumsCount"/>.
         /// </remarks>
-        [ApiVersion("5.9")]
-        public int GetAlbumsCount(long? userId = null, long? groupId = null)
+        [ApiVersion( "5.9" )]
+        public int GetAlbumsCount( long? userId = null, long? groupId = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => userId);
+            VkErrors.ThrowIfNumberIsNegative( () => userId );
 
             var parameters = new VkParameters
-                {
-                    {"user_id", userId},
-                    {"group_id", groupId}
-                };
+            {
+                { "user_id", userId },
+                { "group_id", groupId }
+            };
 
-            VkResponse response = _vk.Call("photos.getAlbumsCount", parameters);
+            VkResponse response = this._vk.Call( "photos.getAlbumsCount", parameters );
 
             return response;
         }
@@ -211,28 +221,30 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.getProfile"/>.
         /// </remarks>
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<Photo> GetProfile(long? ownerId = null, IEnumerable<long> photoIds = null, bool? rev = null, bool? extended = null, string feedType = null, DateTime? feed = null, bool? photoSizes = null, int? count = null, int? offset = null)
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<Photo> GetProfile( long? ownerId = null, IEnumerable<long> photoIds = null,
+            bool? rev = null, bool? extended = null, string feedType = null, DateTime? feed = null,
+            bool? photoSizes = null, int? count = null, int? offset = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
-            VkErrors.ThrowIfNumberIsNegative(() => count);
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
+            VkErrors.ThrowIfNumberIsNegative( () => count );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"photo_ids", photoIds},
-                    {"rev", rev},
-                    {"extended", extended},
-                    {"feed_type", feedType},
-                    {"feed", feed},
-                    {"photo_sizes", photoSizes},
-                    {"count", count},
-                    {"offset", offset}
-                };
+            {
+                { "owner_id", ownerId },
+                { "photo_ids", photoIds },
+                { "rev", rev },
+                { "extended", extended },
+                { "feed_type", feedType },
+                { "feed", feed },
+                { "photo_sizes", photoSizes },
+                { "count", count },
+                { "offset", offset }
+            };
 
-            VkResponseArray response = _vk.Call("photos.getProfile", parameters);
+            VkResponseArray response = this._vk.Call( "photos.getProfile", parameters );
 
-            return response.ToReadOnlyCollectionOf<Photo>(x => x);
+            return response.ToReadOnlyCollectionOf<Photo>( x => x );
         }
 
         /// <summary>
@@ -254,20 +266,21 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.getById"/>.
         /// </remarks>
-        [ApiMethodName("photos.getById", Skip = true)]
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<Photo> GetById(IEnumerable<string> photos, bool? extended = null, bool? photoSizes = null)
+        [ApiMethodName( "photos.getById", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<Photo> GetById( IEnumerable<string> photos, bool? extended = null,
+            bool? photoSizes = null )
         {
             var parameters = new VkParameters
-                {
-                    {"photos", photos},
-                    {"extended", extended},
-                    {"photo_sizes", photoSizes}
-                };
+            {
+                { "photos", photos },
+                { "extended", extended },
+                { "photo_sizes", photoSizes }
+            };
 
-            VkResponseArray response = _vk.Call("photos.getById", parameters);
+            VkResponseArray response = this._vk.Call( "photos.getById", parameters );
 
-            return response.ToReadOnlyCollectionOf<Photo>(x => x);
+            return response.ToReadOnlyCollectionOf<Photo>( x => x );
         }
 
         /// <summary>
@@ -279,17 +292,17 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.getUploadServer"/>.
         /// </remarks>
-        [ApiMethodName("photos.getUploadServer", Skip = true)]
-        [ApiVersion("5.9")]
-        public UploadServerInfo GetUploadServer(long albumId, long? groupId = null)
+        [ApiMethodName( "photos.getUploadServer", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public UploadServerInfo GetUploadServer( long albumId, long? groupId = null )
         {
             var parameters = new VkParameters
-                {
-                    {"album_id", albumId},
-                    {"group_id", groupId}
-                };
+            {
+                { "album_id", albumId },
+                { "group_id", groupId }
+            };
 
-            VkResponse response = _vk.Call("photos.getUploadServer", parameters);
+            VkResponse response = this._vk.Call( "photos.getUploadServer", parameters );
 
             return response;
         }
@@ -301,10 +314,10 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.getProfileUploadServer"/>.
         /// </remarks>
-        [ApiVersion("5.9")]
+        [ApiVersion( "5.9" )]
         public UploadServerInfo GetProfileUploadServer()
         {
-            return _vk.Call("photos.getProfileUploadServer", VkParameters.Empty);
+            return this._vk.Call( "photos.getProfileUploadServer", VkParameters.Empty );
         }
 
         /// <summary>
@@ -318,24 +331,25 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.getChatUploadServer"/>.
         /// </remarks>
-        [ApiMethodName("photos.getChatUploadServer", Skip = true)]
-        [ApiVersion("5.9")]
-        public UploadServerInfo GetChatUploadServer(long chatId, long? cropX = null, long? cropY = null, long? cropWidth = null)
+        [ApiMethodName( "photos.getChatUploadServer", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public UploadServerInfo GetChatUploadServer( long chatId, long? cropX = null, long? cropY = null,
+            long? cropWidth = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => chatId);
-            VkErrors.ThrowIfNumberIsNegative(() => cropX);
-            VkErrors.ThrowIfNumberIsNegative(() => cropY);
-            VkErrors.ThrowIfNumberIsNegative(() => cropWidth);
+            VkErrors.ThrowIfNumberIsNegative( () => chatId );
+            VkErrors.ThrowIfNumberIsNegative( () => cropX );
+            VkErrors.ThrowIfNumberIsNegative( () => cropY );
+            VkErrors.ThrowIfNumberIsNegative( () => cropWidth );
 
             var parameters = new VkParameters
-                {
-                    {"chat_id", chatId},
-                    {"crop_x", cropX},
-                    {"crop_y", cropY},
-                    {"crop_width", cropWidth}
-                };
+            {
+                { "chat_id", chatId },
+                { "crop_x", cropX },
+                { "crop_y", cropY },
+                { "crop_width", cropWidth }
+            };
 
-            VkResponse response = _vk.Call("photos.getChatUploadServer", parameters);
+            VkResponse response = this._vk.Call( "photos.getChatUploadServer", parameters );
             return response;
         }
 
@@ -349,18 +363,18 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.saveProfilePhoto"/>.
         /// </remarks>
-        [ApiMethodName("photos.saveProfilePhoto", Skip = true)]
-        [ApiVersion("5.9")]
-        public Photo SaveProfilePhoto(string server = null, string hash = null, string photo = null)
+        [ApiMethodName( "photos.saveProfilePhoto", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public Photo SaveProfilePhoto( string server = null, string hash = null, string photo = null )
         {
             var parameters = new VkParameters
-                {
-                    {"server", server},
-                    {"hash", hash},
-                    {"photo", photo}
-                };
+            {
+                { "server", server },
+                { "hash", hash },
+                { "photo", photo }
+            };
 
-            VkResponse response = _vk.Call("photos.saveProfilePhoto", parameters);
+            VkResponse response = this._vk.Call( "photos.saveProfilePhoto", parameters );
 
             return response;
         }
@@ -377,24 +391,25 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.saveWallPhoto"/>.
         /// </remarks>
-        [ApiMethodName("photos.saveWallPhoto", Skip = true)]
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<Photo> SaveWallPhoto(string photo, long? userId = null, long? groupId = null, long? server = null, string hash = null)
+        [ApiMethodName( "photos.saveWallPhoto", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<Photo> SaveWallPhoto( string photo, long? userId = null, long? groupId = null,
+            long? server = null, string hash = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => userId);
-            VkErrors.ThrowIfNumberIsNegative(() => groupId);
+            VkErrors.ThrowIfNumberIsNegative( () => userId );
+            VkErrors.ThrowIfNumberIsNegative( () => groupId );
 
             var parameters = new VkParameters
-                {
-                    {"user_id", userId},
-                    {"group_id", groupId},
-                    {"photo", photo},
-                    {"server", server},
-                    {"hash", hash}
-                };
+            {
+                { "user_id", userId },
+                { "group_id", groupId },
+                { "photo", photo },
+                { "server", server },
+                { "hash", hash }
+            };
 
-            VkResponseArray response = _vk.Call("photos.saveWallPhoto", parameters);
-            return response.ToReadOnlyCollectionOf<Photo>(x => x);
+            VkResponseArray response = this._vk.Call( "photos.saveWallPhoto", parameters );
+            return response.ToReadOnlyCollectionOf<Photo>( x => x );
         }
 
         /// <summary>
@@ -405,18 +420,18 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.getWallUploadServer"/>.
         /// </remarks>
-        [ApiMethodName("photos.getWallUploadServer", Skip = true)]
-        [ApiVersion("5.9")]
-        public UploadServerInfo GetWallUploadServer(long? groupId = null)
+        [ApiMethodName( "photos.getWallUploadServer", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public UploadServerInfo GetWallUploadServer( long? groupId = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => groupId);
+            VkErrors.ThrowIfNumberIsNegative( () => groupId );
 
             var parameters = new VkParameters
-                {
-                    {"group_id", groupId}
-                };
+            {
+                { "group_id", groupId }
+            };
 
-            VkResponse response = _vk.Call("photos.getWallUploadServer", parameters);
+            VkResponse response = this._vk.Call( "photos.getWallUploadServer", parameters );
 
             return response;
         }
@@ -428,10 +443,10 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.getMessagesUploadServer"/>.
         /// </remarks>
-        [ApiVersion("5.9")]
+        [ApiVersion( "5.9" )]
         public UploadServerInfo GetMessagesUploadServer()
         {
-            VkResponse response = _vk.Call("photos.getMessagesUploadServer", VkParameters.Empty);
+            VkResponse response = this._vk.Call( "photos.getMessagesUploadServer", VkParameters.Empty );
             return response;
         }
 
@@ -443,16 +458,16 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.saveMessagesPhoto"/>.
         /// </remarks>
-        [ApiMethodName("photos.saveMessagesPhoto", Skip = true)]
-        [ApiVersion("5.9")]
-        public Photo SaveMessagesPhoto(string photo)
+        [ApiMethodName( "photos.saveMessagesPhoto", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public Photo SaveMessagesPhoto( string photo )
         {
             var parameters = new VkParameters
-                {
-                    {"photo", photo}
-                };
+            {
+                { "photo", photo }
+            };
 
-            VkResponse response = _vk.Call("photos.saveMessagesPhoto", parameters);
+            VkResponse response = this._vk.Call( "photos.saveMessagesPhoto", parameters );
             return response;
         }
 
@@ -466,20 +481,20 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.report"/>.
         /// </remarks>
-        [ApiMethodName("photos.report", Skip = true)]
-        [ApiVersion("5.9")]
-        public bool Report(long ownerId, long photoId, VideoReportType reason)
+        [ApiMethodName( "photos.report", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public bool Report( long ownerId, long photoId, VideoReportType reason )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => photoId);
+            VkErrors.ThrowIfNumberIsNegative( () => photoId );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"photo_id", photoId},
-                    {"reason", reason}
-                };
+            {
+                { "owner_id", ownerId },
+                { "photo_id", photoId },
+                { "reason", reason }
+            };
 
-            VkResponse response = _vk.Call("photos.report", parameters);
+            VkResponse response = this._vk.Call( "photos.report", parameters );
 
             return response;
         }
@@ -494,20 +509,20 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.reportComment"/>.
         /// </remarks>
-        [ApiMethodName("photos.reportComment", Skip = true)]
-        [ApiVersion("5.9")]
-        public bool ReportComment(long ownerId, long commentId, VideoReportType reason)
+        [ApiMethodName( "photos.reportComment", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public bool ReportComment( long ownerId, long commentId, VideoReportType reason )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => commentId);
+            VkErrors.ThrowIfNumberIsNegative( () => commentId );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"comment_id", commentId},
-                    {"reason", reason}
-                };
+            {
+                { "owner_id", ownerId },
+                { "comment_id", commentId },
+                { "reason", reason }
+            };
 
-            VkResponse response = _vk.Call("photos.reportComment", parameters);
+            VkResponse response = this._vk.Call( "photos.reportComment", parameters );
 
             return response;
         }
@@ -528,34 +543,36 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.search"/>.
         /// </remarks>
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<Photo> Search(string query = null, double? lat = null, double? longitude = null, DateTime? startTime = null, DateTime? endTime = null, bool? sort = null, int? count = null, int? offset = null, int? radius = null)
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<Photo> Search( string query = null, double? lat = null, double? longitude = null,
+            DateTime? startTime = null, DateTime? endTime = null, bool? sort = null, int? count = null,
+            int? offset = null, int? radius = null )
         {
             // todo add check for latitude and longitude throught VkErrors.ThrowIfNumberNotInRange
             // TODO add verstion with totalCount
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
-            VkErrors.ThrowIfNumberIsNegative(() => count);
-            VkErrors.ThrowIfNumberIsNegative(() => radius);
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
+            VkErrors.ThrowIfNumberIsNegative( () => count );
+            VkErrors.ThrowIfNumberIsNegative( () => radius );
 
             //TODO do this check later
 //            VkErrors.ThrowIfNumberNotInRange(lat, -90, 90);
 
             var parameters = new VkParameters
-                {
-                    {"q", query},
-                    {"lat", lat},
-                    {"long", longitude},
-                    {"start_time", startTime},
-                    {"end_time", endTime},
-                    {"sort", sort},
-                    {"offset", offset},
-                    {"count", count},
-                    {"radius", radius}
-                };
+            {
+                { "q", query },
+                { "lat", lat },
+                { "long", longitude },
+                { "start_time", startTime },
+                { "end_time", endTime },
+                { "sort", sort },
+                { "offset", offset },
+                { "count", count },
+                { "radius", radius }
+            };
 
-            VkResponseArray response = _vk.Call("photos.search", parameters, true);
+            VkResponseArray response = this._vk.Call( "photos.search", parameters, true );
 
-            return response.ToReadOnlyCollectionOf<Photo>(x => x);
+            return response.ToReadOnlyCollectionOf<Photo>( x => x );
         }
 
         /// <summary>
@@ -574,26 +591,27 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.save"/>.
         /// </remarks>
-        [ApiMethodName("photos.save", Skip = true)]
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<Photo> Save(long? albumId = null, long? groupId = null, string server = null, string photosList = null, string hash = null, double? latitude = null, double? longitude = null, string caption = null, string description = null)
+        [ApiMethodName( "photos.save", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<Photo> Save( long? albumId = null, long? groupId = null, string server = null,
+            string photosList = null, string hash = null, double? latitude = null, double? longitude = null,
+            string caption = null, string description = null )
         {
-
             var parameters = new VkParameters
-                {
-                    {"album_id", albumId},
-                    {"group_id", groupId},
-                    {"server", server},
-                    {"photos_list", photosList},
-                    {"hash", hash},
-                    {"latitude", latitude},
-                    {"longitude", longitude},
-                    {"caption", caption},
-                    {"description", description}
-                };
+            {
+                { "album_id", albumId },
+                { "group_id", groupId },
+                { "server", server },
+                { "photos_list", photosList },
+                { "hash", hash },
+                { "latitude", latitude },
+                { "longitude", longitude },
+                { "caption", caption },
+                { "description", description }
+            };
 
-            VkResponseArray response = _vk.Call("photos.save", parameters);
-            return response.ToReadOnlyCollectionOf<Photo>(x => x);
+            VkResponseArray response = this._vk.Call( "photos.save", parameters );
+            return response.ToReadOnlyCollectionOf<Photo>( x => x );
         }
 
         /// <summary>
@@ -606,20 +624,20 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.copy"/>.
         /// </remarks>
-        [ApiMethodName("photos.copy", Skip = true)]
-        [ApiVersion("5.9")]
-        public long Copy(long ownerId, long photoId, string accessKey = null)
+        [ApiMethodName( "photos.copy", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public long Copy( long ownerId, long photoId, string accessKey = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => photoId);
+            VkErrors.ThrowIfNumberIsNegative( () => photoId );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"photo_id", photoId},
-                    {"access_key", accessKey}
-                };
+            {
+                { "owner_id", ownerId },
+                { "photo_id", photoId },
+                { "access_key", accessKey }
+            };
 
-            VkResponse response = _vk.Call("photos.copy", parameters);
+            VkResponse response = this._vk.Call( "photos.copy", parameters );
 
             return response;
         }
@@ -634,20 +652,20 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.edit"/>.
         /// </remarks>
-        [ApiMethodName("photos.edit", Skip = true)]
-        [ApiVersion("5.9")]
-        public bool Edit(long photoId, long? ownerId = null, string caption = null)
+        [ApiMethodName( "photos.edit", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public bool Edit( long photoId, long? ownerId = null, string caption = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => photoId);
+            VkErrors.ThrowIfNumberIsNegative( () => photoId );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"photo_id", photoId},
-                    {"caption", caption}
-                };
+            {
+                { "owner_id", ownerId },
+                { "photo_id", photoId },
+                { "caption", caption }
+            };
 
-            VkResponse response = _vk.Call("photos.edit", parameters);
+            VkResponse response = this._vk.Call( "photos.edit", parameters );
 
             return response;
         }
@@ -662,21 +680,21 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.move"/>.
         /// </remarks>
-        [ApiMethodName("photos.move", Skip = true)]
-        [ApiVersion("5.9")]
-        public bool Move(long targetAlbumId, long photoId, long? ownerId = null)
+        [ApiMethodName( "photos.move", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public bool Move( long targetAlbumId, long photoId, long? ownerId = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => targetAlbumId);
-            VkErrors.ThrowIfNumberIsNegative(() => photoId);
+            VkErrors.ThrowIfNumberIsNegative( () => targetAlbumId );
+            VkErrors.ThrowIfNumberIsNegative( () => photoId );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"target_album_id", targetAlbumId},
-                    {"photo_id", photoId}
-                };
+            {
+                { "owner_id", ownerId },
+                { "target_album_id", targetAlbumId },
+                { "photo_id", photoId }
+            };
 
-            VkResponse response = _vk.Call("photos.move", parameters);
+            VkResponse response = this._vk.Call( "photos.move", parameters );
 
             return response;
         }
@@ -691,21 +709,21 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.makeCover"/>.
         /// </remarks>
-        [ApiMethodName("photos.makeCover", Skip = true)]
-        [ApiVersion("5.9")]
-        public bool MakeCover(long photoId, long? ownerId = null, long? albumId = null)
+        [ApiMethodName( "photos.makeCover", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public bool MakeCover( long photoId, long? ownerId = null, long? albumId = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => photoId);
-            VkErrors.ThrowIfNumberIsNegative(() => albumId);
+            VkErrors.ThrowIfNumberIsNegative( () => photoId );
+            VkErrors.ThrowIfNumberIsNegative( () => albumId );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"photo_id", photoId},
-                    {"album_id", albumId}
-                };
+            {
+                { "owner_id", ownerId },
+                { "photo_id", photoId },
+                { "album_id", albumId }
+            };
 
-            VkResponse response = _vk.Call("photos.makeCover", parameters);
+            VkResponse response = this._vk.Call( "photos.makeCover", parameters );
 
             return response;
         }
@@ -721,23 +739,23 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.reorderAlbums"/>.
         /// </remarks>
-        [ApiMethodName("photos.reorderAlbums", Skip = true)]
-        [ApiVersion("5.9")]
-        public bool ReorderAlbums(long albumId, long? ownerId = null, long? before = null, long? after = null)
+        [ApiMethodName( "photos.reorderAlbums", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public bool ReorderAlbums( long albumId, long? ownerId = null, long? before = null, long? after = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => albumId);
-            VkErrors.ThrowIfNumberIsNegative(() => before);
-            VkErrors.ThrowIfNumberIsNegative(() => after);
+            VkErrors.ThrowIfNumberIsNegative( () => albumId );
+            VkErrors.ThrowIfNumberIsNegative( () => before );
+            VkErrors.ThrowIfNumberIsNegative( () => after );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"album_id", albumId},
-                    {"before", before},
-                    {"after", after}
-                };
+            {
+                { "owner_id", ownerId },
+                { "album_id", albumId },
+                { "before", before },
+                { "after", after }
+            };
 
-            return _vk.Call("photos.reorderAlbums", parameters);
+            return this._vk.Call( "photos.reorderAlbums", parameters );
         }
 
         /// <summary>
@@ -751,23 +769,23 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.reorderPhotos"/>.
         /// </remarks>
-        [ApiMethodName("photos.reorderPhotos", Skip = true)]
-        [ApiVersion("5.9")]
-        public bool ReorderPhotos(long photoId, long? ownerId = null, long? before = null, long? after = null)
+        [ApiMethodName( "photos.reorderPhotos", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public bool ReorderPhotos( long photoId, long? ownerId = null, long? before = null, long? after = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => photoId);
-            VkErrors.ThrowIfNumberIsNegative(() => before);
-            VkErrors.ThrowIfNumberIsNegative(() => after);
+            VkErrors.ThrowIfNumberIsNegative( () => photoId );
+            VkErrors.ThrowIfNumberIsNegative( () => before );
+            VkErrors.ThrowIfNumberIsNegative( () => after );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"photo_id", photoId},
-                    {"before", before},
-                    {"after", after}
-                };
+            {
+                { "owner_id", ownerId },
+                { "photo_id", photoId },
+                { "before", before },
+                { "after", after }
+            };
 
-            return _vk.Call("photos.reorderPhotos", parameters);
+            return this._vk.Call( "photos.reorderPhotos", parameters );
         }
 
         /// <summary>
@@ -791,25 +809,26 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.getAll"/>.
         /// </remarks>
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<Photo> GetAll(long? ownerId = null, bool? extended = null, int? count = null, int? offset = null, bool? photoSizes = null, bool? noServiceAlbums = null)
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<Photo> GetAll( long? ownerId = null, bool? extended = null, int? count = null,
+            int? offset = null, bool? photoSizes = null, bool? noServiceAlbums = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
-            VkErrors.ThrowIfNumberIsNegative(() => count);
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
+            VkErrors.ThrowIfNumberIsNegative( () => count );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"extended", extended},
-                    {"count", count},
-                    {"offset", offset},
-                    {"photo_sizes", photoSizes},
-                    {"no_service_albums", noServiceAlbums}
-                };
+            {
+                { "owner_id", ownerId },
+                { "extended", extended },
+                { "count", count },
+                { "offset", offset },
+                { "photo_sizes", photoSizes },
+                { "no_service_albums", noServiceAlbums }
+            };
 
-            VkResponseArray response = _vk.Call("photos.getAll", parameters);
+            VkResponseArray response = this._vk.Call( "photos.getAll", parameters );
 
-            return response.ToReadOnlyCollectionOf<Photo>(x => x);
+            return response.ToReadOnlyCollectionOf<Photo>( x => x );
         }
 
         /// <summary>
@@ -824,29 +843,30 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.getUserPhotos"/>.
         /// </remarks>
-        [ApiMethodName("photos.getUserPhotos")]
-        [VkValue("userId", 178964623)]
-        [VkValue("count", 2)]
-        [VkValue("offset", 3)]
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<Photo> GetUserPhotos(long? userId = null, int? offset = null, int? count = null, bool? extended = null, bool? sort = null)
+        [ApiMethodName( "photos.getUserPhotos" )]
+        [VkValue( "userId", 178964623 )]
+        [VkValue( "count", 2 )]
+        [VkValue( "offset", 3 )]
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<Photo> GetUserPhotos( long? userId = null, int? offset = null, int? count = null,
+            bool? extended = null, bool? sort = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => userId);
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
-            VkErrors.ThrowIfNumberIsNegative(() => count);
+            VkErrors.ThrowIfNumberIsNegative( () => userId );
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
+            VkErrors.ThrowIfNumberIsNegative( () => count );
 
             var parameters = new VkParameters
-                {
-                    {"user_id", userId},
-                    {"count", count},
-                    {"offset", offset},
-                    {"extended", extended},
-                    {"sort", sort}
-                };
+            {
+                { "user_id", userId },
+                { "count", count },
+                { "offset", offset },
+                { "extended", extended },
+                { "sort", sort }
+            };
 
-            VkResponseArray response = _vk.Call("photos.getUserPhotos", parameters);
+            VkResponseArray response = this._vk.Call( "photos.getUserPhotos", parameters );
 
-            return response.ToReadOnlyCollectionOf<Photo>(x => x);
+            return response.ToReadOnlyCollectionOf<Photo>( x => x );
         }
 
         /// <summary>
@@ -858,19 +878,19 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.deleteAlbum"/>.
         /// </remarks>
-        [ApiVersion("5.9")]
-        public bool DeleteAlbum(long albumId, long? groupId = null)
+        [ApiVersion( "5.9" )]
+        public bool DeleteAlbum( long albumId, long? groupId = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => albumId);
-            VkErrors.ThrowIfNumberIsNegative(() => groupId);
+            VkErrors.ThrowIfNumberIsNegative( () => albumId );
+            VkErrors.ThrowIfNumberIsNegative( () => groupId );
 
             var parameters = new VkParameters
-                {
-                    {"album_id", albumId},
-                    {"group_id", groupId}
-                };
+            {
+                { "album_id", albumId },
+                { "group_id", groupId }
+            };
 
-            return _vk.Call("photos.deleteAlbum", parameters);
+            return this._vk.Call( "photos.deleteAlbum", parameters );
         }
 
         /// <summary>
@@ -882,19 +902,19 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.delete"/>.
         /// </remarks>
-        [ApiMethodName("photos.delete", Skip = true)]
-        [ApiVersion("5.9")]
-        public bool Delete(long photoId, long? ownerId = null)
+        [ApiMethodName( "photos.delete", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public bool Delete( long photoId, long? ownerId = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => photoId);
+            VkErrors.ThrowIfNumberIsNegative( () => photoId );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"photo_id", photoId}
-                };
+            {
+                { "owner_id", ownerId },
+                { "photo_id", photoId }
+            };
 
-            return _vk.Call("photos.delete", parameters);
+            return this._vk.Call( "photos.delete", parameters );
         }
 
         /// <summary>
@@ -907,21 +927,21 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.confirmTag"/>.
         /// </remarks>
-        [ApiMethodName("photos.confirmTag", Skip = true)]
-        [ApiVersion("5.9")]
-        public bool ConfirmTag(long photoId, long tagId, long? ownerId = null)
+        [ApiMethodName( "photos.confirmTag", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public bool ConfirmTag( long photoId, long tagId, long? ownerId = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => photoId);
-            VkErrors.ThrowIfNumberIsNegative(() => tagId);
+            VkErrors.ThrowIfNumberIsNegative( () => photoId );
+            VkErrors.ThrowIfNumberIsNegative( () => tagId );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"photo_id", photoId},
-                    {"tag_id", tagId}
-                };
+            {
+                { "owner_id", ownerId },
+                { "photo_id", photoId },
+                { "tag_id", tagId }
+            };
 
-            return _vk.Call("photos.confirmTag", parameters);
+            return this._vk.Call( "photos.confirmTag", parameters );
         }
 
         /// <summary>
@@ -938,30 +958,31 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.getComments"/>.
         /// </remarks>
-        [ApiMethodName("photos.getComments")]
-        [VkValue("owner_id", 1)]
-        [VkValue("photo_id", 263219735)]
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<Comment> GetComments(long photoId, long? ownerId = null, bool? needLikes = null, int? count = null, int? offset = null, CommentsSort sort = null, string accessKey = null)
+        [ApiMethodName( "photos.getComments" )]
+        [VkValue( "owner_id", 1 )]
+        [VkValue( "photo_id", 263219735 )]
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<Comment> GetComments( long photoId, long? ownerId = null, bool? needLikes = null,
+            int? count = null, int? offset = null, CommentsSort sort = null, string accessKey = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => photoId);
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
-            VkErrors.ThrowIfNumberIsNegative(() => count);
+            VkErrors.ThrowIfNumberIsNegative( () => photoId );
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
+            VkErrors.ThrowIfNumberIsNegative( () => count );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"photo_id", photoId},
-                    {"need_likes", needLikes},
-                    {"offset", offset},
-                    {"count", count},
-                    {"sort", sort},
-                    {"access_key", accessKey}
-                };
+            {
+                { "owner_id", ownerId },
+                { "photo_id", photoId },
+                { "need_likes", needLikes },
+                { "offset", offset },
+                { "count", count },
+                { "sort", sort },
+                { "access_key", accessKey }
+            };
 
-            VkResponseArray response = _vk.Call("photos.getComments", parameters);
+            VkResponseArray response = this._vk.Call( "photos.getComments", parameters );
 
-            return response.ToReadOnlyCollectionOf<Comment>(x => x);
+            return response.ToReadOnlyCollectionOf<Comment>( x => x );
         }
 
         /// <summary>
@@ -976,26 +997,27 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.getAllComments"/>.
         /// </remarks>
-        [ApiMethodName("photos.getAllComments", Skip = true)]
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<Comment> GetAllComments(long? ownerId = null, long? albumId = null, bool? needLikes = null, int? offset = null, int? count = null)
+        [ApiMethodName( "photos.getAllComments", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<Comment> GetAllComments( long? ownerId = null, long? albumId = null,
+            bool? needLikes = null, int? offset = null, int? count = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => albumId);
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
-            VkErrors.ThrowIfNumberIsNegative(() => count);
+            VkErrors.ThrowIfNumberIsNegative( () => albumId );
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
+            VkErrors.ThrowIfNumberIsNegative( () => count );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"album_id", albumId},
-                    {"need_likes", needLikes},
-                    {"offset", offset},
-                    {"count", count}
-                };
+            {
+                { "owner_id", ownerId },
+                { "album_id", albumId },
+                { "need_likes", needLikes },
+                { "offset", offset },
+                { "count", count }
+            };
 
-            VkResponseArray response = _vk.Call("photos.getAllComments", parameters);
+            VkResponseArray response = this._vk.Call( "photos.getAllComments", parameters );
 
-            return response.ToReadOnlyCollectionOf<Comment>(x => x);
+            return response.ToReadOnlyCollectionOf<Comment>( x => x );
         }
 
         /// <summary>
@@ -1025,25 +1047,27 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.createComment"/>.
         /// </remarks>
-        [ApiMethodName("photos.createComment", Skip = true)]
-        [ApiVersion("5.9")]
-        public long CreateComment(long photoId, long? ownerId = null, string message = null, IEnumerable<string> attachments = null, bool? fromGroup = null, bool? replyToComment = null, string accessKey = null)
+        [ApiMethodName( "photos.createComment", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public long CreateComment( long photoId, long? ownerId = null, string message = null,
+            IEnumerable<string> attachments = null, bool? fromGroup = null, bool? replyToComment = null,
+            string accessKey = null )
         {
             // TODO сделать по-нормально работу с аттачментами
-            VkErrors.ThrowIfNumberIsNegative(() => photoId);
+            VkErrors.ThrowIfNumberIsNegative( () => photoId );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"photo_id", photoId},
-                    {"message", message},
-                    {"attachments", attachments},
-                    {"from_group", fromGroup},
-                    {"reply_to_comment", replyToComment},
-                    {"access_key", accessKey}
-                };
+            {
+                { "owner_id", ownerId },
+                { "photo_id", photoId },
+                { "message", message },
+                { "attachments", attachments },
+                { "from_group", fromGroup },
+                { "reply_to_comment", replyToComment },
+                { "access_key", accessKey }
+            };
 
-            VkResponse response = _vk.Call("photos.createComment", parameters);
+            VkResponse response = this._vk.Call( "photos.createComment", parameters );
 
             return response;
         }
@@ -1058,19 +1082,19 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.deleteComment"/>.
         /// </remarks>
-        [ApiMethodName("photos.deleteComment", Skip = true)]
-        [ApiVersion("5.9")]
-        public bool DeleteComment(long commentId, long? ownerId = null)
+        [ApiMethodName( "photos.deleteComment", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public bool DeleteComment( long commentId, long? ownerId = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => commentId);
+            VkErrors.ThrowIfNumberIsNegative( () => commentId );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"comment_id", commentId}
-                };
+            {
+                { "owner_id", ownerId },
+                { "comment_id", commentId }
+            };
 
-            return _vk.Call("photos.deleteComment", parameters);
+            return this._vk.Call( "photos.deleteComment", parameters );
         }
 
         /// <summary>
@@ -1082,19 +1106,19 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.restoreComment"/>.
         /// </remarks>
-        [ApiMethodName("photos.restoreComment", Skip = true)]
-        [ApiVersion("5.9")]
-        public long RestoreComment(long commentId, long? ownerId = null)
+        [ApiMethodName( "photos.restoreComment", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public long RestoreComment( long commentId, long? ownerId = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => commentId);
+            VkErrors.ThrowIfNumberIsNegative( () => commentId );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"comment_id", commentId}
-                };
+            {
+                { "owner_id", ownerId },
+                { "comment_id", commentId }
+            };
 
-            return _vk.Call("photos.restoreComment", parameters);
+            return this._vk.Call( "photos.restoreComment", parameters );
         }
 
         /// <summary>
@@ -1119,21 +1143,22 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.editComment"/>.
         /// </remarks>
-        [ApiMethodName("photos.editComment", Skip = true)]
-        [ApiVersion("5.9")]
-        public bool EditComment(long commentId, string message, long? ownerId = null, IEnumerable<string> attachments = null)
+        [ApiMethodName( "photos.editComment", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public bool EditComment( long commentId, string message, long? ownerId = null,
+            IEnumerable<string> attachments = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => commentId);
+            VkErrors.ThrowIfNumberIsNegative( () => commentId );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"comment_id", commentId},
-                    {"message", message},
-                    {"attachments", attachments}
-                };
+            {
+                { "owner_id", ownerId },
+                { "comment_id", commentId },
+                { "message", message },
+                { "attachments", attachments }
+            };
 
-            return _vk.Call("photos.editComment", parameters);
+            return this._vk.Call( "photos.editComment", parameters );
         }
 
         /// <summary>
@@ -1146,22 +1171,22 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.getTags"/>.
         /// </remarks>
-        [ApiMethodName("photos.getTags", Skip = true)]
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<Tag> GetTags(long photoId, long? ownerId = null, string accessKey = null)
+        [ApiMethodName( "photos.getTags", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<Tag> GetTags( long photoId, long? ownerId = null, string accessKey = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => photoId);
+            VkErrors.ThrowIfNumberIsNegative( () => photoId );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"photo_id", photoId},
-                    {"access_key", accessKey}
-                };
+            {
+                { "owner_id", ownerId },
+                { "photo_id", photoId },
+                { "access_key", accessKey }
+            };
 
-            VkResponseArray response = _vk.Call("photos.getTags", parameters);
+            VkResponseArray response = this._vk.Call( "photos.getTags", parameters );
 
-            return response.ToReadOnlyCollectionOf<Tag>(x => x);
+            return response.ToReadOnlyCollectionOf<Tag>( x => x );
         }
 
         /// <summary>
@@ -1178,26 +1203,27 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.putTag"/>.
         /// </remarks>
-        [ApiMethodName("photos.putTag", Skip = true)]
-        [ApiVersion("5.9")]
-        public long PutTag(long photoId, long userId, long? ownerId = null, double? x = null, double? y = null, double? x2 = null, double? y2 = null)
+        [ApiMethodName( "photos.putTag", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public long PutTag( long photoId, long userId, long? ownerId = null, double? x = null, double? y = null,
+            double? x2 = null, double? y2 = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => ownerId);
-            VkErrors.ThrowIfNumberIsNegative(() => photoId);
-            VkErrors.ThrowIfNumberIsNegative(() => userId);
+            VkErrors.ThrowIfNumberIsNegative( () => ownerId );
+            VkErrors.ThrowIfNumberIsNegative( () => photoId );
+            VkErrors.ThrowIfNumberIsNegative( () => userId );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"photo_id", photoId},
-                    {"user_id", userId},
-                    {"x", x},
-                    {"y", y},
-                    {"x2", x2},
-                    {"y2", y2}
-                };
+            {
+                { "owner_id", ownerId },
+                { "photo_id", photoId },
+                { "user_id", userId },
+                { "x", x },
+                { "y", y },
+                { "x2", x2 },
+                { "y2", y2 }
+            };
 
-            return _vk.Call("photos.putTag", parameters);
+            return this._vk.Call( "photos.putTag", parameters );
         }
 
         /// <summary>
@@ -1210,21 +1236,21 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.removeTag"/>.
         /// </remarks>
-        [ApiMethodName("photos.removeTag", Skip = true)]
-        [ApiVersion("5.9")]
-        public bool RemoveTag(long tagId, long photoId, long? ownerId = null)
+        [ApiMethodName( "photos.removeTag", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public bool RemoveTag( long tagId, long photoId, long? ownerId = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => tagId);
-            VkErrors.ThrowIfNumberIsNegative(() => photoId);
+            VkErrors.ThrowIfNumberIsNegative( () => tagId );
+            VkErrors.ThrowIfNumberIsNegative( () => photoId );
 
             var parameters = new VkParameters
-                {
-                    {"owner_id", ownerId},
-                    {"photo_id", photoId},
-                    {"tag_id", tagId}
-                };
+            {
+                { "owner_id", ownerId },
+                { "photo_id", photoId },
+                { "tag_id", tagId }
+            };
 
-            return _vk.Call("photos.removeTag", parameters);
+            return this._vk.Call( "photos.removeTag", parameters );
         }
 
         /// <summary>
@@ -1236,22 +1262,22 @@ namespace VkNet.Categories
         /// <remarks>
         /// Страница документации ВКонтакте <see href="http://vk.com/dev/photos.getNewTags"/>.
         /// </remarks>
-        [ApiMethodName("photos.getNewTags", Skip = true)]
-        [ApiVersion("5.9")]
-        public ReadOnlyCollection<Photo> GetNewTags(int? offset = null, int? count = null)
+        [ApiMethodName( "photos.getNewTags", Skip = true )]
+        [ApiVersion( "5.9" )]
+        public ReadOnlyCollection<Photo> GetNewTags( int? offset = null, int? count = null )
         {
-            VkErrors.ThrowIfNumberIsNegative(() => offset);
-            VkErrors.ThrowIfNumberIsNegative(() => count);
+            VkErrors.ThrowIfNumberIsNegative( () => offset );
+            VkErrors.ThrowIfNumberIsNegative( () => count );
 
             var parameters = new VkParameters
-                {
-                    {"offset", offset},
-                    {"count", count}
-                };
+            {
+                { "offset", offset },
+                { "count", count }
+            };
 
-            VkResponseArray response = _vk.Call("photos.getNewTags", parameters);
+            VkResponseArray response = this._vk.Call( "photos.getNewTags", parameters );
 
-            return response.ToReadOnlyCollectionOf<Photo>(x => x);
+            return response.ToReadOnlyCollectionOf<Photo>( x => x );
         }
     }
 }

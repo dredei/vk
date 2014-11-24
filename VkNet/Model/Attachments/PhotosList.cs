@@ -1,4 +1,8 @@
-﻿using VkNet.Utils;
+﻿#region Using
+
+using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model.Attachments
 {
@@ -6,12 +10,12 @@ namespace VkNet.Model.Attachments
     {
         static PhotosList()
         {
-            RegisterType(typeof(PhotosList), "photos_list");
+            RegisterType( typeof( PhotosList ), "photos_list" );
         }
 
         #region Private Methods
 
-        internal static PhotosList FromJson(VkResponse response)
+        internal static PhotosList FromJson( VkResponse response )
         {
             var list = new PhotosList();
 

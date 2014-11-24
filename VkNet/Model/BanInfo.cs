@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region Using
+
+using System;
 using VkNet.Enums;
 using VkNet.Utils;
+
+#endregion
 
 namespace VkNet.Model
 {
@@ -39,15 +43,15 @@ namespace VkNet.Model
 
         #region Методы
 
-        internal static BanInfo FromJson(VkResponse response)
+        internal static BanInfo FromJson( VkResponse response )
         {
             var info = new BanInfo();
 
-            info.AdminId = response["admin_id"];
-            info.Date = response["date"];
-            info.Comment = response["comment"];
-            info.EndDate = response["end_date"];
-            info.Reason = response["reason"];
+            info.AdminId = response[ "admin_id" ];
+            info.Date = response[ "date" ];
+            info.Comment = response[ "comment" ];
+            info.EndDate = response[ "end_date" ];
+            info.Reason = response[ "reason" ];
 
             return info;
         }

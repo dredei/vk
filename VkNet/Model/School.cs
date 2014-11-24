@@ -1,7 +1,11 @@
-﻿namespace VkNet.Model
-{
-    using VkNet.Utils;
+﻿#region Using
 
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
+{
     /// <summary>
     /// Школа, в которой учился пользователь.
     /// См. описание <see href="http://vk.com/dev/fields"/>. Раздел schools.
@@ -65,21 +69,21 @@
 
         #region Методы
 
-        internal static School FromJson(VkResponse response)
+        internal static School FromJson( VkResponse response )
         {
             var school = new School();
 
-            school.Id = Utilities.GetNullableLongId(response["id"]);
-            school.Country = Utilities.GetNullableLongId(response["country"]);
-            school.City = Utilities.GetNullableLongId(response["city"]);
-            school.Name = response["name"] ?? response["title"];
-            school.YearFrom = response["year_from"];
-            school.YearTo = response["year_to"];
-            school.YearGraduated = response["year_graduated"];
-            school.Class = response["class"];
-            school.Speciality = response["speciality"];
-            school.Type = response["type"];
-            school.TypeStr = response["type_str"];
+            school.Id = Utilities.GetNullableLongId( response[ "id" ] );
+            school.Country = Utilities.GetNullableLongId( response[ "country" ] );
+            school.City = Utilities.GetNullableLongId( response[ "city" ] );
+            school.Name = response[ "name" ] ?? response[ "title" ];
+            school.YearFrom = response[ "year_from" ];
+            school.YearTo = response[ "year_to" ];
+            school.YearGraduated = response[ "year_graduated" ];
+            school.Class = response[ "class" ];
+            school.Speciality = response[ "speciality" ];
+            school.Type = response[ "type" ];
+            school.TypeStr = response[ "type_str" ];
 
             return school;
         }

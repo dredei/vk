@@ -16,18 +16,18 @@
         Others,
 
         /// <summary>
-		/// Необходимо получить все сообщения на стене (Owner + Others).
+        /// Необходимо получить все сообщения на стене (Owner + Others).
         /// </summary>
         All,
 
-		/// <summary>
-		/// Отложенные записи
-		/// </summary>
-		Suggests,
+        /// <summary>
+        /// Отложенные записи
+        /// </summary>
+        Suggests,
 
-		/// <summary>
-		/// Предложенные записи на стене сообщества
-		/// </summary>
-		Postponed
+        /// <summary>
+        /// Предложенные записи на стене сообщества
+        /// </summary>
+        Postponed
     }
 }

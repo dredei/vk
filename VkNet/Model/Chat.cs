@@ -1,9 +1,12 @@
-﻿namespace VkNet.Model
+﻿#region Using
+
+using System.Collections.ObjectModel;
+using VkNet.Utils;
+
+#endregion
+
+namespace VkNet.Model
 {
-    using System.Collections.ObjectModel;
-
-    using Utils;
-
     /// <summary>
     /// Информация о беседе (мультидиалоге, чате).
     /// См. описание <see href="http://vk.com/dev/chat_object"/>.
@@ -37,15 +40,15 @@
 
         #region Методы
 
-        internal static Chat FromJson(VkResponse response)
+        internal static Chat FromJson( VkResponse response )
         {
             var chat = new Chat();
 
-            chat.Id = response["id"];
-            chat.Type = response["type"];
-            chat.Title = response["title"];
-            chat.AdminId = Utilities.GetNullableLongId(response["admin_id"]);
-            chat.Users = response["users"];
+            chat.Id = response[ "id" ];
+            chat.Type = response[ "type" ];
+            chat.Title = response[ "title" ];
+            chat.AdminId = Utilities.GetNullableLongId( response[ "admin_id" ] );
+            chat.Users = response[ "users" ];
 
             return chat;
         }

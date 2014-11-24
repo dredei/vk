@@ -1,8 +1,12 @@
-﻿namespace VkNet.Exception
-{
-    using System;
-    using System.Runtime.Serialization;
+﻿#region Using
 
+using System;
+using System.Runtime.Serialization;
+
+#endregion
+
+namespace VkNet.Exception
+{
     /// <summary>
     /// Исключение, которые выбрасывается при попытке выполнить запрос с частотой, превышающей максимально допустимую ВКонтакте.
     /// В настоящее время действует ограничение (один раз в три секунды) на количество однотипных запросов (вызовов методов 
@@ -23,7 +27,7 @@
         /// Инициализирует новый экземпляр класса <see cref="TooManyRequestsException"/> с указанным описанием.
         /// </summary>
         /// <param name="message">Описание исключения.</param>
-        public TooManyRequestsException(string message) : base(message)
+        public TooManyRequestsException( string message ) : base( message )
         {
         }
 
@@ -32,7 +36,8 @@
         /// </summary>
         /// <param name="message">Описание исключения.</param>
         /// <param name="innerException">Внутреннее исключение.</param>
-        public TooManyRequestsException(string message, Exception innerException) : base(message, innerException)
+        public TooManyRequestsException( string message, System.Exception innerException )
+            : base( message, innerException )
         {
         }
 
@@ -41,7 +46,7 @@
         /// </summary>
         /// <param name="message">Описание исключения.</param>
         /// <param name="code">Код ошибки, полученный от сервера ВКонтакте.</param>
-        public TooManyRequestsException(string message, int code) : base(message, code)
+        public TooManyRequestsException( string message, int code ) : base( message, code )
         {
         }
 
@@ -51,7 +56,7 @@
         /// <param name="info">Содержит все данные, необходимые для десериализации.</param>
         /// <param name="context">Описывает источник и назначение данного сериализованного потока и предоставляет дополнительный, 
         /// определяемый вызывающим, контекст.</param>
-        protected TooManyRequestsException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected TooManyRequestsException( SerializationInfo info, StreamingContext context ) : base( info, context )
         {
         }
     }

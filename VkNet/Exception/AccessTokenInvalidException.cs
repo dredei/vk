@@ -1,8 +1,12 @@
-﻿namespace VkNet.Exception
-{
-    using System;
-    using System.Runtime.Serialization;
+﻿#region Using
 
+using System;
+using System.Runtime.Serialization;
+
+#endregion
+
+namespace VkNet.Exception
+{
     /// <summary>
     /// Исключение, которое выбрасывается, в случае, если предоставленный маркер доступа является недействительным.
     /// </summary>
@@ -20,7 +24,7 @@
         /// Инициализирует новый экземпляр класса <see cref="AccessTokenInvalidException"/> с указанным описанием.
         /// </summary>
         /// <param name="message">Описание исключения.</param>
-        public AccessTokenInvalidException(string message) : base(message)
+        public AccessTokenInvalidException( string message ) : base( message )
         {
         }
 
@@ -29,7 +33,8 @@
         /// </summary>
         /// <param name="message">Описание исключения.</param>
         /// <param name="innerException">Внутреннее исключение.</param>
-        public AccessTokenInvalidException(string message, Exception innerException) : base(message, innerException)
+        public AccessTokenInvalidException( string message, System.Exception innerException )
+            : base( message, innerException )
         {
         }
 
@@ -39,7 +44,8 @@
         /// <param name="info">Содержит все данные, необходимые для десериализации.</param>
         /// <param name="context">Описывает источник и назначение данного сериализованного потока и предоставляет дополнительный, 
         /// определяемый вызывающим, контекст.</param>
-        protected AccessTokenInvalidException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected AccessTokenInvalidException( SerializationInfo info, StreamingContext context )
+            : base( info, context )
         {
         }
     }

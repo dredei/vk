@@ -1,12 +1,15 @@
-﻿namespace VkNet.Utils
+﻿#region Using
+
+using System;
+using System.IO;
+using System.Net;
+using System.Text;
+using HtmlAgilityPack;
+
+#endregion
+
+namespace VkNet.Utils
 {
-    using System;
-    using System.IO;
-    using System.Net;
-    using System.Text;
-
-    using HtmlAgilityPack;
-
     internal sealed class WebCallResult
     {
         public Uri RequestUrl { get; private set; }
@@ -17,29 +20,31 @@
 
         public string Response { get; private set; }
 
-        public WebCallResult(string url, Cookies cookies)
+        public WebCallResult( string url, Cookies cookies )
         {
-            RequestUrl = new Uri(url);
-            Cookies = cookies;
-            Response = string.Empty;
+            this.RequestUrl = new Uri( url );
+            this.Cookies = cookies;
+            this.Response = string.Empty;
         }
 
-        public void SaveCookies(CookieCollection cookies)
+        public void SaveCookies( CookieCollection cookies )
         {
-            Cookies.AddFrom(ResponseUrl, cookies);
+            this.Cookies.AddFrom( this.ResponseUrl, cookies );
         }
 
-        public void SaveResponse(Uri responseUrl, Stream stream, Encoding encoding)
+        public void SaveResponse( Uri responseUrl, Stream stream, Encoding encoding )
         {
-            ResponseUrl = responseUrl;
+            this.ResponseUrl = responseUrl;
 
-            using (var reader = new StreamReader(stream, encoding))
-                Response = reader.ReadToEnd();
+            using ( var reader = new StreamReader( stream, encoding ) )
+            {
+                this.Response = reader.ReadToEnd();
+            }
         }
 
-        public void LoadResultTo(HtmlDocument htmlDocument)
+        public void LoadResultTo( HtmlDocument htmlDocument )
         {
-            htmlDocument.LoadHtml(Response);
+            htmlDocument.LoadHtml( this.Response );
         }
     }
 }
